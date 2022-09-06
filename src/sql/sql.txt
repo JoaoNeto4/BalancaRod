@@ -1,0 +1,104 @@
+
+
+create database BALANCA;
+
+use BALANCA;
+
+create table TB_Permissao(
+ID int primary key auto_increment,
+nivel varchar(50),
+observacao varchar(255)
+);
+
+create table TB_Operador(
+ID int primary key auto_increment,
+ID_Permissao int,
+nome varchar(50) not null,
+senha varchar(50) not null,
+funcao varchar(50),
+observacoes varchar(255),
+CONSTRAINT fk_permissao FOREIGN KEY (ID_permissao) REFERENCES TB_Permissao(ID)
+);
+
+create table TB_Log(
+ID int primary key auto_increment,
+ID_operador int,
+tabela varchar(150),
+tipoRegistro varchar(150),
+dataHora date,
+CONSTRAINT fk_operador FOREIGN KEY (ID_operador) REFERENCES TB_Operador(ID)
+);
+
+create table TB_ParceiroNegocio(
+ID int primary key auto_increment,
+fantasia varchar(100),
+razaoSocial varchar(100),
+cpf_cnpj varchar(50) not null,
+estado varchar(50) not null,
+cidade varchar(50) not null,
+bairro varchar(50),
+rua varchar(150) not null,
+numero int not null,
+telefone varchar(100) not null,
+telefoneAlt varchar(100),
+celular varchar(100),
+email varchar(100) not null,
+emailAlt varchar(100),
+Observacoes varchar(255)
+);
+
+create table TB_Veiculos(
+ID int primary key auto_increment,
+ID_parceiro int not null,
+marca varchar(100),
+modelo varchar(100),
+anoFabricacao int,
+placa varchar(50) not null,
+tara double,
+tipo varchar(100),
+observacoes varchar(255),
+CONSTRAINT fk_parseiroNegocio FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID)
+);
+
+create table TB_Produto(
+ID int primary key auto_increment,
+produto varchar(100) not null,
+unidMed varchar(50) not null,
+observacao varchar(255)
+);
+
+create table TB_Pesagem(
+ID int primary key auto_increment,
+ID_parceiro int not null,
+ID_veiculo int not null,
+ID_operador int not null,
+ID_produto int,
+dataHora time not null,
+tipoPesagem varchar(50) not null,
+andamento boolean not null,
+nfe varchar(100),
+lote varchar(100),
+origem varchar(100),
+destino varchar(100),
+pesoEnt1 double,
+pesoEnt2 double,
+pesoSai1 double,
+pesoSai2 double,
+motorista varchar(100),
+observacao varchar(255),
+CONSTRAINT fk_parceiroNegocio FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID),
+CONSTRAINT fk_veiculo FOREIGN KEY (ID_veiculo) REFERENCES TB_Veiculos(ID),
+CONSTRAINT fk_operador_pesagem FOREIGN KEY (ID_operador) REFERENCES TB_Operador(ID),
+CONSTRAINT fk_produto FOREIGN KEY (ID_produto) REFERENCES TB_Produto(ID)
+);
+
+create table TB_Registro(
+ID int primary key auto_increment,
+ID_pesagem int,
+dataHora date,
+tipo varchar(100),
+foto1 varchar(150),
+foto2 varchar(150),
+ativo boolean,
+CONSTRAINT fk_pesagem FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
+);
