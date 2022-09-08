@@ -5,6 +5,7 @@ import br.com.bean.Pesagem;
 import br.com.bean.Produtos;
 import br.com.bean.ProdutosCarga;
 import br.com.conexao.Conexao;
+import com.sun.xml.internal.bind.v2.TODO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,27 +50,44 @@ public class ProdutosCargaDao {
         con.close();
     }
    
+   // TODO: //VERIFICAR ESTE METODO
+            /*VERIFICAR ERRO*/
     public static List<ProdutosCarga> listar() throws SQLException {
         List<ProdutosCarga> listaProdCarga = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select PR.*, PR.*, PE.* from TB_ProdutosCarga as PC inner join TB_Produto as PR on PC.ID_produto=PR.ID inner join TB_Pesagem as PE on PE.ID=PC.ID_pesagem order by PC.ID_produto";
+        String sql = "select PR.*, PC.*, PE.* from TB_ProdutosCarga as PC inner join TB_Produto as PR on PC.ID_produto=PR.ID inner join TB_Pesagem as PE on PE.ID=PC.ID_pesagem order by PC.ID_produto";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             
-            Pesagem pe = new Pesagem();
-            pe.setId(rs.getInt("PE.ID"));
-            /*VERIFICAR ERRO*/
-            
+            Pesagem p = new Pesagem();
+            p.setId(rs.getInt("PE.ID"));
+            p.setDataHora(rs.getDate("PE.dataHora"));
+            p.setTipoPesagem(rs.getString("PE.tipoPesagem"));
+            p.setAndamento(rs.getBoolean("PE.andamento"));
+            p.setNfe(rs.getString("PE.nfe"));
+            p.setLote(rs.getString("PE.lote"));
+            p.setOrigem(rs.getString("PE.origem"));
+            p.setDestino(rs.getString("PE.destino"));
+            p.setPesoEnt1(rs.getDouble("PE.pesoEnt1"));
+            p.setPesoEnt2(rs.getDouble("PE.pesoEnt2"));
+            p.setPesoSai1(rs.getDouble("PE."));
+            p.setPesoSai2(rs.getDouble("PE.pesoSai1"));
+            p.setMotorista(rs.getString("PE.pesoSai2"));
+            p.setObservacao(rs.getString("PE.motorista"));
+            p.setObservacao(rs.getString("PE.observacao"));
+         
             Produtos prod = new Produtos();
             prod.setId(rs.getInt("PR.ID"));
             prod.setProduto(rs.getString("PR.produto"));
             prod.setUnidMed(rs.getString("PR.unidMed"));
             prod.setObservacoes(rs.getString("PR.observacao"));
-            
-            
+             
             ProdutosCarga pc = new ProdutosCarga();
             pc.setId(rs.getInt("PC.ID"));
+            pc.setObservacao(rs.getString("PC.observacao"));
+            pc.setProduto(prod);
+            pc.setPesagem(p);
             
             stmt.setInt(1, pc.getPesagem().getId());
             stmt.setInt(2, pc.getProduto().getId());
