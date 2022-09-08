@@ -23,7 +23,7 @@ public class OperadorDao {
         stmt.setString(2, op.getNome());
         stmt.setString(3, op.getSenha());
         stmt.setString(4, op.getFuncao());
-        stmt.setString(2, op.getObservacao());
+        stmt.setString(5, op.getObservacao());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Operador Salvo Com Sucesso!");
         stmt.close();
@@ -32,7 +32,7 @@ public class OperadorDao {
     
     public static void excluir(Operador op)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "DELETE FROM TB_Operador where id=?";
+        String sql = "DELETE FROM TB_Operador where ID=?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, op.getId());
         stmt.execute();
@@ -43,7 +43,7 @@ public class OperadorDao {
     
     public static void alterar(Operador op)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Operador SET ID_Permissao=?, nome=?, senha=?, funcao=?, observacoes=? WHERE id= ?";
+        String sql = "UPDATE TB_Operador SET ID_Permissao=?, nome=?, senha=?, funcao=?, observacoes=? WHERE ID= ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, op.getPermissao().getId());
         stmt.setString(2, op.getNome());
