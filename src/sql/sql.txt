@@ -102,3 +102,12 @@ foto2 varchar(150),
 ativo boolean,
 CONSTRAINT fk_pesagem FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
 );
+
+create table TB_ProdutosCarga(
+ID int primary key auto_increment,
+ID_produto int,
+ID_pesagem int,
+observacao varchar(255),
+CONSTRAINT fk_produtoCarga FOREIGN KEY (ID_produto) REFERENCES TB_Produto(ID),
+CONSTRAINT fk_pesagemCarga FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
+)
