@@ -9,8 +9,8 @@ import java.sql.SQLException;
 public class Conexao {
     public static Connection getConexao() throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/TESTE", "root", "root1234");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/BALANCA", "root", "root");
         } catch (ClassNotFoundException e) {
             throw new SQLException(e.getMessage());
         }

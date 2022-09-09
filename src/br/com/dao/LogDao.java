@@ -25,6 +25,7 @@ public class LogDao {
         stmt.close();
         con.close();
     }
+    
     /*
     public static void excluir(Log log)throws SQLException{
         Connection con = Conexao.getConexao();

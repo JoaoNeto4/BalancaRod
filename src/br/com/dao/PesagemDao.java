@@ -4,6 +4,7 @@ package br.com.dao;
 import br.com.bean.Operador;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
+import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
 import br.com.conexao.Conexao;
 import com.sun.xml.internal.bind.v2.TODO;
@@ -122,10 +123,17 @@ public class PesagemDao {
      public static List<Pesagem> pesquisar(Pesagem pes) throws SQLException {
         List<Pesagem> listaPesagem = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select PE.* RE.*, PR.*, VE.*, PN.*, OP.* from TB_Pesagem as PE inner join TB_Registro as RE on PE.ID=RE.ID_pesagem inner join TB_ProdutosCarga as PR on PE.ID=PR.ID_pesagem inner join TB_Veiculos as VE on VE.ID=PE.ID_veiculo inner join TB_ParceiroNegocio as PN on PN.ID=VE.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by pes.getVeiculo().getPlaca()";
+        String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro  inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by pes.getVeiculo().getPlaca()";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
+            
+            Produtos prod = new Produtos();
+            prod.setId(rs.getInt("PR.ID"));
+            prod.setProduto(rs.getString("PR.produto"));
+            prod.setUnidMed(rs.getString("PR.unidMed"));
+            prod.setObservacoes(rs.getString("PR.observacao"));
+            
             
             ParceiroNegocio pn = new ParceiroNegocio();
             pn.setId(rs.getInt("PN.ID"));

@@ -9,6 +9,7 @@ public class Pesagem {
     private ParceiroNegocio pn;
     private Veiculos veiculo;
     private Operador operador;
+    private Produtos produto;
     private Date dataHora;
     private String tipoPesagem;
     private Boolean andamento;
@@ -29,6 +30,14 @@ public class Pesagem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Produtos getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produtos produto) {
+        this.produto = produto;
     }
 
     public ParceiroNegocio getPn() {

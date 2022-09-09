@@ -12,7 +12,7 @@ observacao varchar(255)
 
 create table TB_Operador(
 ID int primary key auto_increment,
-ID_Permissao int,
+ID_permissao int,
 nome varchar(50) not null,
 senha varchar(50) not null,
 funcao varchar(50),
@@ -72,6 +72,7 @@ ID int primary key auto_increment,
 ID_parceiro int not null,
 ID_veiculo int not null,
 ID_operador int not null,
+ID_produto int,
 dataHora time not null,
 tipoPesagem varchar(50) not null,
 andamento boolean not null,
@@ -102,11 +103,8 @@ ativo boolean,
 CONSTRAINT fk_pesagem FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
 );
 
-create table TB_ProdutosCarga(
-ID int primary key auto_increment,
-ID_produto int,
-ID_pesagem int,
-observacao varchar(255),
-CONSTRAINT fk_produtoCarga FOREIGN KEY (ID_produto) REFERENCES TB_Produto(ID),
-CONSTRAINT fk_pesagemCarga FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
-)
+INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 08 A 13", "KG", "");
+INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 18 A 24", "KG", "");
+INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 25 A 34", "KG", "");
+INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 30 ACIMA", "KG", "");
+INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS EUCA 25 ACIMA", "KG", "");
