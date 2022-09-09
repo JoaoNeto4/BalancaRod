@@ -51,23 +51,28 @@ public class PermissaoDao {
     }
     
     public static List<Permissao> listar() throws SQLException {
-        List<Permissao> listaControle = new ArrayList<>();
+        List<Permissao> listaPermissao = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select * from TB_Permissao order by nivel";
+        String sql = "select * from TB_Permissao order by ID";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            Permissao cont = new Permissao();
-            cont.setId(rs.getInt("ID"));
-            stmt.setString(1, cont.getNivel());
-            stmt.setString(2, cont.getObservacao());
-            listaControle.add(cont);
+            Permissao per = new Permissao();
+            per.setId(rs.getInt("ID"));
+            per.setNivel(rs.getString("nivel"));
+            per.setObservacao(rs.getString("observacao"));
+
+            listaPermissao.add(per);
         }
         stmt.close();
         rs.close();
         con.close();
-        return listaControle;
+        return listaPermissao;
      }
+    
+    public static void main(String[] args) throws SQLException {
+        PermissaoDao.listar();
+    }
      
      public static List<Permissao> pesquisar(Permissao permissao) throws SQLException {
         List<Permissao> listaControle = new ArrayList<>();

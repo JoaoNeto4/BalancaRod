@@ -108,3 +108,12 @@ INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 18 A 2
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 25 A 34", "KG", "");
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 30 ACIMA", "KG", "");
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS EUCA 25 ACIMA", "KG", "");
+
+INSERT into TB_Permissao (nivel, observacao) values ("Admin","Root");
+INSERT into TB_Permissao (nivel, observacao) values ("Gerente","Permissão de Leitura e Escrita");
+INSERT into TB_Permissao (nivel, observacao) values ("Operacional","Permissão de Pesagem manual ou Avulsa");
+INSERT into TB_Permissao (nivel, observacao) values ("Atualizacao","Atualização de Informações já existentes");
+INSERT into TB_Permissao (nivel, observacao) values ("System","Pesagem Automática");
+INSERT into TB_Permissao (nivel, observacao) values ("Agendamento","Apenas Agendamento");
+INSERT into TB_Permissao (nivel, observacao) values ("Leitura","Apenas Vizualização de Dados");
+

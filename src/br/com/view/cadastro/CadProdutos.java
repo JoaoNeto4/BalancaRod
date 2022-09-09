@@ -94,6 +94,11 @@ public class CadProdutos extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
         jPanelPrincipal.setLayout(jPanelPrincipalLayout);
@@ -177,6 +182,10 @@ public class CadProdutos extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnSalvarMouseReleased
+
+    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarMouseReleased
 
 
     public static void main(String args[]) {
