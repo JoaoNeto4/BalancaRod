@@ -2,6 +2,10 @@
 package br.com.view.cadastro;
 
 import br.com.bean.ParceiroNegocio;
+import br.com.dao.ParceiroNegocioDao;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -10,6 +14,9 @@ import javax.swing.JOptionPane;
  */
 public class CadParceiroNegocio extends javax.swing.JDialog {
 
+    private boolean salvar = true;
+    private int id=0;
+    
     public CadParceiroNegocio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -93,8 +100,26 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Campo Email não pode ser Vazio!");
             return false;
         }
-        
         return true;
+    }
+    
+    private void limparCampos(){
+        txtFantasia.setText("");
+        txtRazSocial.setText("");
+        txtCpfCnpj.setText("");
+        jcBoxEstado.setSelectedIndex(0);
+        txtCidade.setText("");
+        txtBairro.setText("");
+        txtRua.setText("");
+        txtNumero.setText("");
+        txtComplemento.setText("");
+        txtTelefone.setText("");
+        txtTelefoneAlt.setText("");
+        txtCelular.setText("");
+        txtEmail.setText("");
+        txtEmailAlt.setText("");
+        txtObservacao.setText("");
+        this.id=0;
     }
 
    
@@ -132,8 +157,8 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservacao = new javax.swing.JTextArea();
         jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtBairro = new javax.swing.JTextField();
 
@@ -181,21 +206,25 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
             ex.printStackTrace();
         }
 
-        txtCelular.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCelularActionPerformed(evt);
-            }
-        });
-
         txtObservacao.setColumns(20);
         txtObservacao.setRows(5);
         jScrollPane1.setViewportView(txtObservacao);
 
         jLabel15.setText("Cidade");
 
-        jButton1.setText("Salvar");
+        btnSalvar.setText("Salvar");
+        btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSalvarMouseReleased(evt);
+            }
+        });
 
-        jButton2.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseReleased(evt);
+            }
+        });
 
         jLabel5.setText("Bairro");
 
@@ -224,9 +253,9 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jScrollPane1)
                                 .addComponent(txtRazSocial)
@@ -330,8 +359,8 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -349,9 +378,29 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelularActionPerformed
+    private void btnSalvarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseReleased
+        if(validaCampos()){
+            ParceiroNegocioDao op = new ParceiroNegocioDao();
+            try {
+                if(salvar){
+                    retornaObjeto();
+                    op.inserir(retornaObjeto());
+                    limparCampos();
+                    this.dispose();
+                }else{
+                    op.alterar(retornaObjeto());
+                    limparCampos();
+                    this.dispose();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CadProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnSalvarMouseReleased
+
+    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarMouseReleased
 
    
     public static void main(String args[]) {
@@ -394,8 +443,8 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

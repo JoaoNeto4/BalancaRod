@@ -58,6 +58,7 @@ create table TB_Veiculos(
     placa varchar(50) not null,
     tara double,
     tipo varchar(100),
+    ativo boolean,
     observacoes varchar(255),
     CONSTRAINT fk_parseiroNegocio FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID)
 );

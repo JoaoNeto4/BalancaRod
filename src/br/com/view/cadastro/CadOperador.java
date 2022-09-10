@@ -91,6 +91,7 @@ public class CadOperador extends javax.swing.JDialog {
         txtFuncao.setText("");
         txtObservacao.setText("");
         jcBox.setSelectedIndex(6);
+        this.id=0;
     }
     
    

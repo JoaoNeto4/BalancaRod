@@ -18,7 +18,7 @@ public class VeiculosDao {
     
     public static void inserir(Veiculos vei)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "insert into TB_Veiculos( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, observacoes) VALUES(?,?,?,?,?)";
+        String sql = "insert into TB_Veiculos( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, ativo, observacoes) VALUES(?,?,?,?,?,?)";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, vei.getPn().getId());
         stmt.setString(2, vei.getMarca());
@@ -27,7 +27,8 @@ public class VeiculosDao {
         stmt.setString(5, vei.getPlaca());
         stmt.setDouble(6, vei.getTara());
         stmt.setString(7, vei.getTipo());
-        stmt.setString(8, vei.getObservacoes());
+        stmt.setBoolean(8, vei.getAtivo());
+        stmt.setString(9, vei.getObservacoes());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Veículo Salvo Com Sucesso!");
         stmt.close();
@@ -47,7 +48,7 @@ public class VeiculosDao {
     
     public static void alterar(Veiculos vei)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Veiculos SET ID_parceiro=?, marca=?, modelo=?, anoFabricacao=?, placa=?, tara=?, tipo=?, observacoes=? WHERE ID= ?";
+        String sql = "UPDATE TB_Veiculos SET ID_parceiro=?, marca=?, modelo=?, anoFabricacao=?, placa=?, tara=?, tipo=?, ativo=?, observacoes=? WHERE ID= ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, vei.getPn().getId());
         stmt.setString(2, vei.getMarca());
@@ -56,7 +57,8 @@ public class VeiculosDao {
         stmt.setString(5, vei.getPlaca());
         stmt.setDouble(6, vei.getTara());
         stmt.setString(7, vei.getTipo());
-        stmt.setString(8, vei.getObservacoes());
+        stmt.setBoolean(8, vei.getAtivo());
+        stmt.setString(9, vei.getObservacoes());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Veículo Alterada Com Sucesso!");
         stmt.close();
@@ -77,9 +79,10 @@ public class VeiculosDao {
             stmt.setString(3, vei.getModelo());
             stmt.setInt(4, vei.getAno());
             stmt.setString(5, vei.getPlaca());
-            stmt.setDouble(5, vei.getTara());
-            stmt.setString(5, vei.getTipo());
-            stmt.setString(5, vei.getObservacoes());
+            stmt.setDouble(6, vei.getTara());
+            stmt.setString(7, vei.getTipo());
+            stmt.setBoolean(8, vei.getAtivo());
+            stmt.setString(9, vei.getObservacoes());
             listaControle.add(vei);
         }
         stmt.close();
@@ -165,6 +168,7 @@ public class VeiculosDao {
             veiculos.setPlaca(rs.getString("V.placa"));
             veiculos.setTara(rs.getDouble("V.tara"));
             veiculos.setTipo(rs.getString("V.tipo"));
+            veiculos.setAtivo(rs.getBoolean("V.ativo"));
             veiculos.setObservacoes(rs.getString("V.observacoes"));
             veiculos.setPn(p);
             listaOperador.add(veiculos);

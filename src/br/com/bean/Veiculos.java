@@ -11,6 +11,15 @@ public class Veiculos {
     private String placa;
     private Double tara;
     private String tipo;
+    private Boolean ativo;
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
     private String observacoes;
 
     public int getId() {
