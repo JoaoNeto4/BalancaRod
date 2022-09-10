@@ -22,6 +22,7 @@ public class CadProdutos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setTitle("Cadastro de Produtos");
+        this.setLocationRelativeTo(null);  // centraliza a tela 
     }
 
     public Produtos retornaObjeto(){
@@ -37,6 +38,13 @@ public class CadProdutos extends javax.swing.JDialog {
             prod.setId(id);
         }
         return prod;
+    }
+    
+    private void setaCampos(Produtos prod){
+        txtProduto.setText(prod.getProduto());
+        jcBox.setSelectedItem(prod.getUnidMed());
+        txtObservacao.setText(prod.getObservacoes());
+        this.id=prod.getId();
     }
     
     public Boolean validaCampos(){

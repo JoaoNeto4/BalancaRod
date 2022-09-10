@@ -28,6 +28,7 @@ public class CadOperador extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Cadastro de Operador");
         this.populaCombobox();
+        this.setLocationRelativeTo(null);  // centraliza a tela 
     }
 
     private void populaCombobox() {
@@ -54,8 +55,18 @@ public class CadOperador extends javax.swing.JDialog {
         op.setFuncao(txtFuncao.getText());
         op.setObservacao(txtObservacao.getText());
         op.setPermissao(p);
-
+        if(!salvar){
+            op.setId(id);
+        }
         return op;
+    }
+    
+    private void setaCampos(Operador op){
+        txtLogin.setText(op.getNome());
+        txtSenha.setText(op.getSenha());
+        txtObservacao.setText(op.getObservacao());
+        jcBox.setSelectedIndex(op.getPermissao().getId());
+        this.id=op.getId();
     }
     
     private Boolean validaCampos(){
@@ -128,6 +139,11 @@ public class CadOperador extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -224,6 +240,10 @@ public class CadOperador extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnSalvarMouseReleased
+
+    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarMouseReleased
 
 
     public static void main(String args[]) {
