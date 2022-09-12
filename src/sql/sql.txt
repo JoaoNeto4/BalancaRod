@@ -76,10 +76,14 @@ create table TB_Pesagem(
     ID_veiculo int not null,
     ID_operador int not null,
     ID_produto int,
-    dataHora time not null,
+    ID_transportador int,
+    dataHoraEntrada time not null,
+    dataHoraSaida time,
     tipoPesagem varchar(50) not null,
     andamento boolean not null,
     nfe varchar(100),
+    valorNfe double,
+    pesoNfe double,
     lote varchar(100),
     origem varchar(100),
     destino varchar(100),
@@ -88,11 +92,16 @@ create table TB_Pesagem(
     pesoSai1 double,
     pesoSai2 double,
     motorista varchar(100),
+    foto1 varchar(150),
+    foto2 varchar(150),
+    fotoEntrada varchar(150),
+    fotoSaida varchar(150),
     observacao varchar(255),
     CONSTRAINT fk_parceiroNegocio FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID),
     CONSTRAINT fk_veiculo FOREIGN KEY (ID_veiculo) REFERENCES TB_Veiculos(ID),
     CONSTRAINT fk_operador_pesagem FOREIGN KEY (ID_operador) REFERENCES TB_Operador(ID),
-    CONSTRAINT fk_produto FOREIGN KEY (ID_produto) REFERENCES TB_Produto(ID)
+    CONSTRAINT fk_produto FOREIGN KEY (ID_produto) REFERENCES TB_Produto(ID),
+    CONSTRAINT fk_transportador FOREIGN KEY (ID_transportador) REFERENCES TB_ParceiroNegocio(ID)
 );
 
 create table TB_Registro(
@@ -120,3 +129,7 @@ INSERT into TB_Permissao (nivel, observacao) values ("System","Pesagem Automáti
 INSERT into TB_Permissao (nivel, observacao) values ("Agendamento","Apenas Agendamento");
 INSERT into TB_Permissao (nivel, observacao) values ("Leitura","Apenas Vizualização de Dados");
 
+
+
+
+UTILIDADES: https://icons8.com.br/icons/set/imprimir

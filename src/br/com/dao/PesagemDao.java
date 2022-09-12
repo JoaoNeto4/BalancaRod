@@ -22,30 +22,40 @@ public class PesagemDao {
     
     public static void inserir(Pesagem ps)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "insert into TB_Pesagem( ID_parceiro, ID_veiculo, ID_operador, dataHora, tipoPesagem, andamento, nfe, lote, origem, destino, pesoEnt1, pesoEnt2, pesoSai1, pesoSai2, motorista, observacao) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into TB_Pesagem( ID_parceiro, ID_veiculo, ID_operador, ID_produto, ID_transportador, dataHoraEntrada, dataHoraSaida, tipoPesagem, andamento, nfe, valorNfe, pesoNfe, lote, origem, destino, pesoEnt1, pesoEnt2, pesoSai1, pesoSai2, motorista, foto1, foto2, fotoEntrada, fotoSaida, observacao) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, ps.getPn().getId());
         stmt.setInt(2, ps.getVeiculo().getId());
         stmt.setInt(3, ps.getOperador().getId());
-        stmt.setTime(4, (Time) ps.getDataHora());
-        stmt.setString(5, ps.getTipoPesagem());
-        stmt.setBoolean(6, ps.getAndamento());
-        stmt.setString(7, ps.getNfe());
-        stmt.setString(8, ps.getLote());
-        stmt.setString(9, ps.getOrigem());
-        stmt.setString(10, ps.getDestino());
-        stmt.setDouble(11, ps.getPesoEnt1());
-        stmt.setDouble(12, ps.getPesoEnt2());
-        stmt.setDouble(13, ps.getPesoSai1());
-        stmt.setDouble(14, ps.getPesoSai2());
-        stmt.setString(15, ps.getMotorista());
-        stmt.setString(16, ps.getObservacao());
+        stmt.setInt(4, ps.getProduto().getId());
+        stmt.setInt(5, ps.getTransportador().getId());
+        stmt.setTime(6, (Time) ps.getDataHoraEtrada());
+        stmt.setTime(7, (Time) ps.getDataHoraSaida());
+        stmt.setString(8, ps.getTipoPesagem());
+        stmt.setBoolean(9, ps.getAndamento());
+        stmt.setString(10, ps.getNfe());
+        stmt.setString(11, ps.getLote());
+        stmt.setString(12, ps.getOrigem());
+        stmt.setString(13, ps.getDestino());
+        stmt.setDouble(14, ps.getValorNfe());
+        stmt.setDouble(15, ps.getPesoNfe());
+        stmt.setDouble(16, ps.getPesoEnt1());
+        stmt.setDouble(17, ps.getPesoEnt2());
+        stmt.setDouble(18, ps.getPesoSai1());
+        stmt.setDouble(19, ps.getPesoSai2());
+        stmt.setString(20, ps.getFotoCarga1());
+        stmt.setString(21, ps.getFotoCarga2());
+        stmt.setString(22, ps.getFotoEntrada());
+        stmt.setString(23, ps.getFotoSaida());
+        stmt.setString(24, ps.getMotorista());
+        stmt.setString(25, ps.getObservacao());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Pesagem Salva Com Sucesso!");
         stmt.close();
         con.close();
     }
-    
+    /*
+    //TODO: NAO VAI PRECISAR 
     public static void excluir(Pesagem ps)throws SQLException{
         Connection con = Conexao.getConexao();
         String sql = "DELETE FROM TB_Pesagem where ID=?";
@@ -56,27 +66,37 @@ public class PesagemDao {
         stmt.close();
         con.close();
     }
-    
+    */
     public static void alterar(Pesagem ps)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Pesagem SET ID_parceiro=?, ID_veiculo=?, ID_operador=?, dataHora=?, tipoPesagem=?, andamento=?, nfe=?, lote=?, origem=?, destino=?, pesoEnt1=?, pesoEnt2=?, pesoSai1=?, pesoSai2=?, motorista=?, observacao=? WHERE ID=?";
+        String sql = "UPDATE TB_Pesagem SET ID_parceiro=?, ID_veiculo=?, ID_operador=?, ID_produto=?, ID_transportador=?, dataHoraEntrada=?, dataHoraSaida=?, tipoPesagem=?, andamento=?, nfe=?, valorNfe=?, pesoNfe=?, lote=?, origem=?, destino=?, pesoEnt1=?, pesoEnt2=?, pesoSai1=?, pesoSai2=?, motorista=?, foto1=?, foto2=?, fotoEntrada=?, fotoSaida=?, observacao=? WHERE ID=?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, ps.getPn().getId());
         stmt.setInt(2, ps.getVeiculo().getId());
         stmt.setInt(3, ps.getOperador().getId());
-        stmt.setTime(4, (Time) ps.getDataHora());
-        stmt.setString(5, ps.getTipoPesagem());
-        stmt.setBoolean(6, ps.getAndamento());
-        stmt.setString(7, ps.getLote());
-        stmt.setString(8, ps.getOrigem());
-        stmt.setString(9, ps.getDestino());
-        stmt.setDouble(10, ps.getPesoEnt1());
-        stmt.setDouble(11, ps.getPesoEnt2());
-        stmt.setDouble(12, ps.getPesoSai1());
-        stmt.setDouble(13, ps.getPesoSai2());
-        stmt.setString(14, ps.getMotorista());
-        stmt.setString(15, ps.getObservacao());
-        stmt.setInt(16, ps.getId());
+        stmt.setInt(4, ps.getProduto().getId());
+        stmt.setInt(5, ps.getTransportador().getId());
+        stmt.setTime(6, (Time) ps.getDataHoraEtrada());
+        stmt.setTime(7, (Time) ps.getDataHoraSaida());
+        stmt.setString(8, ps.getTipoPesagem());
+        stmt.setBoolean(9, ps.getAndamento());
+        stmt.setString(10, ps.getNfe());
+        stmt.setString(11, ps.getLote());
+        stmt.setString(12, ps.getOrigem());
+        stmt.setString(13, ps.getDestino());
+        stmt.setDouble(14, ps.getValorNfe());
+        stmt.setDouble(15, ps.getPesoNfe());
+        stmt.setDouble(16, ps.getPesoEnt1());
+        stmt.setDouble(17, ps.getPesoEnt2());
+        stmt.setDouble(18, ps.getPesoSai1());
+        stmt.setDouble(19, ps.getPesoSai2());
+        stmt.setString(20, ps.getFotoCarga1());
+        stmt.setString(21, ps.getFotoCarga2());
+        stmt.setString(22, ps.getFotoEntrada());
+        stmt.setString(23, ps.getFotoSaida());
+        stmt.setString(24, ps.getMotorista());
+        stmt.setString(25, ps.getObservacao());
+        stmt.setInt(26, ps.getId());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Pesagem Alterada Com Sucesso!");
         stmt.close();
@@ -96,19 +116,28 @@ public class PesagemDao {
             stmt.setInt(1, ps.getPn().getId());
             stmt.setInt(2, ps.getVeiculo().getId());
             stmt.setInt(3, ps.getOperador().getId());
-            stmt.setTime(4, (Time) ps.getDataHora());
-            stmt.setString(5, ps.getTipoPesagem());
-            stmt.setBoolean(5, ps.getAndamento());
-            stmt.setString(5, ps.getNfe());
-            stmt.setString(5, ps.getLote());
-            stmt.setString(5, ps.getOrigem());
-            stmt.setString(5, ps.getDestino());
-            stmt.setDouble(5, ps.getPesoEnt1());
-            stmt.setDouble(5, ps.getPesoEnt2());
-            stmt.setDouble(5, ps.getPesoSai1());
-            stmt.setDouble(5, ps.getPesoSai2());
-            stmt.setString(5, ps.getMotorista());
-            stmt.setString(5, ps.getObservacao());
+            stmt.setInt(4, ps.getProduto().getId());
+            stmt.setInt(5, ps.getTransportador().getId());
+            stmt.setTime(6, (Time) ps.getDataHoraEtrada());
+            stmt.setTime(7, (Time) ps.getDataHoraSaida());
+            stmt.setString(8, ps.getTipoPesagem());
+            stmt.setBoolean(9, ps.getAndamento());
+            stmt.setString(10, ps.getNfe());
+            stmt.setString(11, ps.getLote());
+            stmt.setString(12, ps.getOrigem());
+            stmt.setString(13, ps.getDestino());
+            stmt.setDouble(14, ps.getValorNfe());
+            stmt.setDouble(15, ps.getPesoNfe());
+            stmt.setDouble(16, ps.getPesoEnt1());
+            stmt.setDouble(17, ps.getPesoEnt2());
+            stmt.setDouble(18, ps.getPesoSai1());
+            stmt.setDouble(19, ps.getPesoSai2());
+            stmt.setString(20, ps.getFotoCarga1());
+            stmt.setString(21, ps.getFotoCarga2());
+            stmt.setString(22, ps.getFotoEntrada());
+            stmt.setString(23, ps.getFotoSaida());
+            stmt.setString(24, ps.getMotorista());
+            stmt.setString(25, ps.getObservacao());
             
             listaControle.add(ps);
         }
@@ -141,6 +170,13 @@ public class PesagemDao {
             pn.setRazaoSocial(rs.getString("PN.razaoSocial"));
             pn.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
             
+            ParceiroNegocio transp = new ParceiroNegocio();
+            transp.setId(rs.getInt("PN.ID"));
+            transp.setFantasia(rs.getString("PN.fantasia"));
+            transp.setRazaoSocial(rs.getString("PN.razaoSocial"));
+            transp.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
+            
+            
             Veiculos ve = new Veiculos();
             ve.setId(rs.getInt("VE.ID"));
             ve.setModelo(rs.getString("VE.modelo"));
@@ -155,11 +191,16 @@ public class PesagemDao {
             
             Pesagem p = new Pesagem();
             p.setId(rs.getInt("PE.ID"));
-            p.setDataHora(rs.getDate("PE.dataHora"));
+            p.setDataHoraEtrada(rs.getDate("PE.dataHoraEntrada"));
+            p.setDataHoraEtrada(rs.getDate("PE.dataHoraSaida"));
             p.setTipoPesagem(rs.getString("PE.tipoPesagem"));
             p.setAndamento(rs.getBoolean("PE.andamento"));
             p.setNfe(rs.getString("PE.nfe"));
+            
+            p.setValorNfe(Double.NaN);
+            p.setPesoNfe(Double.NaN);
             p.setLote(rs.getString("PE.lote"));
+            
             p.setOrigem(rs.getString("PE.origem"));
             p.setDestino(rs.getString("PE.destino"));
             p.setPesoEnt1(rs.getDouble("PE.pesoEnt1"));
@@ -168,10 +209,16 @@ public class PesagemDao {
             p.setPesoSai2(rs.getDouble("PE.pesoSai1"));
             p.setMotorista(rs.getString("PE.pesoSai2"));
             p.setObservacao(rs.getString("PE.motorista"));
+            p.setFotoCarga1(rs.getString("PE.foto1"));
+            p.setFotoCarga2(rs.getString("PE.foto2"));
+            p.setFotoEntrada(rs.getString("PE.fotoEntrada"));
+            p.setFotoSaida(rs.getString("PE.fotoSaida"));
             p.setObservacao(rs.getString("PE.observacao"));
             p.setPn(pn);
             p.setVeiculo(ve);
             p.setOperador(op);
+            p.setProduto(prod);
+            p.setTransportador(transp);
             listaPesagem.add(p);
             
         }
