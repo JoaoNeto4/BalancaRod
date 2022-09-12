@@ -53,7 +53,7 @@ create table TB_Veiculos(
     ID int primary key auto_increment,
     ID_parceiro int not null,
     marca varchar(100),
-    modelo varchar(100),
+    modelo varchar(100) not null,
     anoFabricacao int,
     placa varchar(50) not null,
     tara double,
