@@ -254,7 +254,6 @@ public class CadOperador extends javax.swing.JDialog {
                     this.dispose();
                 }else{
                     op.alterar(retornaObjeto());
-                    limparCampos();
                     this.dispose();
                 }
             } catch (SQLException ex) {

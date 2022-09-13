@@ -5,6 +5,7 @@ import br.com.bean.Operador;
 import br.com.dao.OperadorDao;
 import br.com.view.cadastro.CadOperador;
 import java.awt.Frame;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,11 @@ public class PesqOperador extends javax.swing.JDialog {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tabelaTela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaTelaMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tabelaTela);
@@ -234,6 +240,22 @@ public class PesqOperador extends javax.swing.JDialog {
         CadOperador co = new CadOperador((Frame) getParent(), true, opSelecionado);
         co.setVisible(true);
     }//GEN-LAST:event_btnEditarMouseReleased
+
+    private void tabelaTelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTelaMouseClicked
+        if(evt.getClickCount() == 2){
+            switch(evt.getButton()){
+                case MouseEvent.BUTTON1:
+
+                    Operador opSelecionado = listaOperador.get(tabelaTela.getSelectedRow());
+                    CadOperador cp = new CadOperador((Frame) getParent(), true, opSelecionado);
+                    cp.setVisible(true);
+                
+                break;
+                default:
+                    System.out.println("2 vezes outro botao");
+            }
+        }
+    }//GEN-LAST:event_tabelaTelaMouseClicked
 
     /**
      * @param args the command line arguments
