@@ -1,8 +1,6 @@
 
 package br.com.bean;
 
-import java.util.Date;
-
 public class Pesagem {
     
     private int id;
@@ -11,8 +9,8 @@ public class Pesagem {
     private Operador operador;
     private Produtos produto;
     private ParceiroNegocio transportador;
-    private Date dataHoraEtrada;
-    private Date dataHoraSaida;
+    private String dataHoraEtrada;
+    private String dataHoraSaida;
     private String tipoPesagem;
     private Boolean andamento;
     private String nfe;
@@ -32,19 +30,19 @@ public class Pesagem {
     private String motorista;
     private String observacao;
 
-    public Date getDataHoraEtrada() {
+    public String getDataHoraEtrada() {
         return dataHoraEtrada;
     }
 
-    public void setDataHoraEtrada(Date dataHoraEtrada) {
+    public void setDataHoraEtrada(String dataHoraEtrada) {
         this.dataHoraEtrada = dataHoraEtrada;
     }
 
-    public Date getDataHoraSaida() {
+    public String getDataHoraSaida() {
         return dataHoraSaida;
     }
 
-    public void setDataHoraSaida(Date dataHoraSaida) {
+    public void setDataHoraSaida(String dataHoraSaida) {
         this.dataHoraSaida = dataHoraSaida;
     }
 

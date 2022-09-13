@@ -77,8 +77,8 @@ create table TB_Pesagem(
     ID_operador int not null,
     ID_produto int,
     ID_transportador int,
-    dataHoraEntrada time not null,
-    dataHoraSaida time,
+    dataHoraEntrada datetime not null,
+    dataHoraSaida datetime,
     tipoPesagem varchar(50) not null,
     andamento boolean not null,
     nfe varchar(100),
@@ -128,6 +128,23 @@ INSERT into TB_Permissao (nivel, observacao) values ("Atualizacao","Atualizaçã
 INSERT into TB_Permissao (nivel, observacao) values ("System","Pesagem Automática");
 INSERT into TB_Permissao (nivel, observacao) values ("Agendamento","Apenas Agendamento");
 INSERT into TB_Permissao (nivel, observacao) values ("Leitura","Apenas Vizualização de Dados");
+
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 1, "joao" "1234", "Administrador", "pessoa que manda" )
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 2, "pedro" "1234", "teste", "teste" )
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 3, "paulo" "1234", "teste", "teste" )
+
+INSERT into TB_ParceiroNegocio ( fantasia, razaoSocial, cpf_cnpj, estado, cidade, bairro, rua,numero,telefone, telefoneAlt, celular, email, emailAlt, Observacoes)
+values ("fantasia teste", "Razao social teste", "05585562199", "parana", "palmas","centro", "rua x", 500, "046-98888-8888", "046-3262-9999","046-8888-8888","teste@teste", "teste@teste2","observacao teste");   
+
+INSERT into TB_ParceiroNegocio ( fantasia, razaoSocial, cpf_cnpj, estado, cidade, bairro, rua,numero,telefone, telefoneAlt, celular, email, emailAlt, Observacoes)
+values ("fantasia2 teste2", "Razao2 social2 teste2", "05585562179", "parana", "palmas","lagoao", "rua y", 50, "046-98888-8888", "046-3262-9999","046-8888-8888","teste@teste", "teste@teste2","observacao teste");
+
+
+INSERT  into TB_Veiculos ( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, ativo, observacoes) 
+values (1, "MB", "1519", 1990, "lxv-1011", 30.00, "simples", true, "observacao teste" )
+
+INSERT  into TB_Veiculos ( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, ativo, observacoes) 
+values (2, "FORD", "F600", 1990, "lxv-2001", 30.00, "simples", true, "observacao teste" )
 
 
 

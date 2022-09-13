@@ -6,11 +6,9 @@ import br.com.bean.Permissao;
 import br.com.dao.OperadorDao;
 import br.com.dao.PermissaoDao;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -227,7 +225,6 @@ public class CadOperador extends javax.swing.JDialog {
             OperadorDao op = new OperadorDao();
             try {
                 if(salvar){
-                    retornaObjeto();
                     op.inserir(retornaObjeto());
                     limparCampos();
                     this.dispose();
