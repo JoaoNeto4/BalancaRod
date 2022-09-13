@@ -19,6 +19,7 @@ create table TB_Operador(
     senha varchar(50) not null,
     funcao varchar(50),
     observacoes varchar(255),
+    ativo boolean,
     CONSTRAINT fk_permissao FOREIGN KEY (ID_permissao) REFERENCES TB_Permissao(ID)
 );
 
@@ -129,9 +130,9 @@ INSERT into TB_Permissao (nivel, observacao) values ("System","Pesagem Automáti
 INSERT into TB_Permissao (nivel, observacao) values ("Agendamento","Apenas Agendamento");
 INSERT into TB_Permissao (nivel, observacao) values ("Leitura","Apenas Vizualização de Dados");
 
-INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 1, "joao" "1234", "Administrador", "pessoa que manda" )
-INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 2, "pedro" "1234", "teste", "teste" )
-INSERT into TB_Operador (ID_permissao, nome, senha, funcao) values ( 3, "paulo" "1234", "teste", "teste" )
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao, ativo) values ( 1, "joao" "1234", "Administrador", "pessoa que manda", true )
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao, ativo) values ( 2, "pedro" "1234", "teste", "teste", true )
+INSERT into TB_Operador (ID_permissao, nome, senha, funcao, ativo) values ( 3, "paulo" "1234", "teste", "teste", true )
 
 INSERT into TB_ParceiroNegocio ( fantasia, razaoSocial, cpf_cnpj, estado, cidade, bairro, rua,numero,telefone, telefoneAlt, celular, email, emailAlt, Observacoes)
 values ("fantasia teste", "Razao social teste", "05585562199", "parana", "palmas","centro", "rua x", 500, "046-98888-8888", "046-3262-9999","046-8888-8888","teste@teste", "teste@teste2","observacao teste");   

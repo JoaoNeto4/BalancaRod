@@ -254,6 +254,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Simples"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rbSimplesMouseReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="rbComposta">
               <Properties>
@@ -262,6 +265,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Composta"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rbCompostaMouseReleased"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

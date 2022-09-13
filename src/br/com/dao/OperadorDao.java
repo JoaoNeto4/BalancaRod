@@ -43,14 +43,15 @@ public class OperadorDao {
     
     public static void alterar(Operador op)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Operador SET ID_Permissao=?, nome=?, senha=?, funcao=?, observacoes=? WHERE ID= ?";
+        String sql = "UPDATE TB_Operador SET ID_Permissao=?, nome=?, senha=?, funcao=?, observacoes=?, ativo=? WHERE ID= ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, op.getPermissao().getId());
         stmt.setString(2, op.getNome());
         stmt.setString(3, op.getSenha());
         stmt.setString(4, op.getFuncao());
         stmt.setString(5, op.getObservacao());
-        stmt.setInt(6, op.getId());
+        stmt.setBoolean(6, op.isAtivo());
+        stmt.setInt(7, op.getId());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Operador Alterada Com Sucesso!");
         stmt.close();
@@ -71,6 +72,7 @@ public class OperadorDao {
             stmt.setString(3, op.getSenha());
             stmt.setString(4, op.getFuncao());
             stmt.setString(5, op.getObservacao());
+            stmt.setBoolean(6, op.isAtivo());
             listaControle.add(op);
         }
         stmt.close();
@@ -82,7 +84,7 @@ public class OperadorDao {
      public static List<Operador> pesquisar(Operador op) throws SQLException {
         List<Operador> listaOperador = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select P.ID, P.nivel, P.observacao, OP.ID, OP.id, P.ativo from TB_Permissao as P inner join TB_Operador as OP on P.id_controle=OP.id where P.nome like'"+op.getNome()+"%' order by P.nome";
+        String sql = "select OP.*, P.* from TB_Operador as OP inner join TB_Permissao as P on P.ID=OP.ID_permissao where OP.nome like'"+op.getNome()+"%' order by OP.nome";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
@@ -98,6 +100,7 @@ public class OperadorDao {
             operador.setSenha(rs.getString("OP.senha"));
             operador.setFuncao(rs.getString("OP.funcao"));
             operador.setObservacao(rs.getString("OP.observacoes"));
+            operador.setAtivo(rs.getBoolean("OP.ativo"));
             operador.setPermissao(p);
             listaOperador.add(operador);
             

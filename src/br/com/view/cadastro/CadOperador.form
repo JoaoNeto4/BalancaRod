@@ -64,15 +64,19 @@
                               <Component id="btnCancelar" min="-2" pref="107" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jcBox" alignment="1" pref="401" max="32767" attributes="0"/>
-                              <Component id="txtLogin" max="32767" attributes="0"/>
                               <Component id="txtSenha" max="32767" attributes="0"/>
                               <Component id="txtFuncao" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jcBox" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="txtLogin" pref="384" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cbAtivo" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
-                      <Component id="jScrollPane1" min="-2" pref="401" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="444" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -83,6 +87,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtLogin" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbAtivo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -191,6 +196,11 @@
           <Events>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCancelarMouseReleased"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="cbAtivo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ativo"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

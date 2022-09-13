@@ -10,6 +10,15 @@ public class Operador {
     private String senha;
     private String funcao;
     private String observacao;
+    private boolean ativo;
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 
     public int getId() {
         return id;

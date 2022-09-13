@@ -31,6 +31,8 @@ public class CadPesagem extends javax.swing.JDialog {
      private int IDtransport=0;
     private double pesoEntrada2=0;
     private double pesoSaida2=0;
+    private String dataHoraEntrada = "";
+    private String dataHoraSaida = "";
     
     
     
@@ -54,6 +56,7 @@ public class CadPesagem extends javax.swing.JDialog {
         txtPesoSaida.setEditable(false);
         txtPesoLiq.setEditable(false);
         txtPesoBal.setEditable(false);
+        
     }
     
     private Boolean validaCampos(){
@@ -81,7 +84,37 @@ public class CadPesagem extends javax.swing.JDialog {
         LocalDate datAG = LocalDate.of(Integer.parseInt(dataSepAG[2]), Integer.parseInt(dataSepAG[1]), Integer.parseInt(dataSepAG[0]));
         
     */
+    private String dataHoraEntrada(){
+        if(dataHoraEntrada.equals("") && this.rbEntrada.isSelected() ){
+            java.util.Date dt = new java.util.Date();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dataHora = sdf.format(dt);
+            //System.out.println(datahora);
+            return dataHora;
+        }else{
+            return dataHoraEntrada;
+        }  
+    }
     
+    private String dataHoraSaida(){
+        if(dataHoraSaida.equals("") && this.rbSaida.isSelected() ){
+            java.util.Date dt = new java.util.Date();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dataHora = sdf.format(dt);
+            //System.out.println(datahora);
+            return dataHora;
+        }else{
+            return dataHoraSaida;
+        }  
+    }
+    
+    private Boolean emAndamento(){
+        if(rbComposta.isSelected() && rbEntrada.isSelected()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
     private Pesagem retornaObjeto(){
         Pesagem pe = new Pesagem();
@@ -100,16 +133,11 @@ public class CadPesagem extends javax.swing.JDialog {
         /*
         inserir data entrada apenas na insercao, alterar nao
         */
-        java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dataHora = sdf.format(dt);
-        //System.out.println(datahora);
-        
-        pe.setDataHoraEtrada(dataHora);
-        pe.setDataHoraSaida(dataHora);
+        pe.setDataHoraEtrada(dataHoraEntrada());
+        pe.setDataHoraSaida(dataHoraSaida());
         
         pe.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
-        pe.setAndamento(andamento);
+        pe.setAndamento(emAndamento());
         pe.setNfe(txtNfe.getText());
         pe.setValorNfe(Double.parseDouble(txtValorNfe.getText()));
         pe.setPesoNfe(Double.parseDouble(txtPesoBal.getText()));
@@ -121,10 +149,10 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setPesoSai1(Double.parseDouble(txtPesoSaida.getText()));
         pe.setPesoSai2(pesoSaida2);
         pe.setMotorista(txtMotorista.getText());
-        pe.setFotoCarga1("local foto");
-        pe.setFotoCarga2("local foto");
-        pe.setFotoEntrada("local foto");
-        pe.setFotoSaida("local foto");
+        pe.setFotoCarga1("/home/local/foto");
+        pe.setFotoCarga2("/home/local/foto");
+        pe.setFotoEntrada("/home/local/foto");
+        pe.setFotoSaida("/home/local/foto");
         pe.setObservacao(txtObservacao.getText());
         pe.setPn(pn);
         pe.setVeiculo(v);
@@ -134,7 +162,7 @@ public class CadPesagem extends javax.swing.JDialog {
         
         return pe;
     }
-    
+    /*
     private Pesagem teste(){
         Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
@@ -150,9 +178,9 @@ public class CadPesagem extends javax.swing.JDialog {
         op.setId(1);
         prod.setId(1);
 
-        /*
-        inserir data entrada apenas na insercao, alterar nao
-        */
+        
+        //inserir data entrada apenas na insercao, alterar nao
+        
         java.util.Date dt = new java.util.Date();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dataHora = sdf.format(dt);
@@ -184,12 +212,10 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setOperador(op);
         pe.setProduto(prod);
         pe.setTransportador(pn);
-        
-        System.out.println(pe.getValorNfe());
-        
+    
         return pe;
     }
-    
+    */
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -254,9 +280,19 @@ public class CadPesagem extends javax.swing.JDialog {
 
         grupoBotoes_TipoPesagem.add(rbSimples);
         rbSimples.setText("Simples");
+        rbSimples.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                rbSimplesMouseReleased(evt);
+            }
+        });
 
         grupoBotoes_TipoPesagem.add(rbComposta);
         rbComposta.setText("Composta");
+        rbComposta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                rbCompostaMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -619,7 +655,7 @@ public class CadPesagem extends javax.swing.JDialog {
             PesagemDao dao = new PesagemDao();
             try {
                 if(salvar){
-                    dao.inserir(teste());
+                    dao.inserir(retornaObjeto());
                     limparCampos();
                     this.dispose();
                 }else{
@@ -632,6 +668,23 @@ public class CadPesagem extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnSalvarMouseReleased
+
+    private void rbSimplesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbSimplesMouseReleased
+            if(rbSimples.isSelected()){
+                rbSaida.setSelected(false);
+                rbEntrada.setSelected(false);
+                rbEntrada.setEnabled(false);
+                rbSaida.setEnabled(false);
+            }
+    }//GEN-LAST:event_rbSimplesMouseReleased
+
+    private void rbCompostaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbCompostaMouseReleased
+        if(rbComposta.isSelected()){
+            rbEntrada.setEnabled(true);
+            rbSaida.setEnabled(true);
+            rbEntrada.setSelected(true);
+        }
+    }//GEN-LAST:event_rbCompostaMouseReleased
 
   
     public static void main(String args[]) {

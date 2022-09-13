@@ -5,6 +5,7 @@ import br.com.bean.Operador;
 import br.com.bean.Permissao;
 import br.com.dao.OperadorDao;
 import br.com.dao.PermissaoDao;
+import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +28,16 @@ public class CadOperador extends javax.swing.JDialog {
         this.setTitle("Cadastro de Operador");
         this.populaCombobox();
         this.setLocationRelativeTo(null);  // centraliza a tela 
+    }
+
+    public CadOperador(Frame frame, boolean modal, Operador opSelecionado) {
+        super(frame, modal);
+        initComponents();
+        this.setTitle("Edição de Operador");
+        this.populaCombobox();
+        this.setLocationRelativeTo(null);  // centraliza a tela 
+        this.setaCampos(opSelecionado);
+        this.salvar=false;
     }
 
     private void populaCombobox() {
@@ -63,7 +74,9 @@ public class CadOperador extends javax.swing.JDialog {
         txtLogin.setText(op.getNome());
         txtSenha.setText(op.getSenha());
         txtObservacao.setText(op.getObservacao());
-        jcBox.setSelectedIndex(op.getPermissao().getId());
+        jcBox.setSelectedIndex(op.getPermissao().getId()-1);
+        txtFuncao.setText(op.getFuncao());
+        cbAtivo.setSelected(op.isAtivo());
         this.id=op.getId();
     }
     
@@ -78,6 +91,10 @@ public class CadOperador extends javax.swing.JDialog {
         }
         if(txtFuncao.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Campo Função não pode ser Vazio!");
+            return false;
+        }
+        if(salvar && !cbAtivo.isSelected()){
+            JOptionPane.showMessageDialog(null, "Impossível Cria Operador Inativo!");
             return false;
         }
         return true;
@@ -111,6 +128,7 @@ public class CadOperador extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        cbAtivo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -144,6 +162,8 @@ public class CadOperador extends javax.swing.JDialog {
             }
         });
 
+        cbAtivo.setText("Ativo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -164,12 +184,15 @@ public class CadOperador extends javax.swing.JDialog {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jcBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 401, Short.MAX_VALUE)
-                            .addComponent(txtLogin)
                             .addComponent(txtSenha)
-                            .addComponent(txtFuncao)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                            .addComponent(txtFuncao)
+                            .addComponent(jcBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbAtivo))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +200,8 @@ public class CadOperador extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(cbAtivo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,6 +310,7 @@ public class CadOperador extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JCheckBox cbAtivo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
