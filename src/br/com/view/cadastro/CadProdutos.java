@@ -3,6 +3,7 @@ package br.com.view.cadastro;
 
 import br.com.bean.Produtos;
 import br.com.dao.ProdutoDao;
+import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,15 @@ public class CadProdutos extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Cadastro de Produtos");
         this.setLocationRelativeTo(null);  // centraliza a tela 
+    }
+
+    public CadProdutos(Frame frame, boolean modal, Produtos pnSelecionado) {
+        super(frame, modal);
+        initComponents();
+        this.setTitle("Edição de Produtos");
+        this.setLocationRelativeTo(null);  // centraliza a tela 
+        this.setaCampos(pnSelecionado);
+        this.salvar=false;
     }
 
     public Produtos retornaObjeto(){

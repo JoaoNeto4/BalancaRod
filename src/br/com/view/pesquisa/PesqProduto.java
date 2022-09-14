@@ -1,9 +1,9 @@
 
 package br.com.view.pesquisa;
 
-import br.com.bean.ParceiroNegocio;
-import br.com.dao.ParceiroNegocioDao;
-import br.com.view.cadastro.CadParceiroNegocio;
+import br.com.bean.Produtos;
+import br.com.dao.ProdutoDao;
+import br.com.view.cadastro.CadProdutos;
 import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -14,40 +14,40 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author joao
+ */
+public class PesqProduto extends javax.swing.JDialog {
 
-public class PesqParceiroNegocio extends javax.swing.JDialog {
-
-    private List<ParceiroNegocio> listaParceiro = new ArrayList<>();
-
-    public PesqParceiroNegocio(java.awt.Frame parent, boolean modal) {
+   private List<Produtos> listaProduto = new ArrayList<>();
+    
+    public PesqProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        atualizarTabela();
-        this.setTitle("Pesquisa de Parceiro de Negócio");
+        this.setTitle("Pesquisa de Produto");
         this.setLocationRelativeTo(null);  // centraliza a tela
     }
-
-    private ParceiroNegocio retornaObjeto(){
-        ParceiroNegocio pn = new ParceiroNegocio();
-        pn.setFantasia(txtPesquisa.getText());
+    
+    private Produtos retornaObjeto(){
+        Produtos pn = new Produtos();
+        pn.setProduto(txtPesquisa.getText());
     
         return pn;
     }
-
+    
     public final void atualizarTabela(){
         try {
-            listaParceiro = ParceiroNegocioDao.pesquisar(retornaObjeto());
+            listaProduto = ProdutoDao.pesquisar(retornaObjeto());
             DefaultTableModel modelo = (DefaultTableModel) tabelaTela.getModel();
             modelo.setNumRows(0);
 
-            for (ParceiroNegocio op : listaParceiro) {
+            for (Produtos prod : listaProduto) {
                 modelo.addRow(new Object[]{
-                    op.getId(),
-                    op.getFantasia(),
-                    op.getCpf_cnpj(),
-                    op.getCidade(),
-                    op.getTelefone(),
-                    op.getEmail()
+                    prod.getId(),
+                    prod.getProduto(),
+                    prod.getUnidMed(),
+                    prod.getObservacoes()
                 });
             }
 
@@ -55,14 +55,14 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtPesquisa = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        txtPesquisa = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaTela = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
@@ -74,21 +74,21 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
-        jLabel1.setText("Pesquisa");
+        jLabel1.setText("Pesquisar");
 
         tabelaTela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Fantasia", "CPF/CNPJ", "Cidade", "Telefone", "Email"
+                "ID", "Produto", "Unid. Medida", "Observações"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -102,7 +102,6 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tabelaTela);
 
-        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/addVerde25x25.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -110,7 +109,6 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             }
         });
 
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lapis25x25.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -118,7 +116,6 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             }
         });
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/remove-25x25.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -126,7 +123,6 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             }
         });
 
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/sair25x25.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -145,16 +141,16 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE))
+                        .addComponent(txtPesquisa))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnNovo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                        .addComponent(btnEditar)
+                        .addGap(116, 116, 116)
+                        .addComponent(btnExcluir)
+                        .addGap(86, 86, 86)
+                        .addComponent(btnCancelar)
+                        .addGap(11, 11, 11)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,17 +158,17 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
+                    .addComponent(btnEditar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnEditar))
-                .addGap(19, 19, 19))
+                    .addComponent(btnCancelar))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,28 +186,28 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNovoMouseReleased
-        CadParceiroNegocio pn = new CadParceiroNegocio((Frame) getParent(), true);
-        pn.setVisible(true);
+        CadProdutos prod = new CadProdutos((Frame) getParent(), true);
+        prod.setVisible(true);
     }//GEN-LAST:event_btnNovoMouseReleased
 
     private void btnEditarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseReleased
-        ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
-        CadParceiroNegocio pn = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
-        pn.setVisible(true);
+        Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
+        CadProdutos prod = new CadProdutos((Frame) getParent(), true, pnSelecionado);
+        prod.setVisible(true);
     }//GEN-LAST:event_btnEditarMouseReleased
 
     private void btnExcluirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseReleased
         if(tabelaTela.getSelectedRow() != -1){
 
-            ParceiroNegocio op = new ParceiroNegocio();
-            ParceiroNegocioDao dao = new ParceiroNegocioDao();
+            Produtos prod = new Produtos();
+            ProdutoDao dao = new ProdutoDao();
 
             int aux = JOptionPane.showConfirmDialog(null, "Deseja Excluir?");
             if(aux==0){
                 System.out.println(aux);
-                op.setId((int)tabelaTela.getValueAt(tabelaTela.getSelectedRow(), 0)); //0 faz referencia a primeira coluna da tabela,que é o que queremos
+                prod.setId((int)tabelaTela.getValueAt(tabelaTela.getSelectedRow(), 0)); //0 faz referencia a primeira coluna da tabela,que é o que queremos
                 try {
-                    dao.excluir(op);
+                    dao.excluir(prod);
                     atualizarTabela();
                 } catch (SQLException ex) {
                     Logger.getLogger(PesqOperador.class.getName()).log(Level.SEVERE, null, ex);
@@ -235,8 +231,8 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
             switch(evt.getButton()){
                 case MouseEvent.BUTTON1:
 
-                    ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
-                    CadParceiroNegocio cp = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
+                    Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
+                    CadProdutos cp = new CadProdutos((Frame) getParent(), true, pnSelecionado);
                     cp.setVisible(true);
                 
                 break;
@@ -246,9 +242,7 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tabelaTelaMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -263,20 +257,20 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PesqParceiroNegocio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PesqParceiroNegocio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PesqParceiroNegocio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PesqParceiroNegocio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PesqParceiroNegocio dialog = new PesqParceiroNegocio(new javax.swing.JFrame(), true);
+                PesqProduto dialog = new PesqProduto(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

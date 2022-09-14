@@ -147,7 +147,6 @@ public class ParceiroNegocio {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
-    
-    
+
     
 }

@@ -83,20 +83,20 @@ public class ParceiroNegocioDao {
             ParceiroNegocio pn = new ParceiroNegocio();
             pn.setId(rs.getInt("ID"));
             stmt.setInt(1, pn.getId());
-            stmt.setString(2, pn.getFantasia());
-            stmt.setString(3, pn.getRazaoSocial());
-            stmt.setString(4, pn.getCpf_cnpj());
-            stmt.setString(5, pn.getEstado());
-            stmt.setString(6, pn.getCidade());
-            stmt.setString(7, pn.getBairro());
-            stmt.setString(8, pn.getRua());
-            stmt.setInt(9, pn.getNumero());
-            stmt.setString(10, pn.getTelefone());
-            stmt.setString(11, pn.getTelefoneAlt());
-            stmt.setString(12, pn.getCelular());
-            stmt.setString(13, pn.getEmail());
-            stmt.setString(14, pn.getEmailAlt());
-            stmt.setString(15, pn.getObservacao());
+            stmt.setString(1, pn.getFantasia());
+            stmt.setString(2, pn.getRazaoSocial());
+            stmt.setString(3, pn.getCpf_cnpj());
+            stmt.setString(4, pn.getEstado());
+            stmt.setString(5, pn.getCidade());
+            stmt.setString(6, pn.getBairro());
+            stmt.setString(7, pn.getRua());
+            stmt.setInt(8, pn.getNumero());
+            stmt.setString(9, pn.getTelefone());
+            stmt.setString(10,pn.getCelular());
+            stmt.setString(11, pn.getEmail());
+            stmt.setString(12, pn.getEmailAlt());
+            stmt.setString(13, pn.getEmailAlt());
+            stmt.setString(14, pn.getObservacao());
             listaControle.add(pn);
         }
         stmt.close();
@@ -108,7 +108,7 @@ public class ParceiroNegocioDao {
     public static List<ParceiroNegocio> pesquisar(ParceiroNegocio pn) throws SQLException {
         List<ParceiroNegocio> listaParceiro = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select PN.* from TB_ParceiroNegocio as PN where PN.fantasia like'"+pn.getFantasia()+"%' order by P.fantasia";
+        String sql = "select PN.* from TB_ParceiroNegocio as PN where PN.fantasia like'"+pn.getFantasia()+"%' order by PN.fantasia";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
