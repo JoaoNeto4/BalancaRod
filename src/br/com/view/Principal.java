@@ -1,14 +1,32 @@
 
 package br.com.view;
 
+import br.com.bean.Operador;
+import br.com.conexao.Conexao;
+import com.sun.xml.internal.bind.v2.TODO;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * @author joao
  */
 public class Principal extends javax.swing.JFrame {
 
-   
+    // ----->>   TODO: Remover no final <<--------
     public Principal() {
         initComponents();
+        this.setTitle("Principal");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+
+    Connection conexao = null;
+    
+    public Principal(Operador operador) throws SQLException {
+        initComponents();
+        conexao = Conexao.getConexao();
+        this.setTitle("Principal");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+        labelOperador.setText(operador.getNome());
     }
 
   
@@ -16,13 +34,19 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSeparator1 = new javax.swing.JSeparator();
+        labelOperador = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(245, 245, 245));
+
+        labelOperador.setText("Root");
 
         jMenu1.setText("Arquivo");
 
@@ -32,6 +56,10 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Ferramentas");
+
+        jMenuItem2.setText("Backup");
+        jMenu3.add(jMenuItem2);
+
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Help");
@@ -43,11 +71,20 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1035, Short.MAX_VALUE)
+            .addComponent(jSeparator1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelOperador)
+                .addContainerGap(1093, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(540, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(labelOperador)
+                .addContainerGap())
         );
 
         pack();
@@ -92,5 +129,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelOperador;
     // End of variables declaration//GEN-END:variables
 }

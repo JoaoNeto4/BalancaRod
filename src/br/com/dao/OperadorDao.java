@@ -103,12 +103,59 @@ public class OperadorDao {
             operador.setAtivo(rs.getBoolean("OP.ativo"));
             operador.setPermissao(p);
             listaOperador.add(operador);
-            
         }
         stmt.close();
         rs.close();
         con.close();
         return listaOperador;
      }
+     
+     public boolean validaLogin(String login, String senha)throws SQLException{
+        Operador user = new Operador();
+        Permissao p = new Permissao();
+        boolean check=false;
+        Connection con = Conexao.getConexao();
+        String sql="select O.*, P.* from TB_Operador as O inner join TB_Permissao as P WHERE O.nome=? AND O.senha=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+           stmt.setString(1, login);
+           stmt.setString(2, senha);
+           ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            p.setId(rs.getInt("P.ID"));
+            p.setNivel(rs.getString("P.nivel"));
+            user.setNome(rs.getString("O.nome"));
+            user.setSenha(rs.getString("O.senha"));
+            user.setPermissao(p);
+            check=true;
+        }else{
+            JOptionPane.showMessageDialog(null, "Login ou Senha incorreto!");
+            check=false;
+        }
+        rs.close();
+        con.close();
+        return check;
+    }
+     
+      public Operador retornaBean(String login, String senha)throws SQLException{
+        Operador user = new Operador();
+        Permissao p = new Permissao();
+        Connection con = Conexao.getConexao();
+        String sql="select O.*, P.* from TB_Operador as O inner join TB_Permissao as P WHERE O.nome=? AND O.senha=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+           stmt.setString(1, login);
+           stmt.setString(2, senha);
+           ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            p.setId(rs.getInt("P.ID"));
+            p.setNivel(rs.getString("P.nivel"));
+            user.setNome(rs.getString("O.nome"));
+            user.setSenha(rs.getString("O.senha"));
+            user.setPermissao(p);
+           }
+        rs.close();
+        con.close();
+
+        return user;
+    }
 
 }
