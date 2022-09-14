@@ -3,8 +3,8 @@ package br.com.view;
 
 import br.com.bean.Operador;
 import br.com.conexao.Conexao;
-import br.com.view.pesquisa.Backup;
-import br.com.view.pesquisa.Configuracoes;
+import br.com.view.utilidades.Backup;
+import br.com.view.utilidades.Configuracoes;
 import com.sun.xml.internal.bind.v2.TODO;
 import java.sql.Connection;
 import java.sql.SQLException;

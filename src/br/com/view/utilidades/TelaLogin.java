@@ -1,5 +1,5 @@
 
-package br.com.view.pesquisa;
+package br.com.view.utilidades;
 
 import br.com.bean.Operador;
 import br.com.dao.OperadorDao;

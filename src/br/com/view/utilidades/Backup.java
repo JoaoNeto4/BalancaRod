@@ -1,5 +1,5 @@
 
-package br.com.view.pesquisa;
+package br.com.view.utilidades;
 
 import br.com.config.Criptografia;
 import java.awt.HeadlessException;
