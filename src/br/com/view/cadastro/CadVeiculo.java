@@ -4,6 +4,7 @@ package br.com.view.cadastro;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Veiculos;
 import br.com.dao.VeiculosDao;
+import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,15 @@ public class CadVeiculo extends javax.swing.JDialog {
         cbAtivo.setSelected(true);
         cbAtivo.setEnabled(false);
         this.setLocationRelativeTo(null);  // centraliza a tela 
+    }
+
+    public CadVeiculo(Frame frame, boolean modal, Veiculos veiculoSelecionado) {
+        super(frame, modal);
+        initComponents();
+        this.setTitle("Edição de Parceiro de Veículo");
+        this.setLocationRelativeTo(null);  // centraliza a tela 
+        this.setaCampos(veiculoSelecionado);
+        this.salvar=false;
     }
 
     private Veiculos retornaObjeto(){

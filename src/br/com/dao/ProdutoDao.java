@@ -76,6 +76,7 @@ public class ProdutoDao {
         List<Produtos> listaOperador = new ArrayList<>();
         Connection con = Conexao.getConexao();
         String sql = "select * from TB_Produto where produto like'"+prod.getProduto()+"%' order by produto";
+                 System.out.println(prod.getProduto());
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {

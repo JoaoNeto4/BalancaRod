@@ -1,11 +1,11 @@
 
 package br.com.view.pesquisa;
 
-import br.com.bean.Operador;
-import br.com.dao.OperadorDao;
-import br.com.view.cadastro.CadOperador;
+import br.com.bean.ParceiroNegocio;
+import br.com.bean.Veiculos;
+import br.com.dao.VeiculosDao;
+import br.com.view.cadastro.CadVeiculo;
 import java.awt.Frame;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,90 +18,114 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author joao
  */
-public class PesqOperador extends javax.swing.JDialog {
+public class PesqVeiculo extends javax.swing.JDialog {
 
-   private List<Operador> listaOperador = new ArrayList<>();
+    private List<Veiculos> listaVeiculos = new ArrayList<>();
     
-    public PesqOperador(java.awt.Frame parent, boolean modal) {
+    public PesqVeiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        atualizarTabela();
-        this.setTitle("Pesquisa de Operador");
+        this.setTitle("Pesquisa de Veículos");
         this.setLocationRelativeTo(null);  // centraliza a tela
+        rbPlaca.setSelected(true);
+        atualizarTabela();
     }
     
-    private Operador retornaObjeto(){
-        Operador p = new Operador();
-        p.setNome(txtPesqOperador.getText());
-    
-        return p;
+    private Veiculos retornaObjetoSelecao(){
+        if(rbPlaca.isSelected() ){
+            Veiculos vei = new Veiculos();
+            vei.setPlaca(txtPesquisa.getText());
+            return vei;
+        }else{
+            ParceiroNegocio pn = new ParceiroNegocio();
+            Veiculos vei = new Veiculos();
+            pn.setFantasia(txtPesquisa.getText());
+            vei.setPn(pn);
+            return vei;
+        }
     }
-
+    
+    /*
+    private Veiculos retornaObjeto(){
+        Veiculos pn = new Veiculos();
+        pn.setPlaca(txtPesquisa.getText());
+    
+        return pn;
+    }*/
+    
     public final void atualizarTabela(){
         try {
-            listaOperador = OperadorDao.pesquisar(retornaObjeto());
+            if(rbPlaca.isSelected()){
+                listaVeiculos = VeiculosDao.pesquisarPlaca(retornaObjetoSelecao());
+            }else{
+                listaVeiculos = VeiculosDao.pesquisarParceiroNegocio(retornaObjetoSelecao());
+            }
             DefaultTableModel modelo = (DefaultTableModel) tabelaTela.getModel();
             modelo.setNumRows(0);
 
-            for (Operador op : listaOperador) {
+            for (Veiculos vei : listaVeiculos) {
                 modelo.addRow(new Object[]{
-                    op.getId(),
-                    op.getNome(),
-                    op.isAtivo(),
-                    op.getFuncao(),
-                    op.getPermissao().getNivel(),
-                    op.getObservacao()
+                    vei.getId(),
+                    vei.getPn().getFantasia(),
+                    vei.getModelo(),
+                    vei.getPlaca(),
+                    vei.getObservacoes()
                 });
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
- 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        txtPesqOperador = new javax.swing.JTextField();
+        rbPlaca = new javax.swing.JRadioButton();
+        rbProprietario = new javax.swing.JRadioButton();
+        txtPesquisa = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaTela = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
-        txtPesqOperador.addKeyListener(new java.awt.event.KeyAdapter() {
+        buttonGroup1.add(rbPlaca);
+        rbPlaca.setText("Placa");
+
+        buttonGroup1.add(rbProprietario);
+        rbProprietario.setText("Proprietário");
+
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPesqOperadorKeyPressed(evt);
+                txtPesquisaKeyPressed(evt);
             }
         });
 
         tabelaTela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Login", "Ativo", "Função", "Permissão", "Observações"
+                "ID", "Proprietário", "Modelo", "Placa", "Observações"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
-            }
-        });
-        tabelaTela.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaTelaMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tabelaTela);
@@ -114,19 +138,19 @@ public class PesqOperador extends javax.swing.JDialog {
             }
         });
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/remove-25x25.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btnExcluirMouseReleased(evt);
-            }
-        });
-
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lapis25x25.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnEditarMouseReleased(evt);
+            }
+        });
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/remove-25x25.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnExcluirMouseReleased(evt);
             }
         });
 
@@ -138,8 +162,6 @@ public class PesqOperador extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Pesquisa Login");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -148,18 +170,24 @@ public class PesqOperador extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(rbPlaca)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbProprietario)))
+                        .addGap(0, 70, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPesqOperador)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -167,103 +195,83 @@ public class PesqOperador extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPesqOperador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(rbPlaca)
+                    .addComponent(rbProprietario)
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
-                    .addComponent(btnExcluir)
                     .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
                     .addComponent(btnCancelar))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPesqOperadorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesqOperadorKeyPressed
-        atualizarTabela();
-    }//GEN-LAST:event_txtPesqOperadorKeyPressed
-
-    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarMouseReleased
-
     private void btnNovoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNovoMouseReleased
-        CadOperador op = new CadOperador((Frame) getParent(), true);
-        op.setVisible(true);
+        CadVeiculo vei = new CadVeiculo((Frame) getParent(), true);
+        vei.setVisible(true);
     }//GEN-LAST:event_btnNovoMouseReleased
-
-    private void btnExcluirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseReleased
-        if(tabelaTela.getSelectedRow() != -1){
-
-            Operador op = new Operador();
-            OperadorDao dao = new OperadorDao();
-
-            int aux = JOptionPane.showConfirmDialog(null, "Deseja Excluir?");
-            if(aux==0){
-                System.out.println(aux);
-                op.setId((int)tabelaTela.getValueAt(tabelaTela.getSelectedRow(), 0)); //0 faz referencia a primeira coluna da tabela,que é o que queremos
-                try {
-                    dao.excluir(op);
-                    atualizarTabela();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PesqOperador.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                atualizarTabela(); //para mostrar as informações na jtTabela
-            }else{
-
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione um produto para excluir");
-        }
-    }//GEN-LAST:event_btnExcluirMouseReleased
 
     private void btnEditarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseReleased
         if(tabelaTela.getSelectedRow() != -1){
-            Operador opSelecionado = listaOperador.get(tabelaTela.getSelectedRow());
-            CadOperador co = new CadOperador((Frame) getParent(), true, opSelecionado);
-            co.setVisible(true);
+            Veiculos pnSelecionado = listaVeiculos.get(tabelaTela.getSelectedRow());
+            CadVeiculo vei = new CadVeiculo((Frame) getParent(), true, pnSelecionado);
+            vei.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma linha para Editar");
         }
     }//GEN-LAST:event_btnEditarMouseReleased
 
-    private void tabelaTelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTelaMouseClicked
-        if(evt.getClickCount() == 2){
-            switch(evt.getButton()){
-                case MouseEvent.BUTTON1:
+    private void btnExcluirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseReleased
+        if(tabelaTela.getSelectedRow() != -1){
 
-                    Operador opSelecionado = listaOperador.get(tabelaTela.getSelectedRow());
-                    CadOperador cp = new CadOperador((Frame) getParent(), true, opSelecionado);
-                    cp.setVisible(true);
-                
-                break;
-                default:
-                    System.out.println("2 vezes outro botao");
+            Veiculos vei = new Veiculos();
+            VeiculosDao dao = new VeiculosDao();
+
+            int aux = JOptionPane.showConfirmDialog(null, "Deseja Excluir?");
+            if(aux==0){
+                System.out.println(aux);
+                vei.setId((int)tabelaTela.getValueAt(tabelaTela.getSelectedRow(), 0)); //0 faz referencia a primeira coluna da tabela,que é o que queremos
+                try {
+                    dao.excluir(vei);
+                    atualizarTabela();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PesqOperador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                atualizarTabela(); //para mostrar as informações na jtTabela
+            }else{
+
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir");
         }
-    }//GEN-LAST:event_tabelaTelaMouseClicked
+    }//GEN-LAST:event_btnExcluirMouseReleased
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarMouseReleased
+
+    private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
+        atualizarTabela();
+    }//GEN-LAST:event_txtPesquisaKeyPressed
+
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -278,20 +286,20 @@ public class PesqOperador extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PesqOperador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PesqOperador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PesqOperador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PesqOperador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PesqVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PesqOperador dialog = new PesqOperador(new javax.swing.JFrame(), true);
+                PesqVeiculo dialog = new PesqVeiculo(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -308,10 +316,12 @@ public class PesqOperador extends javax.swing.JDialog {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbPlaca;
+    private javax.swing.JRadioButton rbProprietario;
     private javax.swing.JTable tabelaTela;
-    private javax.swing.JTextField txtPesqOperador;
+    private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 }

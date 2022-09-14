@@ -91,30 +91,30 @@ public class VeiculosDao {
         return listaControle;
      }
      
-     public static List<Veiculos> pesquisarModelo(Veiculos vei) throws SQLException {
+     public static List<Veiculos> pesquisarPlaca(Veiculos vei) throws SQLException {
         List<Veiculos> listaOperador = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select PN.*, V.* from TB_Veiculos as V  inner join TB_ParceiroNegocio as PN on V.ID_parceiro=PN.ID where V.modelo like'"+vei.getModelo()+"%' order by V.modelo";
+        String sql = "select PN.*, V.* from TB_Veiculos as V  inner join TB_ParceiroNegocio as PN on V.ID_parceiro=PN.ID where V.placa like'"+vei.getPlaca()+"%' order by V.ID";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             
             ParceiroNegocio p = new ParceiroNegocio();
-            p.setId(rs.getInt("P.ID"));
-            p.setFantasia(rs.getString("P.fantasia"));
-            p.setRazaoSocial(rs.getString("P.razaoSocial"));
-            p.setCpf_cnpj(rs.getString("P.cpf_cnpj"));
-            p.setEstado(rs.getString("P.estado"));
-            p.setCidade(rs.getString("P.cidade"));
-            p.setBairro(rs.getString("P.bairro"));
-            p.setRua(rs.getString("P.rua"));
-            p.setNumero(rs.getInt("P.numero"));
-            p.setTelefone(rs.getString("P.telefone"));
-            p.setTelefoneAlt(rs.getString("P.telefoneAlt"));
-            p.setCelular(rs.getString("P.celular"));
-            p.setEmail(rs.getString("P.email"));
-            p.setEmailAlt(rs.getString("P.emailAlt"));
-            p.setObservacao(rs.getString("P.Observacoes"));
+            p.setId(rs.getInt("PN.ID"));
+            p.setFantasia(rs.getString("PN.fantasia"));
+            p.setRazaoSocial(rs.getString("PN.razaoSocial"));
+            p.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
+            p.setEstado(rs.getString("PN.estado"));
+            p.setCidade(rs.getString("PN.cidade"));
+            p.setBairro(rs.getString("PN.bairro"));
+            p.setRua(rs.getString("PN.rua"));
+            p.setNumero(rs.getInt("PN.numero"));
+            p.setTelefone(rs.getString("PN.telefone"));
+            p.setTelefoneAlt(rs.getString("PN.telefoneAlt"));
+            p.setCelular(rs.getString("PN.celular"));
+            p.setEmail(rs.getString("PN.email"));
+            p.setEmailAlt(rs.getString("PN.emailAlt"));
+            p.setObservacao(rs.getString("PN.Observacoes"));
             
             Veiculos veiculos = new Veiculos();
             veiculos.setId(rs.getInt("V.ID"));
@@ -124,6 +124,7 @@ public class VeiculosDao {
             veiculos.setPlaca(rs.getString("V.placa"));
             veiculos.setTara(rs.getDouble("V.tara"));
             veiculos.setTipo(rs.getString("V.tipo"));
+            veiculos.setAtivo(rs.getBoolean("V.ativo"));
             veiculos.setObservacoes(rs.getString("V.observacoes"));
             veiculos.setPn(p);
             listaOperador.add(veiculos);
@@ -135,30 +136,30 @@ public class VeiculosDao {
         return listaOperador;
      }
      
-     public static List<Veiculos> pesquisarPlaca(Veiculos vei) throws SQLException {
+     public static List<Veiculos> pesquisarParceiroNegocio(Veiculos vei) throws SQLException {
         List<Veiculos> listaOperador = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select PN.*, V.* from TB_Veiculos as V  inner join TB_ParceiroNegocio as PN on V.ID_parceiro=PN.ID where V.modelo like'"+vei.getPlaca()+"%' order by V.modelo";
+        String sql = "select PN.*, V.* from TB_Veiculos as V  inner join TB_ParceiroNegocio as PN on V.ID_parceiro=PN.ID where PN.fantasia like'"+vei.getPn().getFantasia()+"%' ";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             
             ParceiroNegocio p = new ParceiroNegocio();
-            p.setId(rs.getInt("P.ID"));
-            p.setFantasia(rs.getString("P.fantasia"));
-            p.setRazaoSocial(rs.getString("P.razaoSocial"));
-            p.setCpf_cnpj(rs.getString("P.cpf_cnpj"));
-            p.setEstado(rs.getString("P.estado"));
-            p.setCidade(rs.getString("P.cidade"));
-            p.setBairro(rs.getString("P.bairro"));
-            p.setRua(rs.getString("P.rua"));
-            p.setNumero(rs.getInt("P.numero"));
-            p.setTelefone(rs.getString("P.telefone"));
-            p.setTelefoneAlt(rs.getString("P.telefoneAlt"));
-            p.setCelular(rs.getString("P.celular"));
-            p.setEmail(rs.getString("P.email"));
-            p.setEmailAlt(rs.getString("P.emailAlt"));
-            p.setObservacao(rs.getString("P.Observacoes"));
+            p.setId(rs.getInt("PN.ID"));
+            p.setFantasia(rs.getString("PN.fantasia"));
+            p.setRazaoSocial(rs.getString("PN.razaoSocial"));
+            p.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
+            p.setEstado(rs.getString("PN.estado"));
+            p.setCidade(rs.getString("PN.cidade"));
+            p.setBairro(rs.getString("PN.bairro"));
+            p.setRua(rs.getString("PN.rua"));
+            p.setNumero(rs.getInt("PN.numero"));
+            p.setTelefone(rs.getString("PN.telefone"));
+            p.setTelefoneAlt(rs.getString("PN.telefoneAlt"));
+            p.setCelular(rs.getString("PN.celular"));
+            p.setEmail(rs.getString("PN.email"));
+            p.setEmailAlt(rs.getString("PN.emailAlt"));
+            p.setObservacao(rs.getString("PN.Observacoes"));
             
             Veiculos veiculos = new Veiculos();
             veiculos.setId(rs.getInt("V.ID"));

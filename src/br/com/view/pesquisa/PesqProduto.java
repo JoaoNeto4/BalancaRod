@@ -25,6 +25,7 @@ public class PesqProduto extends javax.swing.JDialog {
     public PesqProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        atualizarTabela();
         this.setTitle("Pesquisa de Produto");
         this.setLocationRelativeTo(null);  // centraliza a tela
     }
@@ -76,9 +77,14 @@ public class PesqProduto extends javax.swing.JDialog {
 
         jLabel1.setText("Pesquisar");
 
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyPressed(evt);
+            }
+        });
+
         tabelaTela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
@@ -102,6 +108,7 @@ public class PesqProduto extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tabelaTela);
 
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/addVerde25x25.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -109,6 +116,7 @@ public class PesqProduto extends javax.swing.JDialog {
             }
         });
 
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lapis25x25.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -116,6 +124,7 @@ public class PesqProduto extends javax.swing.JDialog {
             }
         });
 
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/remove-25x25.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -123,6 +132,7 @@ public class PesqProduto extends javax.swing.JDialog {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/sair25x25.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -143,14 +153,14 @@ public class PesqProduto extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtPesquisa))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
-                        .addComponent(btnEditar)
-                        .addGap(116, 116, 116)
-                        .addComponent(btnExcluir)
-                        .addGap(86, 86, 86)
-                        .addComponent(btnCancelar)
-                        .addGap(11, 11, 11)))
+                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,7 +172,7 @@ public class PesqProduto extends javax.swing.JDialog {
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnEditar)
@@ -191,9 +201,13 @@ public class PesqProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_btnNovoMouseReleased
 
     private void btnEditarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseReleased
-        Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
-        CadProdutos prod = new CadProdutos((Frame) getParent(), true, pnSelecionado);
-        prod.setVisible(true);
+        if(tabelaTela.getSelectedRow() != -1){
+            Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
+            CadProdutos prod = new CadProdutos((Frame) getParent(), true, pnSelecionado);
+            prod.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para Editar");
+        }
     }//GEN-LAST:event_btnEditarMouseReleased
 
     private void btnExcluirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseReleased
@@ -241,6 +255,10 @@ public class PesqProduto extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_tabelaTelaMouseClicked
+
+    private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
+        atualizarTabela();
+    }//GEN-LAST:event_txtPesquisaKeyPressed
 
 
     public static void main(String args[]) {

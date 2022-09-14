@@ -195,9 +195,13 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
     }//GEN-LAST:event_btnNovoMouseReleased
 
     private void btnEditarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseReleased
-        ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
-        CadParceiroNegocio pn = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
-        pn.setVisible(true);
+        if(tabelaTela.getSelectedRow() != -1){
+            ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
+            CadParceiroNegocio pn = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
+            pn.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para Editar");
+        }
     }//GEN-LAST:event_btnEditarMouseReleased
 
     private void btnExcluirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirMouseReleased
