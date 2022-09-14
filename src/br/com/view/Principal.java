@@ -3,6 +3,8 @@ package br.com.view;
 
 import br.com.bean.Operador;
 import br.com.conexao.Conexao;
+import br.com.view.pesquisa.Backup;
+import br.com.view.pesquisa.Configuracoes;
 import com.sun.xml.internal.bind.v2.TODO;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,9 +41,15 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jmBackup = new javax.swing.JMenuItem();
+        jmConfiguracoes = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(245, 245, 245));
@@ -55,14 +63,41 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu5.setText("Cadastros");
+        jMenuBar1.add(jMenu5);
+
+        jMenu4.setText("Relatórios");
+        jMenuBar1.add(jMenu4);
+
         jMenu3.setText("Ferramentas");
 
-        jMenuItem2.setText("Backup");
-        jMenu3.add(jMenuItem2);
+        jmBackup.setText("Backup");
+        jmBackup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jmBackupMouseReleased(evt);
+            }
+        });
+        jMenu3.add(jmBackup);
+
+        jmConfiguracoes.setText("Configurações");
+        jmConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jmConfiguracoesMouseReleased(evt);
+            }
+        });
+        jMenu3.add(jmConfiguracoes);
+        jMenu3.add(jSeparator2);
+
+        jMenuItem3.setText("Cameras");
+        jMenu3.add(jMenuItem3);
 
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Help");
+
+        jMenuItem2.setText("Sobre");
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -80,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(540, Short.MAX_VALUE)
+                .addContainerGap(541, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(labelOperador)
@@ -89,6 +124,16 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jmConfiguracoesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmConfiguracoesMouseReleased
+        Configuracoes c = new Configuracoes(this, true);
+        c.setVisible(true);
+    }//GEN-LAST:event_jmConfiguracoesMouseReleased
+
+    private void jmBackupMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmBackupMouseReleased
+        Backup bk = new Backup(this, true);
+        bk.setVisible(true);
+    }//GEN-LAST:event_jmBackupMouseReleased
 
  
     public static void main(String args[]) {
@@ -127,10 +172,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenuItem jmBackup;
+    private javax.swing.JMenuItem jmConfiguracoes;
     private javax.swing.JLabel labelOperador;
     // End of variables declaration//GEN-END:variables
 }
