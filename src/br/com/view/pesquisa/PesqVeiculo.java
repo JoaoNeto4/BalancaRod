@@ -4,6 +4,7 @@ package br.com.view.pesquisa;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Veiculos;
 import br.com.dao.VeiculosDao;
+import br.com.view.cadastro.CadAgendamento;
 import br.com.view.cadastro.CadPesagem;
 import br.com.view.cadastro.CadVeiculo;
 import java.awt.Frame;
@@ -27,6 +28,7 @@ public class PesqVeiculo extends javax.swing.JDialog {
     boolean editar = true;
     boolean veiculo=false;
     private CadPesagem parent;
+    private CadAgendamento parentAgenda;
     private boolean veiTeste=false;
     
     public PesqVeiculo(java.awt.Frame parent, boolean modal) {
@@ -44,6 +46,18 @@ public class PesqVeiculo extends javax.swing.JDialog {
         atualizarTabela();
         this.veiTeste=true;
         this.parent=aThis;
+        this.veiculo=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Veículo");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+    
+    public PesqVeiculo(java.awt.Frame parent, boolean modal, CadAgendamento aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.veiTeste=true;
+        this.parentAgenda=aThis;
         this.veiculo=true;
         this.editar=false;
         this.setTitle("Pesquisa de Seleção de Veículo");

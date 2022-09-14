@@ -4,6 +4,7 @@ package br.com.view.pesquisa;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
 import br.com.dao.ParceiroNegocioDao;
+import br.com.view.cadastro.CadAgendamento;
 import br.com.view.cadastro.CadParceiroNegocio;
 import br.com.view.cadastro.CadPesagem;
 import java.awt.Frame;
@@ -24,6 +25,7 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
     boolean editar = true;
     boolean pesqPN=false;
     private CadPesagem parent;
+    private CadAgendamento parentAgenda;
     private boolean parceiro=false;
 
     public PesqParceiroNegocio(java.awt.Frame parent, boolean modal) {
@@ -46,6 +48,18 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);  // centraliza a tela
     }
 
+    public PesqParceiroNegocio(java.awt.Frame parent, boolean modal, CadAgendamento aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.parceiro=true;
+        this.parentAgenda=aThis;
+        this.pesqPN=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Parceiro de Negócio");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+    
     private ParceiroNegocio retornaObjeto(){
         ParceiroNegocio pn = new ParceiroNegocio();
         pn.setFantasia(txtPesquisa.getText());

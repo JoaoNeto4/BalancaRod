@@ -3,6 +3,7 @@ package br.com.view.pesquisa;
 
 import br.com.bean.Produtos;
 import br.com.dao.ProdutoDao;
+import br.com.view.cadastro.CadAgendamento;
 import br.com.view.cadastro.CadPesagem;
 import br.com.view.cadastro.CadProdutos;
 import java.awt.Frame;
@@ -26,6 +27,7 @@ public class PesqProduto extends javax.swing.JDialog {
     boolean editar = true;
     boolean pesqProduto=false;
     private CadPesagem parent;
+    private CadAgendamento parentAgenda;
     private boolean produto=false;
     
     public PesqProduto(java.awt.Frame parent, boolean modal) {
@@ -42,6 +44,18 @@ public class PesqProduto extends javax.swing.JDialog {
         atualizarTabela();
         this.produto=true;
         this.parent=aThis;
+        this.pesqProduto=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Produto");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+    
+    public PesqProduto(java.awt.Frame parent, boolean modal, CadAgendamento aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.produto=true;
+        this.parentAgenda=aThis;
         this.pesqProduto=true;
         this.editar=false;
         this.setTitle("Pesquisa de Seleção de Produto");

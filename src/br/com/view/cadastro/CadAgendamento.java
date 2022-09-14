@@ -454,7 +454,7 @@ public class CadAgendamento extends javax.swing.JDialog {
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel12.setFont(new java.awt.Font("Liberation Sans", 2, 14)); // NOI18N
-        jLabel12.setText("Peso Kg");
+        jLabel12.setText("Peso Kg REMOVER ");
 
         txtPesoBal.setBackground(new java.awt.Color(204, 255, 204));
         txtPesoBal.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
