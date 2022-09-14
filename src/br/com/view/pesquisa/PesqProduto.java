@@ -3,6 +3,7 @@ package br.com.view.pesquisa;
 
 import br.com.bean.Produtos;
 import br.com.dao.ProdutoDao;
+import br.com.view.cadastro.CadPesagem;
 import br.com.view.cadastro.CadProdutos;
 import java.awt.Frame;
 import java.awt.event.MouseEvent;
@@ -21,12 +22,29 @@ import javax.swing.table.DefaultTableModel;
 public class PesqProduto extends javax.swing.JDialog {
 
    private List<Produtos> listaProduto = new ArrayList<>();
+   
+    boolean editar = true;
+    boolean pesqProduto=false;
+    private CadPesagem parent;
+    private boolean produto=false;
     
     public PesqProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizarTabela();
         this.setTitle("Pesquisa de Produto");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+
+    public PesqProduto(java.awt.Frame parent, boolean modal, CadPesagem aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.produto=true;
+        this.parent=aThis;
+        this.pesqProduto=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Produto");
         this.setLocationRelativeTo(null);  // centraliza a tela
     }
     
@@ -244,10 +262,17 @@ public class PesqProduto extends javax.swing.JDialog {
         if(evt.getClickCount() == 2){
             switch(evt.getButton()){
                 case MouseEvent.BUTTON1:
-
-                    Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
-                    CadProdutos cp = new CadProdutos((Frame) getParent(), true, pnSelecionado);
-                    cp.setVisible(true);
+                    if(editar){
+                        Produtos pnSelecionado = listaProduto.get(tabelaTela.getSelectedRow());
+                        CadProdutos cp = new CadProdutos((Frame) getParent(), true, pnSelecionado);
+                        cp.setVisible(true);
+                    }else{
+                        Produtos prodSel = listaProduto.get(tabelaTela.getSelectedRow());
+                        CadPesagem cad = (CadPesagem) parent;
+                        cad.RecebeObjetoProduto(prodSel);
+                        cad.setVisible(true);
+                        this.dispose();
+                    }
                 
                 break;
                 default:

@@ -2,8 +2,10 @@
 package br.com.view.pesquisa;
 
 import br.com.bean.ParceiroNegocio;
+import br.com.bean.Pesagem;
 import br.com.dao.ParceiroNegocioDao;
 import br.com.view.cadastro.CadParceiroNegocio;
+import br.com.view.cadastro.CadPesagem;
 import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -18,12 +20,29 @@ import javax.swing.table.DefaultTableModel;
 public class PesqParceiroNegocio extends javax.swing.JDialog {
 
     private List<ParceiroNegocio> listaParceiro = new ArrayList<>();
+    
+    boolean editar = true;
+    boolean pesqPN=false;
+    private CadPesagem parent;
+    private boolean parceiro=false;
 
     public PesqParceiroNegocio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizarTabela();
         this.setTitle("Pesquisa de Parceiro de Negócio");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+
+    public PesqParceiroNegocio(java.awt.Frame parent, boolean modal, CadPesagem aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.parceiro=true;
+        this.parent=aThis;
+        this.pesqPN=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Parceiro de Negócio");
         this.setLocationRelativeTo(null);  // centraliza a tela
     }
 
@@ -238,11 +257,17 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         if(evt.getClickCount() == 2){
             switch(evt.getButton()){
                 case MouseEvent.BUTTON1:
-
-                    ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
-                    CadParceiroNegocio cp = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
-                    cp.setVisible(true);
-                
+                    if(editar){
+                        ParceiroNegocio pnSelecionado = listaParceiro.get(tabelaTela.getSelectedRow());
+                        CadParceiroNegocio cp = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
+                        cp.setVisible(true);
+                    }else{
+                        ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                        CadPesagem cad = (CadPesagem) parent;
+                        cad.RecebeObjetoParceiro(parSel);
+                        cad.setVisible(true);
+                        this.dispose();
+                    }
                 break;
                 default:
                     System.out.println("2 vezes outro botao");

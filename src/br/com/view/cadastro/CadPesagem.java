@@ -7,6 +7,9 @@ import br.com.bean.Pesagem;
 import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
 import br.com.dao.PesagemDao;
+import br.com.view.pesquisa.PesqParceiroNegocio;
+import br.com.view.pesquisa.PesqProduto;
+import br.com.view.pesquisa.PesqVeiculo;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -114,6 +117,22 @@ public class CadPesagem extends javax.swing.JDialog {
         }else{
             return false;
         }
+    }
+    
+    public void RecebeObjetoVeiculo(Veiculos vei){
+        txtPlaca.setText(vei.getPlaca());
+        txtPnVeiculo.setText(vei.getPn().getFantasia());
+        this.IDveiculo=vei.getId();
+    }
+    
+    public void RecebeObjetoParceiro(ParceiroNegocio par){
+        txtTransportador.setText(par.getFantasia());
+        this.IDparceiro=par.getId();
+    }
+    
+    public void RecebeObjetoProduto(Produtos prod){
+        txtProduto.setText(prod.getProduto());
+        this.IDproduto=prod.getId();
     }
     
     private Pesagem retornaObjeto(){
@@ -364,12 +383,27 @@ public class CadPesagem extends javax.swing.JDialog {
         jLabel10.setText("Lote");
 
         btnPesqPlaca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
+        btnPesqPlaca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnPesqPlacaMouseReleased(evt);
+            }
+        });
 
         btnPesqProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
+        btnPesqProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnPesqProdutoMouseReleased(evt);
+            }
+        });
 
         jLabel11.setText("Motorista");
 
         btnPesqTransp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
+        btnPesqTransp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnPesqTranspMouseReleased(evt);
+            }
+        });
 
         jPanel4.setBackground(new java.awt.Color(245, 245, 245));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "NFe", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -685,6 +719,21 @@ public class CadPesagem extends javax.swing.JDialog {
             rbEntrada.setSelected(true);
         }
     }//GEN-LAST:event_rbCompostaMouseReleased
+
+    private void btnPesqPlacaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqPlacaMouseReleased
+        PesqVeiculo pes = new PesqVeiculo(null, true, this);
+        pes.setVisible(true);
+    }//GEN-LAST:event_btnPesqPlacaMouseReleased
+
+    private void btnPesqTranspMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqTranspMouseReleased
+        PesqParceiroNegocio par = new PesqParceiroNegocio(null, true, this);
+        par.setVisible(true);
+    }//GEN-LAST:event_btnPesqTranspMouseReleased
+
+    private void btnPesqProdutoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqProdutoMouseReleased
+        PesqProduto par = new PesqProduto(null, true, this);
+        par.setVisible(true);
+    }//GEN-LAST:event_btnPesqProdutoMouseReleased
 
   
     public static void main(String args[]) {

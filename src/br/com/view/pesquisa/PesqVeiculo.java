@@ -4,8 +4,10 @@ package br.com.view.pesquisa;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Veiculos;
 import br.com.dao.VeiculosDao;
+import br.com.view.cadastro.CadPesagem;
 import br.com.view.cadastro.CadVeiculo;
 import java.awt.Frame;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,11 @@ public class PesqVeiculo extends javax.swing.JDialog {
 
     private List<Veiculos> listaVeiculos = new ArrayList<>();
     
+    boolean editar = true;
+    boolean veiculo=false;
+    private CadPesagem parent;
+    private boolean veiTeste=false;
+    
     public PesqVeiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -29,6 +36,18 @@ public class PesqVeiculo extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);  // centraliza a tela
         rbPlaca.setSelected(true);
         atualizarTabela();
+    }
+
+    public PesqVeiculo(java.awt.Frame parent, boolean modal, CadPesagem aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.veiTeste=true;
+        this.parent=aThis;
+        this.veiculo=true;
+        this.editar=false;
+        this.setTitle("Pesquisa de Seleção de Veículo");
+        this.setLocationRelativeTo(null);  // centraliza a tela
     }
     
     private Veiculos retornaObjetoSelecao(){
@@ -126,6 +145,11 @@ public class PesqVeiculo extends javax.swing.JDialog {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tabelaTela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tabelaTelaMouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tabelaTela);
@@ -270,6 +294,28 @@ public class PesqVeiculo extends javax.swing.JDialog {
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
         atualizarTabela();
     }//GEN-LAST:event_txtPesquisaKeyPressed
+
+    private void tabelaTelaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTelaMouseReleased
+        if(evt.getClickCount() == 2){
+            switch(evt.getButton()){
+                case MouseEvent.BUTTON1:
+                    if(editar){
+                        Veiculos pnSelecionado = listaVeiculos.get(tabelaTela.getSelectedRow());
+                        CadVeiculo vei = new CadVeiculo((Frame) getParent(), true, pnSelecionado);
+                        vei.setVisible(true);
+                    }else{
+                        Veiculos veiSelecionado = listaVeiculos.get(tabelaTela.getSelectedRow());
+                        CadPesagem cad = (CadPesagem) parent;
+                        cad.RecebeObjetoVeiculo(veiSelecionado);
+                        cad.setVisible(true);
+                        this.dispose();
+                    }
+                break;
+                default:
+                System.out.println("2 vezes outro botao");
+            }
+        }
+    }//GEN-LAST:event_tabelaTelaMouseReleased
 
 
     public static void main(String args[]) {
