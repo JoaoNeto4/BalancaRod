@@ -16,7 +16,7 @@ public class TesteOcr {
     //sudo apt-get install tesseract-ocr-por
     //sudo apt-get install tesseract-ocr
     //
-    //lib Tess4j_5.4
+    //add ao projeto lib Tess4j_5.4 & javacv_1.5
     
     
     /*
