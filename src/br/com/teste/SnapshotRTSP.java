@@ -32,9 +32,9 @@ import static org.bytedeco.opencv.global.opencv_imgproc.*;
  * rtsp://admin:campos159@10.42.42.133:554/cam/realmonitor?channel=1&subtype=0
  */
 public class SnapshotRTSP {
-   public static void main(String[] args) throws FrameGrabber.Exception, InterruptedException {
+    public static void main(String[] args) throws FrameGrabber.Exception, InterruptedException {
         
-        KeyEvent tecla = null;
+
         OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
 
         OpenCVFrameGrabber camera = new OpenCVFrameGrabber(0);
@@ -43,15 +43,12 @@ public class SnapshotRTSP {
         
 
         CanvasFrame cFrame = new CanvasFrame("Previw", CanvasFrame.getDefaultGamma() / CanvasFrame.getDefaultGamma());
-        Frame frameCapturado = null;
         Mat imagemColorido  = new Mat();
-        frameCapturado = camera.grab();
-        imagemColorido = convertemat.convert(frameCapturado);
-        
-        
-        Mat faceCapturada = new Mat(imagemColorido);
+        Frame frameCapturado = camera.grab();
 
-        imwrite("src/br/com/teste/fotoTeste.jpg", faceCapturada);
+        imagemColorido = convertemat.convert(frameCapturado);
+
+        imwrite("src/br/com/teste/fotoTeste.jpg", imagemColorido);
         System.out.println("foto capturada\n");
          if (cFrame.isVisible()){
             cFrame.showImage(frameCapturado);
@@ -62,6 +59,6 @@ public class SnapshotRTSP {
         //resize(faceCapturada, faceCapturada, new Size(160, 160));
 
 
-        }
+    }
 
 }
