@@ -17,6 +17,12 @@ public class TesteOcr {
     //sudo apt-get install tesseract-ocr
     //
     //lib Tess4j_5.4
+    
+    
+    /*
+    botao direito no projeto -> propriedades --> build --> compiling --> desmarca "Compile on salve"
+    so funciona java 8
+    */
 
      File imageFile = new File("/home/joao/Downloads/TESTE/teste.png");
      //File imageFile = new File("./src/main/resources/teste.png");
