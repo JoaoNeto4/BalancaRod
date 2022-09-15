@@ -181,60 +181,7 @@ public class CadAgendamento extends javax.swing.JDialog {
         
         return pe;
     }
-    /*
-    private Pesagem teste(){
-        Pesagem pe = new Pesagem();
-        ParceiroNegocio pn = new ParceiroNegocio();
-        ParceiroNegocio transp = new ParceiroNegocio();
-        Veiculos v = new Veiculos();
-        Operador op = new Operador();
-        Produtos prod = new Produtos();
-        
-        
-        pn.setId(1);
-        transp.setId(1);
-        v.setId(1);
-        op.setId(1);
-        prod.setId(1);
-
-        
-        //inserir data entrada apenas na insercao, alterar nao
-        
-        java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dataHora = sdf.format(dt);
-        //System.out.println(datahora);
-        
-        pe.setDataHoraEtrada(dataHora);
-        pe.setDataHoraSaida(dataHora);
-        
-        pe.setTipoPesagem("composta");
-        pe.setAndamento(true);
-        pe.setNfe("5555555");
-        pe.setValorNfe(55.500);
-        pe.setPesoNfe(20.0);
-        pe.setLote("teste");
-        pe.setOrigem("fazenda 1");
-        pe.setDestino("tableros");
-        pe.setPesoEnt1(25.000);
-        pe.setPesoEnt2(10.000);
-        pe.setPesoSai1(10.000);
-        pe.setPesoSai2(10.000);
-        pe.setMotorista("antonio");
-        pe.setFotoCarga1("local foto");
-        pe.setFotoCarga2("local foto");
-        pe.setFotoEntrada("local foto");
-        pe.setFotoSaida("local foto");
-        pe.setObservacao("obs teste");
-        pe.setPn(pn);
-        pe.setVeiculo(v);
-        pe.setOperador(op);
-        pe.setProduto(prod);
-        pe.setTransportador(pn);
     
-        return pe;
-    }
-    */
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
