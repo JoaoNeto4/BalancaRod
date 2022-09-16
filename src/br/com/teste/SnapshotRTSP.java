@@ -1,7 +1,9 @@
 
 package br.com.teste;
 
+import java.awt.event.KeyEvent;
 import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -14,7 +16,7 @@ import org.bytedeco.opencv.opencv_core.Mat;
 /**
  *
  * @author joao
- * rtsp://admin:campos159@10.42.42.133:554/cam/realmonitor?channel=1&subtype=0
+ * 
  */
 public class SnapshotRTSP {
     public static void main(String[] args) throws FrameGrabber.Exception, InterruptedException {
@@ -22,7 +24,8 @@ public class SnapshotRTSP {
 
         OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
 
-        OpenCVFrameGrabber camera = new OpenCVFrameGrabber(0);
+        //OpenCVFrameGrabber camera = new OpenCVFrameGrabber("rtsp://admin:campos159@200.150.127.211:37715/cam/realmonitor?channel=1&subtype=0");
+        FFmpegFrameGrabber camera = new FFmpegFrameGrabber("rtsp://admin:campos159@200.150.127.211:37715/cam/realmonitor?channel=1&subtype=0");
         camera.start();
 
         

@@ -3,12 +3,22 @@ package br.com.view.utilidades;
 
 import br.com.bean.Cameras;
 import br.com.dao.CamerasDao;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
+import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
+import org.bytedeco.opencv.opencv_core.Mat;
 
 public class ConfigCameras extends javax.swing.JDialog {
 
@@ -16,6 +26,7 @@ public class ConfigCameras extends javax.swing.JDialog {
     private int id;
     private boolean salvar=true;
     private List<Cameras> listaCam = new ArrayList<>();
+    Cameras cameras = new Cameras();
 
     public ConfigCameras(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -53,7 +64,6 @@ public class ConfigCameras extends javax.swing.JDialog {
     
     public final void atualizarCampos(){
         try {
-            Cameras cameras = new Cameras();
             listaCam = CamerasDao.listar();
             if(listaCam.isEmpty()){              
                 JOptionPane.showMessageDialog(null, "Você ainda não possui Cameras cadastradas!");
@@ -67,7 +77,62 @@ public class ConfigCameras extends javax.swing.JDialog {
         }
     }
     
+    public boolean validaTeste(){
+        int i=0;
+        if(cbCam01.isSelected() && !cbCam02.isSelected() && !cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            return true;
+        }
+        if(!cbCam01.isSelected() && cbCam02.isSelected() && !cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            return true;
+        }
+        if(!cbCam01.isSelected() && !cbCam02.isSelected() && cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            return true;
+        }
+        if(!cbCam01.isSelected() && !cbCam02.isSelected() && !cbCamEntrada.isSelected() && cbCamSaida.isSelected()){
+            return true;
+        }
+        JOptionPane.showMessageDialog(null, "Para testar as cameras selecione apenas uma por vez!");
+        return false;
+    }
     
+    public String testaCamera(){
+        if(cbCam01.isSelected() && !cbCam02.isSelected() && !cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            if(cameras.getCam01().equals("")){
+                JOptionPane.showMessageDialog(null, "Não possui camera configurada");
+            }else{
+                return cameras.getCam01();
+            }
+        }
+        if(!cbCam01.isSelected() && cbCam02.isSelected() && !cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            if(cameras.getCam02().equals("")){
+                JOptionPane.showMessageDialog(null, "Não possui camera configurada");
+            }else{
+                return cameras.getCam01();
+            }
+        }
+        if(!cbCam01.isSelected() && !cbCam02.isSelected() && cbCamEntrada.isSelected() && !cbCamSaida.isSelected()){
+            if(cameras.getCamEntrada().equals("")){
+                JOptionPane.showMessageDialog(null, "Não possui camera configurada");
+            }else{
+                return cameras.getCam01();
+            }
+        }
+        if(!cbCam01.isSelected() && !cbCam02.isSelected() && !cbCamEntrada.isSelected() && cbCamSaida.isSelected()){
+            if(cameras.getCamSaida().equals("")){
+                JOptionPane.showMessageDialog(null, "Não possui camera configurada");
+            }else{
+                return cameras.getCam01();
+            }
+        }
+        return null;
+    }
+    
+    public String retornaDataHora(){
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        String dataHora = sdf.format(dt);
+        return dataHora;
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -98,6 +163,11 @@ public class ConfigCameras extends javax.swing.JDialog {
         });
 
         btnTestar.setText("Testar");
+        btnTestar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnTestarMouseReleased(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,6 +273,54 @@ public class ConfigCameras extends javax.swing.JDialog {
     private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
         this.dispose();
     }//GEN-LAST:event_btnCancelarMouseReleased
+
+    private void btnTestarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTestarMouseReleased
+
+        if(validaTeste()){
+            
+            java.util.Date dt = new java.util.Date();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dataHora = sdf.format(dt);
+            OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
+
+            //OpenCVFrameGrabber camera = new OpenCVFrameGrabber("rtsp://admin:campos159@200.150.127.211:37715/cam/realmonitor?channel=1&subtype=0");
+            FFmpegFrameGrabber camera = new FFmpegFrameGrabber(testaCamera());
+            System.out.println(cameras.getCam01());
+
+            try {
+                camera.start();
+                CanvasFrame cFrame = new CanvasFrame("Previw", CanvasFrame.getDefaultGamma() / CanvasFrame.getDefaultGamma());
+                Mat imagemColorido  = new Mat();
+                Frame frameCapturado = camera.grab();
+
+                imagemColorido = convertemat.convert(frameCapturado);
+
+
+                imwrite("src/br/com/teste/"+this.retornaDataHora()+".jpg", imagemColorido);
+                System.out.println("foto capturada\n");
+                 if (cFrame.isVisible()){
+                    cFrame.showImage(frameCapturado);
+
+                    //cFrame.showImage(camera.grabSamples());
+
+                }
+                cFrame.waitKey(2000);
+                cFrame.dispose();
+                camera.stop();
+            } catch (FrameGrabber.Exception ex) {
+                JOptionPane.showMessageDialog(null, "");
+                //Logger.getLogger(ConfigCameras.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConfigCameras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        
+        
+
+        
+        
+    }//GEN-LAST:event_btnTestarMouseReleased
 
 
     public static void main(String args[]) {

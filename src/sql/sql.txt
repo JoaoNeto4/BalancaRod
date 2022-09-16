@@ -117,16 +117,25 @@ create table TB_Registro(
 );
 
 create  table TB_Cameras(
-	ID int primary key auto_increment,
-	cam01 varchar(150),
-	ativoC1 boolean,
-	cam02 varchar(150),
-	ativoC2 boolean,
-	camEntrada varchar(150),
-	ativoEntrada boolean,
-	camSaida varchar(150),
-	ativoSaida boolean
+    ID int primary key auto_increment,
+    cam01 varchar(150),
+    ativoC1 boolean,
+    cam02 varchar(150),
+    ativoC2 boolean,
+    camEntrada varchar(150),
+    ativoEntrada boolean,
+    camSaida varchar(150),
+    ativoSaida boolean
 );
+
+create  table TB_Email(
+    ID int primary key auto_increment,
+    ID_parceiro int,
+    email varchar(150),
+    senha varchar(150),
+    CONSTRAINT fk_idparceiro FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID)
+);
+
 
 
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 08 A 13", "KG", "");

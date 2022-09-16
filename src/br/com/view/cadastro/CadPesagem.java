@@ -11,9 +11,6 @@ import br.com.view.pesquisa.PesqParceiroNegocio;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
