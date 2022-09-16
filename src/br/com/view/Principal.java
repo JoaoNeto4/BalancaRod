@@ -43,9 +43,9 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         labelOperador = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miSair = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         miOperador = new javax.swing.JMenuItem();
         miParceiro = new javax.swing.JMenuItem();
@@ -101,19 +101,26 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jMenuBar1.setFont(new java.awt.Font("Nimbus Sans", 0, 18)); // NOI18N
+        menuBar.setFont(new java.awt.Font("Nimbus Sans", 0, 18)); // NOI18N
 
         jMenu1.setText("Arquivo");
         jMenu1.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenu1.add(jMenuItem1);
+        miSair.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        miSair.setText("Sair");
+        miSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miSairMouseReleased(evt);
+            }
+        });
+        jMenu1.add(miSair);
 
-        jMenuBar1.add(jMenu1);
+        menuBar.add(jMenu1);
 
         jMenu5.setText("Pesquisa");
         jMenu5.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
+        miOperador.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         miOperador.setText("Operador");
         miOperador.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -122,6 +129,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(miOperador);
 
+        miParceiro.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         miParceiro.setText("Parceiro de Negócio");
         miParceiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -130,6 +138,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(miParceiro);
 
+        miPesagem.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         miPesagem.setText("Pesagens");
         miPesagem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -138,6 +147,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(miPesagem);
 
+        miVeiculos.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         miVeiculos.setText("Veículos");
         miVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -146,6 +156,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(miVeiculos);
 
+        miProdutos.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         miProdutos.setText("Produtos");
         miProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -154,15 +165,16 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(miProdutos);
 
-        jMenuBar1.add(jMenu5);
+        menuBar.add(jMenu5);
 
         jMenu4.setText("Relatórios");
         jMenu4.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
-        jMenuBar1.add(jMenu4);
+        menuBar.add(jMenu4);
 
         jMenu3.setText("Ferramentas");
         jMenu3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
+        jmBackup.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jmBackup.setText("Backup");
         jmBackup.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -171,6 +183,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jmBackup);
 
+        jmConfiguracoes.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jmConfiguracoes.setText("Configurações");
         jmConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -180,20 +193,22 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.add(jmConfiguracoes);
         jMenu3.add(jSeparator2);
 
+        jMenuItem3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jMenuItem3.setText("Cameras");
         jMenu3.add(jMenuItem3);
 
-        jMenuBar1.add(jMenu3);
+        menuBar.add(jMenu3);
 
         jMenu2.setText("Help");
         jMenu2.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
+        jMenuItem2.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jMenuItem2.setText("Sobre");
         jMenu2.add(jMenuItem2);
 
-        jMenuBar1.add(jMenu2);
+        menuBar.add(jMenu2);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,6 +259,10 @@ public class Principal extends javax.swing.JFrame {
         p.setVisible(true);
     }//GEN-LAST:event_miProdutosMouseReleased
 
+    private void miSairMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miSairMouseReleased
+        System.exit(0);
+    }//GEN-LAST:event_miSairMouseReleased
+
  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -283,8 +302,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
@@ -293,10 +310,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmBackup;
     private javax.swing.JMenuItem jmConfiguracoes;
     private javax.swing.JLabel labelOperador;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem miOperador;
     private javax.swing.JMenuItem miParceiro;
     private javax.swing.JMenuItem miPesagem;
     private javax.swing.JMenuItem miProdutos;
+    private javax.swing.JMenuItem miSair;
     private javax.swing.JMenuItem miVeiculos;
     // End of variables declaration//GEN-END:variables
 }

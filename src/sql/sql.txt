@@ -116,6 +116,14 @@ create table TB_Registro(
     CONSTRAINT fk_pesagem FOREIGN KEY (ID_pesagem) REFERENCES TB_Pesagem(ID)
 );
 
+create  table TB_Cameras(
+    ID int primary key auto_increment,
+    cam01 varchar(150),
+    cam02 varchar(150),
+    camEntrada varchar(150),
+    camSaida varchar(150)
+);
+
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 08 A 13", "KG", "");
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 18 A 24", "KG", "");
 INSERT into TB_Produto (produto, unidMed, observacao) values("TORAS PINUS 25 A 34", "KG", "");

@@ -136,7 +136,7 @@ public class OperadorDao {
         return check;
     }
      
-      public Operador retornaBean(String login, String senha)throws SQLException{
+    public Operador retornaBean(String login, String senha)throws SQLException{
         Operador user = new Operador();
         Permissao p = new Permissao();
         Connection con = Conexao.getConexao();

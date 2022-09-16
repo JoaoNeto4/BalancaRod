@@ -40,7 +40,7 @@ public class ProdutoDao {
     
     public static void alterar(Produtos prod)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Produto SET produto=?, unidMed=?, observacao=? WHERE id= ?";
+        String sql = "UPDATE TB_Produto SET produto=?, unidMed=?, observacao=? WHERE ID= ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, prod.getProduto());
         stmt.setString(2, prod.getUnidMed());
