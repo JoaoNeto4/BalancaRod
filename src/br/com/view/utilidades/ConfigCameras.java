@@ -14,6 +14,7 @@ public class ConfigCameras extends javax.swing.JDialog {
 
 
     private int id;
+    private boolean salvar=true;
     private List<Cameras> listaCam = new ArrayList<>();
 
     public ConfigCameras(java.awt.Frame parent, boolean modal) {
@@ -30,6 +31,10 @@ public class ConfigCameras extends javax.swing.JDialog {
         cam.setCam02(txtCam02.getText());
         cam.setCamEntrada(txtCamEntrada.getText());
         cam.setCamSaida(txtCamSaida.getText());
+        cam.setAtivoC1(cbCam01.isSelected());
+        cam.setAtivoC1(cbCam02.isSelected());
+        cam.setAtivoEntrada(cbCamEntrada.isSelected());
+        cam.setAtivoSaida(cbCamSaida.isSelected());
         cam.setId(id);
         return cam;
     }
@@ -39,34 +44,30 @@ public class ConfigCameras extends javax.swing.JDialog {
         txtCam02.setText(cam.getCam02());
         txtCamEntrada.setText(cam.getCamEntrada());
         txtCamSaida.setText(cam.getCamSaida());
+        cbCam01.setSelected(cam.isAtivoC1());
+        cbCam02.setSelected(cam.isAtivoC2());
+        cbCamEntrada.setSelected(cam.isAtivoEntrada());
+        cbCamSaida.setSelected(cam.isAtivoSaida());
+        this.id=cam.getId();
     }
     
     public final void atualizarCampos(){
         try {
             Cameras cameras = new Cameras();
             listaCam = CamerasDao.listar();
-            setaCampos(cameras);
-            for (Cameras prod : listaCam) {
-                txtCam01.setText(listaCam.get());
+            if(listaCam.isEmpty()){              
+                JOptionPane.showMessageDialog(null, "Você ainda não possui Cameras cadastradas!");
+            }else{
+                salvar=false;
+                cameras = listaCam.get(0);
+                setaCampos(cameras);
             }
-    
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    public boolean salvarAlterar(){
-        if(txtCam01.getText().equals("")){
-            if(txtCam02.getText().equals("")){
-                if(txtCamEntrada.getText().equals("")){
-                    if(txtCamSaida.getText().equals("")){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,25 +78,17 @@ public class ConfigCameras extends javax.swing.JDialog {
         txtCam02 = new javax.swing.JTextField();
         txtCamEntrada = new javax.swing.JTextField();
         txtCamSaida = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         btnTestar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        cbCam01 = new javax.swing.JCheckBox();
+        cbCam02 = new javax.swing.JCheckBox();
+        cbCamEntrada = new javax.swing.JCheckBox();
+        cbCamSaida = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
-
-        jLabel1.setText("Camera 01");
-
-        jLabel2.setText("Camera 02");
-
-        jLabel3.setText("Camera Saída");
-
-        jLabel4.setText("Camera Entrada");
 
         btnSalvar.setText("Salvar");
         btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -113,17 +106,25 @@ public class ConfigCameras extends javax.swing.JDialog {
             }
         });
 
+        cbCam01.setText("Camera 01");
+
+        cbCam02.setText("Camera 02");
+
+        cbCamEntrada.setText("Camera Entrada");
+
+        cbCamSaida.setText("Camera Saida");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbCam02)
+                    .addComponent(cbCam01)
+                    .addComponent(cbCamEntrada)
+                    .addComponent(cbCamSaida))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -135,9 +136,9 @@ public class ConfigCameras extends javax.swing.JDialog {
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnTestar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                        .addGap(50, 50, 50)
                         .addComponent(btnSalvar)
-                        .addGap(94, 94, 94)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addComponent(btnCancelar)
                         .addGap(313, 313, 313))))
         );
@@ -147,25 +148,25 @@ public class ConfigCameras extends javax.swing.JDialog {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCam01, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(cbCam01))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCam02, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(cbCam02))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCamEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(cbCamEntrada))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCamSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(cbCamSaida))
                 .addGap(55, 55, 55)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnTestar)
                     .addComponent(btnCancelar))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -186,7 +187,7 @@ public class ConfigCameras extends javax.swing.JDialog {
    
         CamerasDao cam = new CamerasDao();
         try {
-            if(salvarAlterar()){
+            if(salvar){
                 cam.inserir(retornaObjeto());
                 this.dispose();
             }else{
@@ -247,10 +248,10 @@ public class ConfigCameras extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnTestar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JCheckBox cbCam01;
+    private javax.swing.JCheckBox cbCam02;
+    private javax.swing.JCheckBox cbCamEntrada;
+    private javax.swing.JCheckBox cbCamSaida;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCam01;
     private javax.swing.JTextField txtCam02;
