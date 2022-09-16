@@ -25,6 +25,8 @@ public class Backup extends javax.swing.JDialog {
     public Backup(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Backup");
+        this.setLocationRelativeTo(null);  // centraliza a tela
     }
 
     public static String procuraEspaco(String s){
@@ -68,7 +70,7 @@ public class Backup extends javax.swing.JDialog {
         
         Properties prop = new Properties();
         FileInputStream file;
-        file = new FileInputStream("/home/melena/NetBeansProjects/Clinica_Medica_JoaoNeto/src/Configuracao/Propriedades.properties");
+        file = new FileInputStream("/home/joao/NetBeansProjects/Balanca/src/br/com/config/config.properties");
         prop.load(file);
         
         String st = txtCaminhoImport.getText();

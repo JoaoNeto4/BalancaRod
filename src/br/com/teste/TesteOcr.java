@@ -18,7 +18,6 @@ public class TesteOcr {
     //
     //add ao projeto lib Tess4j_5.4 & javacv_1.5
     
-    
     /*
     botao direito no projeto -> propriedades --> build --> compiling --> desmarca "Compile on salve"
     so funciona java 8

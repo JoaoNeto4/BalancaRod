@@ -7,16 +7,11 @@ import br.com.bean.Pesagem;
 import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
 import br.com.conexao.Conexao;
-import com.sun.xml.internal.bind.v2.TODO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 

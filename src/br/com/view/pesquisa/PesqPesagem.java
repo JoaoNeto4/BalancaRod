@@ -11,6 +11,8 @@ public class PesqPesagem extends javax.swing.JDialog {
     public PesqPesagem(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Pesquisa de Pesagens");
+        this.setLocationRelativeTo(null);  // centraliza a tela
     }
 
   

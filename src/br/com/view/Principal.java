@@ -3,9 +3,13 @@ package br.com.view;
 
 import br.com.bean.Operador;
 import br.com.conexao.Conexao;
+import br.com.view.pesquisa.PesqOperador;
+import br.com.view.pesquisa.PesqParceiroNegocio;
+import br.com.view.pesquisa.PesqPesagem;
+import br.com.view.pesquisa.PesqProduto;
+import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.Backup;
 import br.com.view.utilidades.Configuracoes;
-import com.sun.xml.internal.bind.v2.TODO;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -36,12 +40,18 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         labelOperador = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        miOperador = new javax.swing.JMenuItem();
+        miParceiro = new javax.swing.JMenuItem();
+        miPesagem = new javax.swing.JMenuItem();
+        miVeiculos = new javax.swing.JMenuItem();
+        miProdutos = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jmBackup = new javax.swing.JMenuItem();
@@ -54,22 +64,104 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(245, 245, 245));
 
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
+
+        jPanel2.setBackground(new java.awt.Color(245, 245, 245));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
         labelOperador.setText("Root");
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelOperador)
+                .addContainerGap(1091, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelOperador)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 530, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jMenuBar1.setFont(new java.awt.Font("Nimbus Sans", 0, 18)); // NOI18N
+
         jMenu1.setText("Arquivo");
+        jMenu1.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
         jMenuItem1.setText("jMenuItem1");
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu5.setText("Cadastros");
+        jMenu5.setText("Pesquisa");
+        jMenu5.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+
+        miOperador.setText("Operador");
+        miOperador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miOperadorMouseReleased(evt);
+            }
+        });
+        jMenu5.add(miOperador);
+
+        miParceiro.setText("Parceiro de Negócio");
+        miParceiro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miParceiroMouseReleased(evt);
+            }
+        });
+        jMenu5.add(miParceiro);
+
+        miPesagem.setText("Pesagens");
+        miPesagem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miPesagemMouseReleased(evt);
+            }
+        });
+        jMenu5.add(miPesagem);
+
+        miVeiculos.setText("Veículos");
+        miVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miVeiculosMouseReleased(evt);
+            }
+        });
+        jMenu5.add(miVeiculos);
+
+        miProdutos.setText("Produtos");
+        miProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                miProdutosMouseReleased(evt);
+            }
+        });
+        jMenu5.add(miProdutos);
+
         jMenuBar1.add(jMenu5);
 
         jMenu4.setText("Relatórios");
+        jMenu4.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("Ferramentas");
+        jMenu3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
         jmBackup.setText("Backup");
         jmBackup.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -94,6 +186,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Help");
+        jMenu2.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
 
         jMenuItem2.setText("Sobre");
         jMenu2.add(jMenuItem2);
@@ -106,20 +199,11 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelOperador)
-                .addContainerGap(1093, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(541, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(labelOperador)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -134,6 +218,31 @@ public class Principal extends javax.swing.JFrame {
         Backup bk = new Backup(this, true);
         bk.setVisible(true);
     }//GEN-LAST:event_jmBackupMouseReleased
+
+    private void miOperadorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miOperadorMouseReleased
+        PesqOperador p = new PesqOperador(this, true);
+        p.setVisible(true);
+    }//GEN-LAST:event_miOperadorMouseReleased
+
+    private void miParceiroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miParceiroMouseReleased
+        PesqParceiroNegocio p = new PesqParceiroNegocio(this, true);
+        p.setVisible(true);
+    }//GEN-LAST:event_miParceiroMouseReleased
+
+    private void miPesagemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miPesagemMouseReleased
+        PesqPesagem p = new PesqPesagem(this, true);
+        p.setVisible(true);
+    }//GEN-LAST:event_miPesagemMouseReleased
+
+    private void miVeiculosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miVeiculosMouseReleased
+        PesqVeiculo p = new PesqVeiculo(this, true);
+        p.setVisible(true);
+    }//GEN-LAST:event_miVeiculosMouseReleased
+
+    private void miProdutosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miProdutosMouseReleased
+        PesqProduto p = new PesqProduto(this, true);
+        p.setVisible(true);
+    }//GEN-LAST:event_miProdutosMouseReleased
 
  
     public static void main(String args[]) {
@@ -178,10 +287,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem jmBackup;
     private javax.swing.JMenuItem jmConfiguracoes;
     private javax.swing.JLabel labelOperador;
+    private javax.swing.JMenuItem miOperador;
+    private javax.swing.JMenuItem miParceiro;
+    private javax.swing.JMenuItem miPesagem;
+    private javax.swing.JMenuItem miProdutos;
+    private javax.swing.JMenuItem miVeiculos;
     // End of variables declaration//GEN-END:variables
 }

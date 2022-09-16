@@ -32,6 +32,8 @@ public class Configuracoes extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(Configuracoes.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.setTitle("Configurações");
+        this.setLocationRelativeTo(null);  // centraliza a tela
     }
 
     @SuppressWarnings("unchecked")
