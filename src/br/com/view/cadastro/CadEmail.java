@@ -2,6 +2,12 @@
 package br.com.view.cadastro;
 
 import br.com.bean.Email;
+import br.com.dao.EmailDao;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +17,17 @@ import javax.swing.JOptionPane;
 public class CadEmail extends javax.swing.JDialog {
 
     private int id=0;
+    private boolean salvar=true;
+    private List<Email> listaEmail = new ArrayList<>();
+    Email email = new Email();
     
     public CadEmail(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setTitle("Email de disparo automático");
         this.setLocationRelativeTo(null);  // centraliza a tela
+        rbSSL.setSelected(true);
+        atualizarCampos();
     }
     
     public Email retornaObjeto(){
@@ -49,6 +60,21 @@ public class CadEmail extends javax.swing.JDialog {
         this.id=em.getId();
     }
     
+    public final void atualizarCampos(){
+        try {
+            listaEmail = EmailDao.listar();
+            if(listaEmail.isEmpty()){              
+                JOptionPane.showMessageDialog(null, "Você ainda não possui Emails cadastradas!");
+            }else{
+                salvar=false;
+                email = listaEmail.get(0);
+                setaCampos(email);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean validaCampos(){
         if(txtEmail.getText().equals("") || txtSenha.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Campo Email e Senha não podem ser vazios");
@@ -56,10 +82,6 @@ public class CadEmail extends javax.swing.JDialog {
         }
         if(txtServidor.getText().equals("") || txtPorta.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Campo Servidor e Porta não podem ser vazios");
-            return false;
-        }
-        if(!rbSSL.isSelected() || !rbTLS.isSelected()){
-            JOptionPane.showMessageDialog(null, "Selecione um tipo de Segurança!");
             return false;
         }
         return true;
@@ -75,8 +97,8 @@ public class CadEmail extends javax.swing.JDialog {
         txtSenha = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         cbAtivo = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -85,7 +107,7 @@ public class CadEmail extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         txtServidor = new javax.swing.JTextField();
         txtPorta = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnTestar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -95,9 +117,19 @@ public class CadEmail extends javax.swing.JDialog {
 
         jLabel2.setText("Senha");
 
-        jButton1.setText("Salvar");
+        btnSalvar.setText("Salvar");
+        btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSalvarMouseReleased(evt);
+            }
+        });
 
-        jButton2.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseReleased(evt);
+            }
+        });
 
         cbAtivo.setText("Ativo");
 
@@ -113,7 +145,12 @@ public class CadEmail extends javax.swing.JDialog {
 
         jLabel5.setText("Segurança");
 
-        jButton3.setText("Testar");
+        btnTestar.setText("Testar");
+        btnTestar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnTestarMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,11 +169,11 @@ public class CadEmail extends javax.swing.JDialog {
                     .addComponent(txtEmail)
                     .addComponent(txtServidor)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                        .addComponent(btnTestar, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbAtivo)
@@ -178,9 +215,9 @@ public class CadEmail extends javax.swing.JDialog {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnTestar))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -199,6 +236,33 @@ public class CadEmail extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarMouseReleased
+
+    private void btnSalvarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseReleased
+        EmailDao cam = new EmailDao();
+        try {
+            if(salvar){
+                cam.inserir(retornaObjeto());
+                this.dispose();
+            }else{
+                cam.alterar(retornaObjeto());
+                this.dispose();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadEmail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSalvarMouseReleased
+
+    private void btnTestarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTestarMouseReleased
+        
+        if(validaCampos()){
+            String emailEnvio = JOptionPane.showInputDialog( " Digite um email para teste de envio " );
+            
+        }
+    }//GEN-LAST:event_btnTestarMouseReleased
 
     /**
      * @param args the command line arguments
@@ -243,11 +307,11 @@ public class CadEmail extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnTestar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox cbAtivo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

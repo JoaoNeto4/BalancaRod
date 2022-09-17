@@ -21,8 +21,7 @@ public class ComAutenticacaoSSL {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
         props.put("mail.smtp.socketFactory.port", "465"); // Porta SSL
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory"); //SSL Factory Class
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); //SSL Factory Class
         props.put("mail.smtp.auth", "true"); // SMTP Autenticação ativa
         props.put("mail.smtp.port", "465"); //SMTP Porta
 

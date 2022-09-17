@@ -46,11 +46,11 @@ public class EmailDao {
     
     public static void alterar(Email em)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Email SET email=?, senha=?, servidor=?, porta=?, seguranca=? ativo WHERE ID= ?";
+        String sql = "UPDATE TB_Email SET email=?, senha=?, servidor=?, porta=?, seguranca=?, ativo=? WHERE ID=?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, em.getEmail());
         stmt.setString(2, em.getSenha());
-        stmt.setString(3, em.getSeguranca());
+        stmt.setString(3, em.getServidor());
         stmt.setInt(4, em.getPorta());
         stmt.setString(5, em.getSeguranca());
         stmt.setBoolean(6, em.isAtivo());
@@ -64,18 +64,19 @@ public class EmailDao {
     public static List<Email> listar() throws SQLException {
         List<Email> listaEmail = new ArrayList<>();
         Connection con = Conexao.getConexao();
-        String sql = "select * from TB_Email order by ID";
+        String sql = "select * from TB_Email";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
+        
         while (rs.next()) {
             Email em = new Email();
             em.setId(rs.getInt("ID"));
-            stmt.setString(2, em.getEmail());
-            stmt.setString(3, em.getSenha());
-            stmt.setString(4, em.getSeguranca());
-            stmt.setInt(5, em.getPorta());
-            stmt.setString(6, em.getSeguranca());
-            stmt.setBoolean(7, em.isAtivo());
+            em.setEmail(rs.getString("email"));
+            em.setSenha(rs.getString("senha"));
+            em.setServidor(rs.getString("servidor"));
+            em.setPorta(rs.getInt("porta"));
+            em.setSeguranca(rs.getString("seguranca"));
+            em.setAtivo(rs.getBoolean("ativo"));
             listaEmail.add(em);
         }
         stmt.close();
@@ -83,4 +84,5 @@ public class EmailDao {
         con.close();
         return listaEmail;
      }
+    
 }
