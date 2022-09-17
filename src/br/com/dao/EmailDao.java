@@ -19,10 +19,14 @@ public class EmailDao {
     
     public static void inserir(Email em)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "insert into TB_Email(email, senha) VALUES(?,?)";
+        String sql = "insert into TB_Email(email, senha, servidor, porta, seguranca, ativo) VALUES(?,?,?,?,?,?)";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, em.getEmail());
         stmt.setString(2, em.getSenha());
+        stmt.setString(3, em.getSeguranca());
+        stmt.setInt(4, em.getPorta());
+        stmt.setString(5, em.getSeguranca());
+        stmt.setBoolean(6, em.isAtivo());
         stmt.execute();
         JOptionPane.showMessageDialog(null, "Email Salvo Com Sucesso!");
         stmt.close();
@@ -42,13 +46,17 @@ public class EmailDao {
     
     public static void alterar(Email em)throws SQLException{
         Connection con = Conexao.getConexao();
-        String sql = "UPDATE TB_Email SET email=?, senha=? WHERE ID= ?";
+        String sql = "UPDATE TB_Email SET email=?, senha=?, servidor=?, porta=?, seguranca=? ativo WHERE ID= ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, em.getEmail());
         stmt.setString(2, em.getSenha());
+        stmt.setString(3, em.getSeguranca());
+        stmt.setInt(4, em.getPorta());
+        stmt.setString(5, em.getSeguranca());
+        stmt.setBoolean(6, em.isAtivo());
         stmt.setInt(7, em.getId());
         stmt.execute();
-        JOptionPane.showMessageDialog(null, "Operador Alterada Com Sucesso!");
+        JOptionPane.showMessageDialog(null, "Email Alterado Com Sucesso!");
         stmt.close();
         con.close();
     }
@@ -64,6 +72,10 @@ public class EmailDao {
             em.setId(rs.getInt("ID"));
             stmt.setString(2, em.getEmail());
             stmt.setString(3, em.getSenha());
+            stmt.setString(4, em.getSeguranca());
+            stmt.setInt(5, em.getPorta());
+            stmt.setString(6, em.getSeguranca());
+            stmt.setBoolean(7, em.isAtivo());
             listaEmail.add(em);
         }
         stmt.close();
