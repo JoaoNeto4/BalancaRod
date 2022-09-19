@@ -46,9 +46,13 @@ public class Backup extends javax.swing.JDialog {
         file = new FileInputStream("/home/joao/NetBeansProjects/Balanca/src/br/com/config/config.properties");
         prop.load(file);
         
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        String dataCorrente = sdf.format(dt);
+        //System.out.println(dataCorrente);
         String st = txtCaminhoExport.getText();
         //String nome = "\\backup.sql";
-        String nome = "/backupBALANCA.sql";
+        String nome = "/BackupBALANCA"+dataCorrente+".sql";
         String backup = "";
         
         if(st.trim().length() != 0 ){
