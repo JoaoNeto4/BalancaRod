@@ -115,7 +115,7 @@ public class CadVeiculo extends javax.swing.JDialog {
         txtTipo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservacoes = new javax.swing.JTextArea();
-        jButton3 = new javax.swing.JButton();
+        btnPesqProp = new javax.swing.JButton();
         txtParceiroNegocio = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -147,7 +147,7 @@ public class CadVeiculo extends javax.swing.JDialog {
         txtObservacoes.setRows(5);
         jScrollPane1.setViewportView(txtObservacoes);
 
-        jButton3.setText("Pesquisa");
+        btnPesqProp.setText("Pesquisa");
 
         btnSalvar.setText("Salvar");
         btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -190,7 +190,7 @@ public class CadVeiculo extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtParceiroNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPesqProp, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,7 +231,7 @@ public class CadVeiculo extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtParceiroNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
+                    .addComponent(btnPesqProp)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,9 +346,9 @@ public class CadVeiculo extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnPesqProp;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox cbAtivo;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

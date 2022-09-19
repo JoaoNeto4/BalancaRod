@@ -37,6 +37,7 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);  // centraliza a tela
         atualizarTabela();
         rbPlaca.setSelected(true);
+        selecionar = true;
     }
 
     private Pesagem retornaObjeto(){
@@ -174,6 +175,38 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
                     if(selecionar){
                         Pesagem pesSelec = listaPesagem.get(tabelaTela.getSelectedRow());
                         CadPesagem cad = (CadPesagem) parent;
+                        
+                        
+                        /*  DEBUG */
+                        System.out.println("id pesagem: "+pesSelec.getId());
+                        System.out.println("id pn: "+pesSelec.getPn().getId());
+                        System.out.println("id veiculo: "+pesSelec.getVeiculo().getId());
+                        System.out.println("id operador: "+pesSelec.getOperador().getId());
+                        System.out.println("id produto: "+pesSelec.getProduto().getId());
+                        System.out.println("id transp: "+pesSelec.getTransportador().getId());
+                        System.out.println("hora entra: "+pesSelec.getDataHoraEtrada());
+                        System.out.println("hora saida: "+pesSelec.getDataHoraSaida());
+                        System.out.println("tipo pesagem: "+pesSelec.getTipoPesagem());
+                        System.out.println("andamento(ver esse): "+pesSelec.getAndamento());
+                        System.out.println("nfe: "+pesSelec.getNfe());
+                        System.out.println("valor nfe: "+pesSelec.getValorNfe());
+                        System.out.println("peso nfe: "+pesSelec.getPesoNfe());
+                        System.out.println("lote: "+pesSelec.getLote());
+                        System.out.println("origem: "+pesSelec.getOrigem());
+                        System.out.println("destino: "+pesSelec.getDestino());
+                        System.out.println("peso ent1: "+pesSelec.getPesoEnt1());
+                        System.out.println("peso ent2: "+pesSelec.getPesoEnt2());
+                        System.out.println("peso sai1: "+pesSelec.getPesoSai1());
+                        System.out.println("peso sai2: "+pesSelec.getPesoSai2());
+                        System.out.println("motora: "+pesSelec.getMotorista());
+                        System.out.println("foto c1: "+pesSelec.getFotoCarga1());
+                        System.out.println("foto c2: "+pesSelec.getFotoCarga2());
+                        System.out.println("foto ent: "+pesSelec.getFotoEntrada());
+                        System.out.println("foto sai: "+pesSelec.getFotoSaida());
+                        System.out.println("obs: "+pesSelec.getObservacao());
+                        
+                        
+                        
                         cad.RecebeObjetoAgendamento(pesSelec);
                         cad.setVisible(true);
                         this.dispose();

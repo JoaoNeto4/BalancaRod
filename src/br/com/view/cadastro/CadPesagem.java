@@ -14,14 +14,12 @@ import br.com.view.pesquisa.PesqPesagemParaSaida;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.ConfigCameras;
-import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -42,7 +40,7 @@ public class CadPesagem extends javax.swing.JDialog {
     private int IDveiculo=0;
     private int IDproduto=0;
     private int IDoperador=0;
-     private int IDtransport=0;
+    private int IDtransport=0;
     private double pesoEntrada2=0;
     private double pesoSaida2=0;
     private String dataHoraEntrada = "";
@@ -154,9 +152,12 @@ public class CadPesagem extends javax.swing.JDialog {
         this.IDproduto=prod.getId();
     }
     
+   
     public void RecebeObjetoAgendamento(Pesagem pes){
         salvar=false;
-        Pesagem pe = new Pesagem();
+        
+        erro
+        //Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
         ParceiroNegocio transp = new ParceiroNegocio();
         Veiculos v = new Veiculos();
@@ -172,37 +173,38 @@ public class CadPesagem extends javax.swing.JDialog {
         /*
         inserir data entrada apenas na insercao, alterar nao
         */
-        pe.setDataHoraEtrada(pes.getDataHoraEtrada());
-        pe.setDataHoraSaida(dataHoraSaida());
+        pes.setDataHoraEtrada(pes.getDataHoraEtrada());
+        pes.setDataHoraSaida(dataHoraSaida());
         
         if(pes.getTipoPesagem().equals("composta")){
             rbComposta.setSelected(true);
             rbSaida.setSelected(true);
         }
         
-        pe.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
-        pe.setAndamento(emAndamento());
-        pe.setNfe(pes.getNfe());
-        pe.setValorNfe(pes.getValorNfe());
-        pe.setPesoNfe(pes.getPesoNfe());
-        pe.setLote(pes.getLote());
-        pe.setOrigem(pes.getOrigem());
-        pe.setDestino(pes.getDestino());
-        pe.setPesoEnt1(pes.getPesoEnt1());
-        pe.setPesoEnt2(pes.getPesoEnt2());
-        pe.setPesoSai1(pes.getPesoSai1());
-        pe.setPesoSai2(pes.getPesoSai2());
-        pe.setMotorista(pes.getMotorista());
-        pe.setFotoCarga1(pes.getFotoCarga1());
-        pe.setFotoCarga2(pes.getFotoCarga2());
-        pe.setFotoEntrada("/home/local/foto");
-        pe.setFotoSaida("/home/local/foto");
-        pe.setObservacao(pes.getObservacao());
-        pe.setPn(pn);
-        pe.setVeiculo(v);
-        pe.setOperador(op);
-        pe.setProduto(prod);
-        pe.setTransportador(pn);
+        pes.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
+        pes.setAndamento(emAndamento());
+        pes.setNfe(pes.getNfe());
+        pes.setValorNfe(pes.getValorNfe());
+        pes.setPesoNfe(pes.getPesoNfe());
+        pes.setLote(pes.getLote());
+        pes.setOrigem(pes.getOrigem());
+        pes.setDestino(pes.getDestino());
+        pes.setPesoEnt1(pes.getPesoEnt1());
+        pes.setPesoEnt2(pes.getPesoEnt2());
+        pes.setPesoSai1(pes.getPesoSai1());
+        pes.setPesoSai2(pes.getPesoSai2());
+        pes.setMotorista(pes.getMotorista());
+        pes.setFotoCarga1(pes.getFotoCarga1());
+        pes.setFotoCarga2(pes.getFotoCarga2());
+        pes.setFotoEntrada("/home/local/foto");
+        pes.setFotoSaida("/home/local/foto");
+        pes.setObservacao(pes.getObservacao());
+        pes.setPn(pn);
+        pes.setVeiculo(v);
+        pes.setOperador(op);
+        pes.setProduto(prod);
+        pes.setTransportador(pn);
+        pes.setId(pes.getId());
     }
     
     public String retornaDataHoraFoto(){
@@ -450,7 +452,7 @@ public class CadPesagem extends javax.swing.JDialog {
         txtPesoLiq = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnPesqAgendamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -705,10 +707,10 @@ public class CadPesagem extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setText("Agendamentos");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPesqAgendamento.setText("Agendamentos");
+        btnPesqAgendamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jButton1MouseReleased(evt);
+                btnPesqAgendamentoMouseReleased(evt);
             }
         });
 
@@ -771,7 +773,7 @@ public class CadPesagem extends javax.swing.JDialog {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnCancelar)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton1)))
+                                        .addComponent(btnPesqAgendamento)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -834,7 +836,7 @@ public class CadPesagem extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalvar)
-                    .addComponent(jButton1))
+                    .addComponent(btnPesqAgendamento))
                 .addContainerGap())
         );
 
@@ -908,10 +910,10 @@ public class CadPesagem extends javax.swing.JDialog {
         par.setVisible(true);
     }//GEN-LAST:event_btnPesqProdutoMouseReleased
 
-    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+    private void btnPesqAgendamentoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqAgendamentoMouseReleased
         PesqPesagemParaSaida ps = new PesqPesagemParaSaida(null, true, this);
         ps.setVisible(true);
-    }//GEN-LAST:event_jButton1MouseReleased
+    }//GEN-LAST:event_btnPesqAgendamentoMouseReleased
 
   
     public static void main(String args[]) {
@@ -955,13 +957,13 @@ public class CadPesagem extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnPesqAgendamento;
     private javax.swing.JButton btnPesqPlaca;
     private javax.swing.JButton btnPesqProduto;
     private javax.swing.JButton btnPesqTransp;
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup grupoBotoes_Operacao;
     private javax.swing.ButtonGroup grupoBotoes_TipoPesagem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
