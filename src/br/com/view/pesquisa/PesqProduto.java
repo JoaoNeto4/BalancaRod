@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PesqProduto extends javax.swing.JDialog {
 
-   private List<Produtos> listaProduto = new ArrayList<>();
+    private List<Produtos> listaProduto = new ArrayList<>();
    
     boolean editar = true;
     boolean pesqProduto=false;

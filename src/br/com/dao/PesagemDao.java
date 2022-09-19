@@ -252,7 +252,7 @@ public class PesagemDao {
         try {
             List<Pesagem> listaPesagem = new ArrayList<>();
             Connection con = Conexao.getConexao();
-            String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro  inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by order by PE.ID";
+            String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by PE.ID";
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -292,23 +292,23 @@ public class PesagemDao {
                 Pesagem p = new Pesagem();
                 p.setId(rs.getInt("PE.ID"));
                 p.setDataHoraEtrada(rs.getString("PE.dataHoraEntrada"));
-                p.setDataHoraEtrada(rs.getString("PE.dataHoraSaida"));
+                p.setDataHoraSaida(rs.getString("PE.dataHoraSaida"));
                 p.setTipoPesagem(rs.getString("PE.tipoPesagem"));
                 p.setAndamento(rs.getBoolean("PE.andamento"));
                 p.setNfe(rs.getString("PE.nfe"));
                 
-                p.setValorNfe(Double.NaN);
-                p.setPesoNfe(Double.NaN);
+                p.setValorNfe(rs.getDouble("PE.nfe"));
+                p.setPesoNfe(rs.getDouble("PE.pesoNfe"));
                 p.setLote(rs.getString("PE.lote"));
                 
                 p.setOrigem(rs.getString("PE.origem"));
                 p.setDestino(rs.getString("PE.destino"));
                 p.setPesoEnt1(rs.getDouble("PE.pesoEnt1"));
                 p.setPesoEnt2(rs.getDouble("PE.pesoEnt2"));
-                p.setPesoSai1(rs.getDouble("PE."));
-                p.setPesoSai2(rs.getDouble("PE.pesoSai1"));
-                p.setMotorista(rs.getString("PE.pesoSai2"));
-                p.setObservacao(rs.getString("PE.motorista"));
+                p.setPesoSai1(rs.getDouble("PE.pesoSai1"));
+                p.setPesoSai2(rs.getDouble("PE.pesoSai2"));
+                p.setMotorista(rs.getString("PE.motorista"));
+                p.setObservacao(rs.getString("PE.observacao"));
                 p.setFotoCarga1(rs.getString("PE.foto1"));
                 p.setFotoCarga2(rs.getString("PE.foto2"));
                 p.setFotoEntrada(rs.getString("PE.fotoEntrada"));

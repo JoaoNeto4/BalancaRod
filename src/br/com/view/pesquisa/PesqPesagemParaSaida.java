@@ -1,52 +1,124 @@
 
 package br.com.view.pesquisa;
 
+import br.com.bean.Pesagem;
+import br.com.bean.Veiculos;
+import br.com.dao.PesagemDao;
+import br.com.view.cadastro.CadPesagem;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author joao
  */
 public class PesqPesagemParaSaida extends javax.swing.JDialog {
 
+    private List<Pesagem> listaPesagem = new ArrayList<>();
+    private CadPesagem parent;
+    boolean selecionar = false;
   
     public PesqPesagemParaSaida(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setTitle("Pesquisa de Pesagens");
         this.setLocationRelativeTo(null);  // centraliza a tela
+        atualizarTabela();
+        rbPlaca.setSelected(true);
     }
 
+    public PesqPesagemParaSaida(java.awt.Frame parent, boolean modal, CadPesagem aThis) {
+        super(parent, modal);
+        initComponents();
+        this.setTitle("Pesquisa de Pesagens");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+        atualizarTabela();
+        rbPlaca.setSelected(true);
+    }
+
+    private Pesagem retornaObjeto(){
+        Veiculos vei = new Veiculos();
+        vei.setPlaca(txtPesquisa.getText());
+        Pesagem pe = new Pesagem();
+        pe.setVeiculo(vei);
+    
+        return pe;
+    }
+    
+    public final void atualizarTabela(){
+        try {
+            listaPesagem = PesagemDao.pesquisarSaida(retornaObjeto());
+            DefaultTableModel modelo = (DefaultTableModel) tabelaTela.getModel();
+            modelo.setNumRows(0);
+
+            for (Pesagem pe : listaPesagem) {
+                modelo.addRow(new Object[]{
+                    pe.getId(),
+                    pe.getVeiculo().getPlaca(),
+                    pe.getTransportador().getFantasia(),
+                    pe.getDataHoraEtrada(),
+                    pe.getNfe()
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbPlaca = new javax.swing.JRadioButton();
+        rbTrasnportador = new javax.swing.JRadioButton();
         txtPesquisa = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaTela = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
-        jRadioButton1.setText("Placa");
+        rbPlaca.setText("Placa");
 
-        jRadioButton2.setText("Proprietário");
+        rbTrasnportador.setText("Transportador");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyPressed(evt);
+            }
+        });
+
+        tabelaTela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Placa", "Transportador", "Hora Entrada", "NFe"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaTela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaTelaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaTela);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -57,9 +129,9 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(rbPlaca)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton2)
+                        .addComponent(rbTrasnportador)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPesquisa)))
                 .addContainerGap())
@@ -69,12 +141,12 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
+                    .addComponent(rbPlaca)
+                    .addComponent(rbTrasnportador)
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -85,11 +157,34 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
+        atualizarTabela();
+    }//GEN-LAST:event_txtPesquisaKeyPressed
+
+    private void tabelaTelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTelaMouseClicked
+        if(evt.getClickCount() == 2){
+            switch(evt.getButton()){
+                case MouseEvent.BUTTON1:
+                    if(selecionar){
+                        Pesagem pesSelec = listaPesagem.get(tabelaTela.getSelectedRow());
+                        CadPesagem cad = (CadPesagem) parent;
+                        cad.RecebeObjetoAgendamento(pesSelec);
+                        cad.setVisible(true);
+                        this.dispose();
+                    }
+                
+                break;
+                default:
+                    System.out.println("2 vezes outro botao");
+            }
+        }
+    }//GEN-LAST:event_tabelaTelaMouseClicked
 
   
     public static void main(String args[]) {
@@ -134,10 +229,10 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JRadioButton rbPlaca;
+    private javax.swing.JRadioButton rbTrasnportador;
+    private javax.swing.JTable tabelaTela;
     private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 }

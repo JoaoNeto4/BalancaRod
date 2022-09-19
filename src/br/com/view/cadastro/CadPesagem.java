@@ -10,6 +10,7 @@ import br.com.bean.Veiculos;
 import br.com.dao.CamerasDao;
 import br.com.dao.PesagemDao;
 import br.com.view.pesquisa.PesqParceiroNegocio;
+import br.com.view.pesquisa.PesqPesagemParaSaida;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.ConfigCameras;
@@ -151,6 +152,57 @@ public class CadPesagem extends javax.swing.JDialog {
     public void RecebeObjetoProduto(Produtos prod){
         txtProduto.setText(prod.getProduto());
         this.IDproduto=prod.getId();
+    }
+    
+    public void RecebeObjetoAgendamento(Pesagem pes){
+        salvar=false;
+        Pesagem pe = new Pesagem();
+        ParceiroNegocio pn = new ParceiroNegocio();
+        ParceiroNegocio transp = new ParceiroNegocio();
+        Veiculos v = new Veiculos();
+        Operador op = new Operador();
+        Produtos prod = new Produtos();
+        
+        pn.setId(pes.getPn().getId());
+        transp.setId(pes.getTransportador().getId());
+        v.setId(pes.getVeiculo().getId());
+        op.setId(IDoperador);/*************************************************************alterar permissao********************* */
+        prod.setId(pes.getProduto().getId());
+
+        /*
+        inserir data entrada apenas na insercao, alterar nao
+        */
+        pe.setDataHoraEtrada(pes.getDataHoraEtrada());
+        pe.setDataHoraSaida(dataHoraSaida());
+        
+        if(pes.getTipoPesagem().equals("composta")){
+            rbComposta.setSelected(true);
+            rbSaida.setSelected(true);
+        }
+        
+        pe.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
+        pe.setAndamento(emAndamento());
+        pe.setNfe(pes.getNfe());
+        pe.setValorNfe(pes.getValorNfe());
+        pe.setPesoNfe(pes.getPesoNfe());
+        pe.setLote(pes.getLote());
+        pe.setOrigem(pes.getOrigem());
+        pe.setDestino(pes.getDestino());
+        pe.setPesoEnt1(pes.getPesoEnt1());
+        pe.setPesoEnt2(pes.getPesoEnt2());
+        pe.setPesoSai1(pes.getPesoSai1());
+        pe.setPesoSai2(pes.getPesoSai2());
+        pe.setMotorista(pes.getMotorista());
+        pe.setFotoCarga1(pes.getFotoCarga1());
+        pe.setFotoCarga2(pes.getFotoCarga2());
+        pe.setFotoEntrada("/home/local/foto");
+        pe.setFotoSaida("/home/local/foto");
+        pe.setObservacao(pes.getObservacao());
+        pe.setPn(pn);
+        pe.setVeiculo(v);
+        pe.setOperador(op);
+        pe.setProduto(prod);
+        pe.setTransportador(pn);
     }
     
     public String retornaDataHoraFoto(){
@@ -398,6 +450,7 @@ public class CadPesagem extends javax.swing.JDialog {
         txtPesoLiq = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -652,6 +705,13 @@ public class CadPesagem extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Agendamentos");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton1MouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -709,7 +769,9 @@ public class CadPesagem extends javax.swing.JDialog {
                                         .addGap(3, 3, 3)
                                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCancelar)))
+                                        .addComponent(btnCancelar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -771,7 +833,8 @@ public class CadPesagem extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnSalvar))
+                    .addComponent(btnSalvar)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -845,6 +908,11 @@ public class CadPesagem extends javax.swing.JDialog {
         par.setVisible(true);
     }//GEN-LAST:event_btnPesqProdutoMouseReleased
 
+    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+        PesqPesagemParaSaida ps = new PesqPesagemParaSaida(null, true, this);
+        ps.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseReleased
+
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -893,6 +961,7 @@ public class CadPesagem extends javax.swing.JDialog {
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup grupoBotoes_Operacao;
     private javax.swing.ButtonGroup grupoBotoes_TipoPesagem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
