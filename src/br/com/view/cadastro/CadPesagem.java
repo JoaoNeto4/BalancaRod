@@ -1,18 +1,31 @@
 
 package br.com.view.cadastro;
 
+import br.com.bean.Cameras;
 import br.com.bean.Operador;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
 import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
+import br.com.dao.CamerasDao;
 import br.com.dao.PesagemDao;
 import br.com.view.pesquisa.PesqParceiroNegocio;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
+import br.com.view.utilidades.ConfigCameras;
+import java.awt.Frame;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
+import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
+import org.bytedeco.opencv.opencv_core.Mat;
 
 /**
  *
@@ -33,7 +46,11 @@ public class CadPesagem extends javax.swing.JDialog {
     private double pesoSaida2=0;
     private String dataHoraEntrada = "";
     private String dataHoraSaida = "";
-    
+    private List<Cameras> listaCam = new ArrayList<>();
+    Cameras cameras = new Cameras();
+    private String dirCam01="NotEnabled";
+    private String dirCam02="NotEnabled";
+    private String DIRETORIOFOTOS="/home/joao/Downloads/Fotos/";
     
     
     public CadPesagem(java.awt.Frame parent, boolean modal) {
@@ -41,8 +58,8 @@ public class CadPesagem extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Pesagem Manual");
         this.setLocationRelativeTo(null);  // centraliza a tela
-        
         this.desabilitaEdicao();
+        this.carregaCameras();
     }
 
     private void desabilitaEdicao(){
@@ -85,26 +102,30 @@ public class CadPesagem extends javax.swing.JDialog {
         
     */
     private String dataHoraEntrada(){
-        if(dataHoraEntrada.equals("") && this.rbEntrada.isSelected() ){
+        if(this.rbEntrada.isSelected() ){
+            salvar = true;
             java.util.Date dt = new java.util.Date();
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dataHora = sdf.format(dt);
             //System.out.println(datahora);
             return dataHora;
         }else{
-            return dataHoraEntrada;
+            return null;
         }  
     }
     
     private String dataHoraSaida(){
-        if(dataHoraSaida.equals("") && this.rbSaida.isSelected() ){
+        String dataHora="";
+        if( this.rbSaida.isSelected() ){
+            salvar = false;
             java.util.Date dt = new java.util.Date();
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dataHora = sdf.format(dt);
+            dataHora = sdf.format(dt);
             //System.out.println(datahora);
             return dataHora;
         }else{
-            return dataHoraSaida;
+            dataHora=null;
+            return dataHora;
         }  
     }
     
@@ -130,6 +151,28 @@ public class CadPesagem extends javax.swing.JDialog {
     public void RecebeObjetoProduto(Produtos prod){
         txtProduto.setText(prod.getProduto());
         this.IDproduto=prod.getId();
+    }
+    
+    public String retornaDataHoraFoto(){
+        String dataCorrente = "";
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd-HH:mm");
+        dataCorrente = sdf.format(dt);
+        return dataCorrente;
+    }
+    
+    public final void carregaCameras(){
+        try {
+            listaCam = CamerasDao.listar();
+            if(listaCam.isEmpty()){              
+                JOptionPane.showMessageDialog(null, "Você ainda não possui Cameras cadastradas!");
+            }else{
+                cameras = listaCam.get(0);
+                
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     private Pesagem retornaObjeto(){
@@ -165,8 +208,8 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setPesoSai1(Double.parseDouble(txtPesoSaida.getText()));
         pe.setPesoSai2(pesoSaida2);
         pe.setMotorista(txtMotorista.getText());
-        pe.setFotoCarga1("/home/local/foto");
-        pe.setFotoCarga2("/home/local/foto");
+        pe.setFotoCarga1(capturaFoto1());
+        pe.setFotoCarga2(capturaFoto2());
         pe.setFotoEntrada("/home/local/foto");
         pe.setFotoSaida("/home/local/foto");
         pe.setObservacao(txtObservacao.getText());
@@ -178,8 +221,75 @@ public class CadPesagem extends javax.swing.JDialog {
         
         return pe;
     }
-    /*
-    private Pesagem teste(){
+    
+    public boolean validaCam1_Ativa(){
+        if(cameras.isAtivoC1()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean validaCam2_Ativa(){
+        if(cameras.isAtivoC2()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    public String capturaFoto1(){
+        String diretorio="NotEnabled";
+        if(validaCam1_Ativa()){
+            OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
+            FFmpegFrameGrabber cam1 = new FFmpegFrameGrabber(cameras.getCam01());
+
+            try {
+                cam1.start();
+                //CanvasFrame cFrame = new CanvasFrame("Previw", CanvasFrame.getDefaultGamma() / CanvasFrame.getDefaultGamma());
+                Mat imgColorida1  = new Mat();
+                //Mat imagemColorido  = new Mat();
+                org.bytedeco.javacv.Frame frameCam1 = cam1.grab();
+                imgColorida1 = convertemat.convert(frameCam1);
+                diretorio=DIRETORIOFOTOS+this.retornaDataHoraFoto()+"cam1.jpg";
+                imwrite(diretorio, imgColorida1);
+                cam1.stop();
+            } catch (FrameGrabber.Exception ex) {
+                //JOptionPane.showMessageDialog(null, ex);
+                Logger.getLogger(ConfigCameras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return diretorio;
+        }else{
+            return diretorio;
+        }
+    }
+    public String capturaFoto2(){
+        String diretorio="NotEnabled";
+        if(validaCam2_Ativa()){
+            OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
+            FFmpegFrameGrabber cam2 = new FFmpegFrameGrabber(cameras.getCam02());
+
+            try {
+                cam2.start();
+                //CanvasFrame cFrame = new CanvasFrame("Previw", CanvasFrame.getDefaultGamma() / CanvasFrame.getDefaultGamma());
+                Mat imgColorida1  = new Mat();
+                //Mat imagemColorido  = new Mat();
+                org.bytedeco.javacv.Frame frameCam1 = cam2.grab();
+                imgColorida1 = convertemat.convert(frameCam1);
+                diretorio=DIRETORIOFOTOS+this.retornaDataHoraFoto()+"cam2.jpg";
+                imwrite(diretorio, imgColorida1);
+                cam2.stop();
+            } catch (FrameGrabber.Exception ex) {
+                //JOptionPane.showMessageDialog(null, ex);
+                Logger.getLogger(ConfigCameras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return diretorio;
+        }else{
+            return diretorio;
+        }
+    }
+    
+    private Pesagem tESTE(){
         Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
         ParceiroNegocio transp = new ParceiroNegocio();
@@ -188,7 +298,7 @@ public class CadPesagem extends javax.swing.JDialog {
         Produtos prod = new Produtos();
         
         
-        pn.setId(1);
+        pn.setId(2);
         transp.setId(1);
         v.setId(1);
         op.setId(1);
@@ -200,10 +310,12 @@ public class CadPesagem extends javax.swing.JDialog {
         java.util.Date dt = new java.util.Date();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dataHora = sdf.format(dt);
-        //System.out.println(datahora);
+        //System.out.println("eitaa-->"+dataHora);
         
-        pe.setDataHoraEtrada(dataHora);
-        pe.setDataHoraSaida(dataHora);
+        pe.setDataHoraEtrada(dataHoraEntrada());
+        pe.setDataHoraSaida(dataHoraSaida());
+        System.out.println(pe.getDataHoraEtrada());
+        System.out.println(pe.getDataHoraSaida());
         
         pe.setTipoPesagem("composta");
         pe.setAndamento(true);
@@ -218,8 +330,8 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setPesoSai1(10.000);
         pe.setPesoSai2(10.000);
         pe.setMotorista("antonio");
-        pe.setFotoCarga1("local foto");
-        pe.setFotoCarga2("local foto");
+        pe.setFotoCarga1(capturaFoto1());
+        pe.setFotoCarga2(capturaFoto2());
         pe.setFotoEntrada("local foto");
         pe.setFotoSaida("local foto");
         pe.setObservacao("obs teste");
@@ -231,7 +343,7 @@ public class CadPesagem extends javax.swing.JDialog {
     
         return pe;
     }
-    */
+    
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -686,7 +798,8 @@ public class CadPesagem extends javax.swing.JDialog {
             PesagemDao dao = new PesagemDao();
             try {
                 if(salvar){
-                    dao.inserir(retornaObjeto());
+                    //dao.inserir(retornaObjeto());
+                    dao.inserir(tESTE());
                     limparCampos();
                     this.dispose();
                 }else{

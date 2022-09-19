@@ -53,7 +53,7 @@ public class PesagemDao {
             stmt.setString(24, ps.getFotoSaida());
             stmt.setString(25, ps.getObservacao());
             stmt.execute();
-            JOptionPane.showMessageDialog(null, "Pesagem Salva Com Sucesso!");
+            JOptionPane.showMessageDialog(null, "Pesagem de Entrada Salva Com Sucesso!");
             stmt.close();
             con.close();
         } catch (Exception ex) {
@@ -105,7 +105,7 @@ public class PesagemDao {
             stmt.setString(25, ps.getObservacao());
             stmt.setInt(26, ps.getId());
             stmt.execute();
-            JOptionPane.showMessageDialog(null, "Pesagem Alterada Com Sucesso!");
+            JOptionPane.showMessageDialog(null, "Pesagem de Saída Salva Com Sucesso!");
             stmt.close();
             con.close();
         } catch (Exception ex) {
@@ -164,11 +164,95 @@ public class PesagemDao {
      
 
     //TODO: REVER ESTE METODO
-     public static List<Pesagem> pesquisar(Pesagem pes) throws SQLException {
+    public static List<Pesagem> pesquisar(Pesagem pes) throws SQLException {
         try {
             List<Pesagem> listaPesagem = new ArrayList<>();
             Connection con = Conexao.getConexao();
-            String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro  inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by pes.getVeiculo().getPlaca()";
+            String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro  inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by PE.ID";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                
+                Produtos prod = new Produtos();
+                prod.setId(rs.getInt("PR.ID"));
+                prod.setProduto(rs.getString("PR.produto"));
+                prod.setUnidMed(rs.getString("PR.unidMed"));
+                prod.setObservacoes(rs.getString("PR.observacao"));
+                
+                
+                ParceiroNegocio pn = new ParceiroNegocio();
+                pn.setId(rs.getInt("PN.ID"));
+                pn.setFantasia(rs.getString("PN.fantasia"));
+                pn.setRazaoSocial(rs.getString("PN.razaoSocial"));
+                pn.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
+                
+                ParceiroNegocio transp = new ParceiroNegocio();
+                transp.setId(rs.getInt("PN.ID"));
+                transp.setFantasia(rs.getString("PN.fantasia"));
+                transp.setRazaoSocial(rs.getString("PN.razaoSocial"));
+                transp.setCpf_cnpj(rs.getString("PN.cpf_cnpj"));
+                
+                
+                Veiculos ve = new Veiculos();
+                ve.setId(rs.getInt("VE.ID"));
+                ve.setModelo(rs.getString("VE.modelo"));
+                ve.setPlaca(rs.getString("VE.placa"));
+                ve.setTara(rs.getDouble("VE.tara"));
+                ve.setPn(pn);
+                
+                Operador op = new Operador();
+                op.setId(rs.getInt("OP.ID"));
+                op.setNome(rs.getString("OP.nome"));
+                
+                
+                Pesagem p = new Pesagem();
+                p.setId(rs.getInt("PE.ID"));
+                p.setDataHoraEtrada(rs.getString("PE.dataHoraEntrada"));
+                p.setDataHoraEtrada(rs.getString("PE.dataHoraSaida"));
+                p.setTipoPesagem(rs.getString("PE.tipoPesagem"));
+                p.setAndamento(rs.getBoolean("PE.andamento"));
+                p.setNfe(rs.getString("PE.nfe"));
+                
+                p.setValorNfe(Double.NaN);
+                p.setPesoNfe(Double.NaN);
+                p.setLote(rs.getString("PE.lote"));
+                
+                p.setOrigem(rs.getString("PE.origem"));
+                p.setDestino(rs.getString("PE.destino"));
+                p.setPesoEnt1(rs.getDouble("PE.pesoEnt1"));
+                p.setPesoEnt2(rs.getDouble("PE.pesoEnt2"));
+                p.setPesoSai1(rs.getDouble("PE."));
+                p.setPesoSai2(rs.getDouble("PE.pesoSai1"));
+                p.setMotorista(rs.getString("PE.pesoSai2"));
+                p.setObservacao(rs.getString("PE.motorista"));
+                p.setFotoCarga1(rs.getString("PE.foto1"));
+                p.setFotoCarga2(rs.getString("PE.foto2"));
+                p.setFotoEntrada(rs.getString("PE.fotoEntrada"));
+                p.setFotoSaida(rs.getString("PE.fotoSaida"));
+                p.setObservacao(rs.getString("PE.observacao"));
+                p.setPn(pn);
+                p.setVeiculo(ve);
+                p.setOperador(op);
+                p.setProduto(prod);
+                p.setTransportador(transp);
+                listaPesagem.add(p);
+                
+            }
+            stmt.close();
+            rs.close();
+            con.close();
+            return listaPesagem;
+        } catch (Exception ex) {
+            Logger.getLogger(PesagemDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+     }
+    
+    public static List<Pesagem> pesquisarSaida(Pesagem pes) throws SQLException {
+        try {
+            List<Pesagem> listaPesagem = new ArrayList<>();
+            Connection con = Conexao.getConexao();
+            String sql = "select PE.*, PN.*, VE.*, OP.*, PR.* from TB_Pesagem as PE inner join TB_ParceiroNegocio as PN on PN.ID=PE.ID_parceiro inner join TB_Veiculos as VE on PN.ID=VE.ID_parceiro  inner join TB_Produto as PR on PE.ID_produto=PR.ID inner join TB_Operador as OP on OP.ID=PE.ID_operador where VE.placa like'"+pes.getVeiculo().getPlaca()+"%' order by order by PE.ID";
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

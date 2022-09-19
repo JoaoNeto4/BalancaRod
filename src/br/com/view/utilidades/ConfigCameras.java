@@ -278,9 +278,9 @@ public class ConfigCameras extends javax.swing.JDialog {
 
         if(validaTeste()){
             
-            java.util.Date dt = new java.util.Date();
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dataHora = sdf.format(dt);
+            //java.util.Date dt = new java.util.Date();
+            //java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //String dataHora = sdf.format(dt);
             OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
 
             //OpenCVFrameGrabber camera = new OpenCVFrameGrabber("rtsp://admin:campos159@200.150.127.211:37715/cam/realmonitor?channel=1&subtype=0");
