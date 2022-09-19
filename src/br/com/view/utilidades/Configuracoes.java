@@ -288,7 +288,7 @@ public class Configuracoes extends javax.swing.JDialog {
             }else{
                 JOptionPane.showMessageDialog(null, "Sem Conexão!");
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Configuracoes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTestarMouseReleased

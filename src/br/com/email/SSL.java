@@ -10,13 +10,13 @@ import javax.mail.Session;
 public class SSL {
 
     public static void main(String[] args) {
-        final String remetente = "myemailid@gmail.com"; ////email de quem envia(válido)
-        final String senha = "mypassword"; // senha de quem envia
-        final String destinatario = "myemail@yahoo.com"; // quem recebe
+        final String remetente = "desenvolvimento2@ativusgestao.com.br"; ////email de quem envia(válido)
+        final String senha = "myPassword"; // senha de quem envia
+        final String destinatario = "desenvolvimento2@ativusgestao.com.br"; // quem recebe
 
         System.out.println("SSLEmail Start");
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+        props.put("mail.smtp.host", "email-ssl.com.br"); //SMTP Host
         props.put("mail.smtp.socketFactory.port", "465"); // Porta SSL
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); //SSL Factory Class
         props.put("mail.smtp.auth", "true"); // SMTP Autenticação ativa
@@ -31,11 +31,11 @@ public class SSL {
 
         Session session = Session.getDefaultInstance(props, auth);
         System.out.println("Sessão criada");
-        Util.enviaEmail(session, destinatario, "SSLEmail Assunto", "SSLEmail Corpo Email");
+        EnvioEmail.enviaEmail(session, destinatario, "SSLEmail Assunto", "SSLEmail Corpo Email");
 
-        Util.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo");
+    //    EnvioEmail.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo");
 
-        Util.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
+    //    EnvioEmail.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
 
     }
 

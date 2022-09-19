@@ -27,6 +27,8 @@ public class Backup extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Backup");
         this.setLocationRelativeTo(null);  // centraliza a tela
+        txtCaminhoExport.setEditable(false);
+        txtCaminhoImport.setEditable(false);
     }
 
     public static String procuraEspaco(String s){
@@ -46,7 +48,7 @@ public class Backup extends javax.swing.JDialog {
         
         String st = txtCaminhoExport.getText();
         //String nome = "\\backup.sql";
-        String nome = "/backup.sql";
+        String nome = "/backupBALANCA.sql";
         String backup = "";
         
         if(st.trim().length() != 0 ){
@@ -135,6 +137,11 @@ public class Backup extends javax.swing.JDialog {
         });
 
         btnExportar.setText("Exportar");
+        btnExportar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnExportarMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -273,6 +280,26 @@ public class Backup extends javax.swing.JDialog {
             txtCaminhoExport.setText(st);
         }
     }//GEN-LAST:event_btnSelecionaCaminhoExportMouseReleased
+
+    private void btnExportarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportarMouseReleased
+        try {
+            exportar();
+        } catch (IOException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidAlgorithmParameterException ex) {
+            Logger.getLogger(Backup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportarMouseReleased
 
 
     public static void main(String args[]) {

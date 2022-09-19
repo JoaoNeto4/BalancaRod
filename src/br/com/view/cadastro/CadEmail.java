@@ -260,7 +260,9 @@ public class CadEmail extends javax.swing.JDialog {
         
         if(validaCampos()){
             String emailEnvio = JOptionPane.showInputDialog( " Digite um email para teste de envio " );
+            
             //CONTINUAR...
+            
         }
     }//GEN-LAST:event_btnTestarMouseReleased
 

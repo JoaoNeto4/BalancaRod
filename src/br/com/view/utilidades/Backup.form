@@ -120,6 +120,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Exportar"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExportarMouseReleased"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

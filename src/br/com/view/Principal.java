@@ -10,8 +10,17 @@ import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.Backup;
 import br.com.view.utilidades.Configuracoes;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * @author joao
@@ -29,7 +38,11 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal(Operador operador) throws SQLException {
         initComponents();
-        conexao = Conexao.getConexao();
+        try {
+            conexao = Conexao.getConexao();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setTitle("Principal");
         this.setLocationRelativeTo(null);  // centraliza a tela
         labelOperador.setText(operador.getNome());
