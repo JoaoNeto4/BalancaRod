@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/pesquisa/PesqPesagemParaSaida.java</file>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/pesquisa/PesqVeiculo.java</file>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/cadastro/CadPesagem.java</file>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/dao/PesagemDao.java</file>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/Principal.java</file>
-            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/pesquisa/PesqProduto.java</file>
+            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/email/SSL.java</file>
+            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/view/utilidades/CadEmail.java</file>
+            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/dao/EmailDao.java</file>
+            <file>file:/home/joao/NetBeansProjects/Balanca/src/br/com/email/EnvioEmail.java</file>
         </group>
     </open-files>
 </project-private>
