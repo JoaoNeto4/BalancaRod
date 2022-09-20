@@ -27,7 +27,7 @@ public class PesqProduto extends javax.swing.JDialog {
     boolean editar = true;
     boolean pesqProduto=false;
     private CadPesagem parent;
-    private CadAgendamento parentAgenda;
+    private CadAgendamento parentPesagem;
     private boolean produto=false;
     
     public PesqProduto(java.awt.Frame parent, boolean modal) {
@@ -55,7 +55,7 @@ public class PesqProduto extends javax.swing.JDialog {
         initComponents();
         atualizarTabela();
         this.produto=true;
-        this.parentAgenda=aThis;
+        this.parentPesagem=aThis;
         this.pesqProduto=true;
         this.editar=false;
         this.setTitle("Pesquisa de Seleção de Produto");

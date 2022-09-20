@@ -43,7 +43,7 @@ public class CadPesagem extends javax.swing.JDialog {
     private int IDtransport=0;
     private double pesoEntrada2=0;
     private double pesoSaida2=0;
-    private String dataHoraEntrada = "";
+    private String dataHoraEntrada = null;
     private String dataHoraSaida = "";
     private List<Cameras> listaCam = new ArrayList<>();
     Cameras cameras = new Cameras();
@@ -59,14 +59,15 @@ public class CadPesagem extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);  // centraliza a tela
         this.desabilitaEdicao();
         this.carregaCameras();
+        txtPesoBal.setText("44.000");
     }
 
     private void desabilitaEdicao(){
         this.rbComposta.setSelected(true);
         this.rbEntrada.setSelected(true);
         txtPlaca.setEditable(false);
-        txtPnVeiculo.setEditable(false);
-        txtTransportador.setEditable(false);
+        txtTranpVeiculo.setEditable(false);
+        txtParceiro.setEditable(false);
         txtProduto.setEditable(false);
         txtPesoEntrada.setEditable(false);
         txtPesoSaida.setEditable(false);
@@ -109,7 +110,7 @@ public class CadPesagem extends javax.swing.JDialog {
             //System.out.println(datahora);
             return dataHora;
         }else{
-            return null;
+            return dataHoraEntrada;
         }  
     }
     
@@ -138,12 +139,13 @@ public class CadPesagem extends javax.swing.JDialog {
     
     public void RecebeObjetoVeiculo(Veiculos vei){
         txtPlaca.setText(vei.getPlaca());
-        txtPnVeiculo.setText(vei.getPn().getFantasia());
+        txtTranpVeiculo.setText(vei.getPn().getFantasia());
         this.IDveiculo=vei.getId();
+        this.IDtransport=vei.getPn().getId();
     }
     
     public void RecebeObjetoParceiro(ParceiroNegocio par){
-        txtTransportador.setText(par.getFantasia());
+        txtParceiro.setText(par.getFantasia());
         this.IDparceiro=par.getId();
     }
     
@@ -154,57 +156,57 @@ public class CadPesagem extends javax.swing.JDialog {
     
    
     public void RecebeObjetoAgendamento(Pesagem pes){
-        salvar=false;
-        
-        erro
-        //Pesagem pe = new Pesagem();
-        ParceiroNegocio pn = new ParceiroNegocio();
-        ParceiroNegocio transp = new ParceiroNegocio();
-        Veiculos v = new Veiculos();
-        Operador op = new Operador();
-        Produtos prod = new Produtos();
-        
-        pn.setId(pes.getPn().getId());
-        transp.setId(pes.getTransportador().getId());
-        v.setId(pes.getVeiculo().getId());
-        op.setId(IDoperador);/*************************************************************alterar permissao********************* */
-        prod.setId(pes.getProduto().getId());
 
-        /*
-        inserir data entrada apenas na insercao, alterar nao
-        */
-        pes.setDataHoraEtrada(pes.getDataHoraEtrada());
-        pes.setDataHoraSaida(dataHoraSaida());
+            salvar=false;
+            /*
+            ParceiroNegocio pn = new ParceiroNegocio();
+            ParceiroNegocio transp = new ParceiroNegocio();
+            Veiculos v = new Veiculos();
+            Operador op = new Operador();
+            Produtos prod = new Produtos();
+            this.id=pes.getId();
+            */
+            
+            this.id=pes.getId();
+            
+            this.IDoperador=pes.getOperador().getId();//*************************************************************pegar do sistema********************* 
+            
+            IDveiculo=pes.getVeiculo().getId();
+            txtTranpVeiculo.setText(pes.getTransportador().getFantasia());
+            IDtransport=pes.getTransportador().getId();
+            txtPlaca.setText(pes.getVeiculo().getPlaca());
+            
+            txtParceiro.setText(pes.getPn().getFantasia());
+            IDparceiro=pes.getPn().getId();
+            
+            txtNfe.setText(pes.getNfe());
+            txtPesoNfe.setText(String.valueOf(pes.getPesoNfe()));
+            txtValorNfe.setText(String.valueOf(pes.getValorNfe()));
+            
+            txtProduto.setText(pes.getProduto().getProduto());
+            IDproduto=pes.getProduto().getId();
+            
+            txtDestino.setText(pes.getDestino());
+            
+            txtLote.setText(pes.getLote());
+            
+            txtMotorista.setText(pes.getMotorista());
+            
+            txtObservacao.setText(pes.getObservacao());
+            
+            dataHoraEntrada=pes.getDataHoraEtrada();
+            
+            if(pes.getTipoPesagem().equals("composta")){
+                rbComposta.setSelected(true);
+                rbSaida.setSelected(true);
+            }
+            Double peso1=pes.getPesoEnt1();
+            Double peso2=pes.getPesoEnt2();
+            Double soma=peso1+peso2;
+            txtPesoEntrada.setText(Double.toString(soma));
+            
         
-        if(pes.getTipoPesagem().equals("composta")){
-            rbComposta.setSelected(true);
-            rbSaida.setSelected(true);
-        }
-        
-        pes.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
-        pes.setAndamento(emAndamento());
-        pes.setNfe(pes.getNfe());
-        pes.setValorNfe(pes.getValorNfe());
-        pes.setPesoNfe(pes.getPesoNfe());
-        pes.setLote(pes.getLote());
-        pes.setOrigem(pes.getOrigem());
-        pes.setDestino(pes.getDestino());
-        pes.setPesoEnt1(pes.getPesoEnt1());
-        pes.setPesoEnt2(pes.getPesoEnt2());
-        pes.setPesoSai1(pes.getPesoSai1());
-        pes.setPesoSai2(pes.getPesoSai2());
-        pes.setMotorista(pes.getMotorista());
-        pes.setFotoCarga1(pes.getFotoCarga1());
-        pes.setFotoCarga2(pes.getFotoCarga2());
-        pes.setFotoEntrada("/home/local/foto");
-        pes.setFotoSaida("/home/local/foto");
-        pes.setObservacao(pes.getObservacao());
-        pes.setPn(pn);
-        pes.setVeiculo(v);
-        pes.setOperador(op);
-        pes.setProduto(prod);
-        pes.setTransportador(pn);
-        pes.setId(pes.getId());
+   
     }
     
     public String retornaDataHoraFoto(){
@@ -229,6 +231,14 @@ public class CadPesagem extends javax.swing.JDialog {
         }
     }
     
+    public String retornaTipoPesagem(){
+        if(rbComposta.isSelected() && !rbSimples.isSelected()){
+            return "composta";
+        }else{
+            return "simples";
+        }
+    }
+    
     private Pesagem retornaObjeto(){
         Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
@@ -249,17 +259,17 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setDataHoraEtrada(dataHoraEntrada());
         pe.setDataHoraSaida(dataHoraSaida());
         
-        pe.setTipoPesagem(grupoBotoes_TipoPesagem.getSelection().toString());
+        pe.setTipoPesagem(retornaTipoPesagem());
         pe.setAndamento(emAndamento());
         pe.setNfe(txtNfe.getText());
-        pe.setValorNfe(Double.parseDouble(txtValorNfe.getText()));
-        pe.setPesoNfe(Double.parseDouble(txtPesoBal.getText()));
+        pe.setValorNfe(Double.valueOf(txtValorNfe.getText()));
+        pe.setPesoNfe(Double.valueOf(txtPesoBal.getText()));
         pe.setLote(txtLote.getText());
         pe.setOrigem(txtOrigem.getText());
         pe.setDestino(txtDestino.getText());
-        pe.setPesoEnt1(Double.parseDouble(txtPesoEntrada.getText()));
+        pe.setPesoEnt1(Double.valueOf(txtPesoEntrada.getText()));
         pe.setPesoEnt2(pesoEntrada2);
-        pe.setPesoSai1(Double.parseDouble(txtPesoSaida.getText()));
+        pe.setPesoSai1(Double.valueOf(txtPesoBal.getText()));
         pe.setPesoSai2(pesoSaida2);
         pe.setMotorista(txtMotorista.getText());
         pe.setFotoCarga1(capturaFoto1());
@@ -272,6 +282,7 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setOperador(op);
         pe.setProduto(prod);
         pe.setTransportador(pn);
+        pe.setId(id);
         
         return pe;
     }
@@ -342,7 +353,7 @@ public class CadPesagem extends javax.swing.JDialog {
             return diretorio;
         }
     }
-    
+    /*
     private Pesagem tESTE(){
         Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
@@ -373,7 +384,7 @@ public class CadPesagem extends javax.swing.JDialog {
         
         pe.setTipoPesagem("composta");
         pe.setAndamento(true);
-        pe.setNfe("5555555");
+        pe.setNfe("555.0");
         pe.setValorNfe(55.500);
         pe.setPesoNfe(20.0);
         pe.setLote("teste");
@@ -397,7 +408,7 @@ public class CadPesagem extends javax.swing.JDialog {
     
         return pe;
     }
-    
+    */
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -414,11 +425,9 @@ public class CadPesagem extends javax.swing.JDialog {
         rbSaida = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         txtPlaca = new javax.swing.JTextField();
-        txtPnVeiculo = new javax.swing.JTextField();
+        txtTranpVeiculo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtTransportador = new javax.swing.JTextField();
-        txtOrigem = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        txtParceiro = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtDestino = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -432,7 +441,7 @@ public class CadPesagem extends javax.swing.JDialog {
         btnPesqProduto = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         txtMotorista = new javax.swing.JTextField();
-        btnPesqTransp = new javax.swing.JButton();
+        btnPesqParceiro = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtNfe = new javax.swing.JTextField();
@@ -453,6 +462,9 @@ public class CadPesagem extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnPesqAgendamento = new javax.swing.JButton();
+        btnLocalOrigem = new javax.swing.JButton();
+        txtOrigem = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -530,9 +542,7 @@ public class CadPesagem extends javax.swing.JDialog {
 
         jLabel4.setText("Placa Veículo");
 
-        jLabel5.setText("Transportador");
-
-        jLabel6.setText("Origem");
+        jLabel5.setText("Parceiro Origem");
 
         jLabel7.setText("Destino");
 
@@ -562,10 +572,10 @@ public class CadPesagem extends javax.swing.JDialog {
 
         jLabel11.setText("Motorista");
 
-        btnPesqTransp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
-        btnPesqTransp.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPesqParceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
+        btnPesqParceiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btnPesqTranspMouseReleased(evt);
+                btnPesqParceiroMouseReleased(evt);
             }
         });
 
@@ -714,6 +724,8 @@ public class CadPesagem extends javax.swing.JDialog {
             }
         });
 
+        jLabel16.setText("Local Origem");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -730,6 +742,7 @@ public class CadPesagem extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
@@ -737,33 +750,10 @@ public class CadPesagem extends javax.swing.JDialog {
                             .addComponent(jLabel7)
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel11))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtMotorista, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtLote, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDestino, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtOrigem, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnPesqProduto)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(btnPesqTransp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnPesqPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txtPnVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(txtTransportador))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -774,7 +764,33 @@ public class CadPesagem extends javax.swing.JDialog {
                                         .addComponent(btnCancelar)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnPesqAgendamento)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtMotorista)
+                                    .addComponent(txtLote)
+                                    .addComponent(txtDestino)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(btnPesqParceiro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btnPesqPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(txtTranpVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtParceiro)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnPesqProduto)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnLocalOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -794,45 +810,50 @@ public class CadPesagem extends javax.swing.JDialog {
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPnVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesqPlaca))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTranpVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPesqPlaca))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtParceiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPesqParceiro))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16)
+                                    .addComponent(txtOrigem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnLocalOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtTransportador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesqTransp))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnPesqProduto)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel8)
-                                .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnPesqProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtProduto)
+                            .addComponent(jLabel8))))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalvar)
@@ -860,15 +881,15 @@ public class CadPesagem extends javax.swing.JDialog {
 
     private void btnSalvarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseReleased
         if(validaCampos()){
-            PesagemDao dao = new PesagemDao();
             try {
                 if(salvar){
                     //dao.inserir(retornaObjeto());
-                    dao.inserir(tESTE());
+                    //dao.inserir(tESTE());
+                    PesagemDao.inserir(retornaObjeto());
                     limparCampos();
                     this.dispose();
                 }else{
-                    dao.alterar(retornaObjeto());
+                    PesagemDao.alterar(retornaObjeto());
                     limparCampos();
                     this.dispose();
                 }
@@ -900,10 +921,10 @@ public class CadPesagem extends javax.swing.JDialog {
         pes.setVisible(true);
     }//GEN-LAST:event_btnPesqPlacaMouseReleased
 
-    private void btnPesqTranspMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqTranspMouseReleased
+    private void btnPesqParceiroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqParceiroMouseReleased
         PesqParceiroNegocio par = new PesqParceiroNegocio(null, true, this);
         par.setVisible(true);
-    }//GEN-LAST:event_btnPesqTranspMouseReleased
+    }//GEN-LAST:event_btnPesqParceiroMouseReleased
 
     private void btnPesqProdutoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqProdutoMouseReleased
         PesqProduto par = new PesqProduto(null, true, this);
@@ -957,10 +978,11 @@ public class CadPesagem extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnLocalOrigem;
     private javax.swing.JButton btnPesqAgendamento;
+    private javax.swing.JButton btnPesqParceiro;
     private javax.swing.JButton btnPesqPlaca;
     private javax.swing.JButton btnPesqProduto;
-    private javax.swing.JButton btnPesqTransp;
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup grupoBotoes_Operacao;
     private javax.swing.ButtonGroup grupoBotoes_TipoPesagem;
@@ -971,11 +993,11 @@ public class CadPesagem extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -996,15 +1018,15 @@ public class CadPesagem extends javax.swing.JDialog {
     private javax.swing.JTextField txtNfe;
     private javax.swing.JTextArea txtObservacao;
     private javax.swing.JTextField txtOrigem;
+    private javax.swing.JTextField txtParceiro;
     private javax.swing.JTextField txtPesoBal;
     private javax.swing.JTextField txtPesoEntrada;
     private javax.swing.JTextField txtPesoLiq;
     private javax.swing.JTextField txtPesoNfe;
     private javax.swing.JTextField txtPesoSaida;
     private javax.swing.JTextField txtPlaca;
-    private javax.swing.JTextField txtPnVeiculo;
     private javax.swing.JTextField txtProduto;
-    private javax.swing.JTextField txtTransportador;
+    private javax.swing.JTextField txtTranpVeiculo;
     private javax.swing.JTextField txtValorNfe;
     // End of variables declaration//GEN-END:variables
 }
