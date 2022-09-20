@@ -102,6 +102,42 @@ public class EmailDao {
             Logger.getLogger(EmailDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static Email retornaInfoEmail(int ID) throws SQLException {
+        try {
+            
+            
+            Connection con = Conexao.getConexao();
+            String sql = "select * from TB_Email where ID="+ID+"";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            Email email = new Email();
+            if(rs.next()) {
+                
+                email.setId(rs.getInt("ID"));
+                email.setEmail(rs.getString("email"));
+                email.setSenha(rs.getString("senha"));
+                email.setServidor(rs.getString("servidor"));
+                email.setPorta(rs.getInt("porta"));
+                email.setSeguranca(rs.getString("seguranca"));
+                email.setAtivo(rs.getBoolean("ativo"));
+                
+                stmt.close();
+                rs.close();
+                con.close();
+                return email;
+                
+            }else{
+                stmt.close();
+                rs.close();
+                con.close();
+                return null;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PesagemDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
      }
     
 }

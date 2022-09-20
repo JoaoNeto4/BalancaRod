@@ -3,11 +3,9 @@ package br.com.view.utilidades;
 
 import br.com.bean.Cameras;
 import br.com.dao.CamerasDao;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -16,7 +14,6 @@ import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameGrabber;
 import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
 import org.bytedeco.opencv.opencv_core.Mat;
 

@@ -1,9 +1,7 @@
 package br.com.email;
 
-import br.com.teste.email.*;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -113,9 +111,9 @@ public class EnvioEmail {
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+            msg.setFrom(new InternetAddress("desenvolvimento2@ativusgestao.com.br", "NoReply-JD"));
 
-            msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+            msg.setReplyTo(InternetAddress.parse("desenvolvimento2@ativusgestao.com.br", false));
 
             msg.setSubject(subject, "UTF-8");
 
@@ -137,7 +135,9 @@ public class EnvioEmail {
 
             // A segunda parte é o anexo
             messageBodyPart = new MimeBodyPart();
-            String filename = "abc.txt";
+            //String filename = "abc.txt";
+            ///home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg
+            String filename = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg";
             DataSource source = new FileDataSource(filename);
             messageBodyPart.setDataHandler(new DataHandler(source));
             messageBodyPart.setFileName(filename);
@@ -149,9 +149,7 @@ public class EnvioEmail {
             // Envia a menssagem
             Transport.send(msg);
             System.out.println("EMail e Anexo Enviado comSucesso!!");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

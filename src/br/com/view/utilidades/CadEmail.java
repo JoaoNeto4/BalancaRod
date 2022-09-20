@@ -1,5 +1,5 @@
 
-package br.com.view.cadastro;
+package br.com.view.utilidades;
 
 import br.com.bean.Email;
 import br.com.dao.EmailDao;

@@ -9,18 +9,12 @@ import br.com.view.pesquisa.PesqPesagem;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.Backup;
+import br.com.view.utilidades.ConfigCameras;
 import br.com.view.utilidades.Configuracoes;
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * @author joao
@@ -197,7 +191,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.add(jmBackup);
 
         jmConfiguracoes.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
-        jmConfiguracoes.setText("Configurações");
+        jmConfiguracoes.setText("Config. BD");
         jmConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jmConfiguracoesMouseReleased(evt);
@@ -208,6 +202,11 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         jMenuItem3.setText("Cameras");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem3MouseReleased(evt);
+            }
+        });
         jMenu3.add(jMenuItem3);
 
         menuBar.add(jMenu3);
@@ -275,6 +274,11 @@ public class Principal extends javax.swing.JFrame {
     private void miSairMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miSairMouseReleased
         System.exit(0);
     }//GEN-LAST:event_miSairMouseReleased
+
+    private void jMenuItem3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MouseReleased
+        ConfigCameras cc = new ConfigCameras(this, true);
+        cc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3MouseReleased
 
  
     public static void main(String args[]) {

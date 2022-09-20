@@ -77,6 +77,7 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         rbPlaca = new javax.swing.JRadioButton();
         rbTrasnportador = new javax.swing.JRadioButton();
@@ -88,8 +89,10 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
+        buttonGroup1.add(rbPlaca);
         rbPlaca.setText("Placa");
 
+        buttonGroup1.add(rbTrasnportador);
         rbTrasnportador.setText("Transportador");
 
         txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -168,7 +171,11 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
-        atualizarTabela();
+        if(rbPlaca.isSelected()){
+            atualizarTabela();
+        }else{
+            
+        }
     }//GEN-LAST:event_txtPesquisaKeyPressed
 
     private void tabelaTelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTelaMouseClicked
@@ -238,6 +245,7 @@ public class PesqPesagemParaSaida extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rbPlaca;

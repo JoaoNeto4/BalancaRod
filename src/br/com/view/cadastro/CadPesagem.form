@@ -84,7 +84,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnPesqAgendamento" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnPesqAgendamento" min="-2" pref="160" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -210,7 +210,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSalvar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnPesqAgendamento" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnPesqAgendamento" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -695,6 +695,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnPesqAgendamento">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/icones/lupa20x20.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Agendamentos"/>
           </Properties>
           <Events>

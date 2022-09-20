@@ -86,21 +86,6 @@ public class CadPesagem extends javax.swing.JDialog {
         return true;
     }
     
-    /*
-    LocalDate data = LocalDate.now();
-        DateTimeFormatter saida_formatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String hoje = data.format(saida_formatada);
-        String[] dataSeparada = hoje.split("/");
-        LocalDate dat = LocalDate.of(Integer.parseInt(dataSeparada[2]), Integer.parseInt(dataSeparada[1]), Integer.parseInt(dataSeparada[0]));
-        ag.setDataHoje(java.sql.Date.valueOf(dat));
-        
-        java.util.Date pega = dataAgend.getDate();
-        SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
-        String dataAG = form.format(pega);
-        String[] dataSepAG = dataAG.split("/");
-        LocalDate datAG = LocalDate.of(Integer.parseInt(dataSepAG[2]), Integer.parseInt(dataSepAG[1]), Integer.parseInt(dataSepAG[0]));
-        
-    */
     private String dataHoraEntrada(){
         if(this.rbEntrada.isSelected() ){
             salvar = true;
@@ -158,18 +143,10 @@ public class CadPesagem extends javax.swing.JDialog {
     public void RecebeObjetoAgendamento(Pesagem pes){
 
             salvar=false;
-            /*
-            ParceiroNegocio pn = new ParceiroNegocio();
-            ParceiroNegocio transp = new ParceiroNegocio();
-            Veiculos v = new Veiculos();
-            Operador op = new Operador();
-            Produtos prod = new Produtos();
-            this.id=pes.getId();
-            */
-            
+
             this.id=pes.getId();
             
-            this.IDoperador=pes.getOperador().getId();//*************************************************************pegar do sistema********************* 
+            this.IDoperador=pes.getOperador().getId();//*******************************pegar do sistema********************* 
             
             IDveiculo=pes.getVeiculo().getId();
             txtTranpVeiculo.setText(pes.getTransportador().getFantasia());
@@ -361,15 +338,13 @@ public class CadPesagem extends javax.swing.JDialog {
         Veiculos v = new Veiculos();
         Operador op = new Operador();
         Produtos prod = new Produtos();
-        
-        
+          
         pn.setId(2);
         transp.setId(1);
         v.setId(1);
         op.setId(1);
         prod.setId(1);
 
-        
         //inserir data entrada apenas na insercao, alterar nao
         
         java.util.Date dt = new java.util.Date();
@@ -717,6 +692,7 @@ public class CadPesagem extends javax.swing.JDialog {
             }
         });
 
+        btnPesqAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/lupa20x20.png"))); // NOI18N
         btnPesqAgendamento.setText("Agendamentos");
         btnPesqAgendamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -763,7 +739,7 @@ public class CadPesagem extends javax.swing.JDialog {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnCancelar)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnPesqAgendamento)))
+                                        .addComponent(btnPesqAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -857,7 +833,7 @@ public class CadPesagem extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalvar)
-                    .addComponent(btnPesqAgendamento))
+                    .addComponent(btnPesqAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -883,15 +859,14 @@ public class CadPesagem extends javax.swing.JDialog {
         if(validaCampos()){
             try {
                 if(salvar){
-                    //dao.inserir(retornaObjeto());
                     //dao.inserir(tESTE());
                     PesagemDao.inserir(retornaObjeto());
                     limparCampos();
-                    this.dispose();
+                    //this.dispose();
                 }else{
                     PesagemDao.alterar(retornaObjeto());
                     limparCampos();
-                    this.dispose();
+                    //this.dispose();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(CadProdutos.class.getName()).log(Level.SEVERE, null, ex);
