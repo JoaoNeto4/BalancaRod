@@ -2,11 +2,14 @@
 package br.com.view.cadastro;
 
 import br.com.bean.Operador;
+import br.com.bean.OrigemFazenda;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
 import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
+import br.com.dao.OrigemFazendaDao;
 import br.com.dao.PesagemDao;
+import br.com.view.pesquisa.PesqOrigem;
 import br.com.view.pesquisa.PesqParceiroNegocio;
 import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
@@ -14,6 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -109,6 +113,26 @@ public class CadAgendamento extends javax.swing.JDialog {
     public void RecebeObjetoParceiro(ParceiroNegocio par){
         txtTransportador.setText(par.getFantasia());
         this.IDparceiro=par.getId();
+        populaCombobox(par);
+        
+        //*****
+    }
+    
+    private void populaCombobox(ParceiroNegocio pn) {
+        try {
+            OrigemFazendaDao of = new OrigemFazendaDao();
+            List<OrigemFazenda> lista =of.listar(pn);
+            if(lista.isEmpty()){
+                //cbBox.addItem("vazio");
+            }else{
+                for(OrigemFazenda item: lista){
+                    cbBox.addItem(item.getOrigem());
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CadOperador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void RecebeObjetoProduto(Produtos prod){
@@ -142,7 +166,11 @@ public class CadAgendamento extends javax.swing.JDialog {
         pe.setValorNfe(Double.parseDouble(txtValorNfe.getText()));
         pe.setPesoNfe(Double.parseDouble(txtPesoNfe.getText()));
         pe.setLote(txtLote.getText());
-        pe.setOrigem(txtOrigem.getText());
+        if(cbBox.getSelectedIndex()==0){
+            pe.setOrigem("");
+        }else{
+            pe.setOrigem(cbBox.getSelectedItem().toString());
+        }
         pe.setDestino(txtDestino.getText());
         pe.setMotorista(txtMotorista.getText());
         pe.setFotoCarga1("NoData");
@@ -178,7 +206,6 @@ public class CadAgendamento extends javax.swing.JDialog {
         txtPnVeiculo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtTransportador = new javax.swing.JTextField();
-        txtOrigem = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtDestino = new javax.swing.JTextField();
@@ -203,7 +230,7 @@ public class CadAgendamento extends javax.swing.JDialog {
         txtValorNfe = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnLocalOrigem = new javax.swing.JButton();
+        cbBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -381,6 +408,8 @@ public class CadAgendamento extends javax.swing.JDialog {
             }
         });
 
+        cbBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "**** Selecione ****" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -419,13 +448,9 @@ public class CadAgendamento extends javax.swing.JDialog {
                                         .addComponent(txtPnVeiculo))
                                     .addComponent(txtTransportador)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnPesqProduto)
-                                    .addComponent(btnLocalOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnPesqProduto)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
-                                    .addComponent(txtOrigem)))
+                                .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtLote)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
@@ -434,9 +459,10 @@ public class CadAgendamento extends javax.swing.JDialog {
                                 .addComponent(btnCancelar)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(txtMotorista)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1)
+                            .addComponent(cbBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(16, 16, 16)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,10 +489,8 @@ public class CadAgendamento extends javax.swing.JDialog {
                     .addComponent(btnPesqTransp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnLocalOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnPesqProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -499,7 +523,7 @@ public class CadAgendamento extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -607,11 +631,11 @@ public class CadAgendamento extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnLocalOrigem;
     private javax.swing.JButton btnPesqPlaca;
     private javax.swing.JButton btnPesqProduto;
     private javax.swing.JButton btnPesqTransp;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cbBox;
     private javax.swing.ButtonGroup grupoBotoes_Operacao;
     private javax.swing.ButtonGroup grupoBotoes_TipoPesagem;
     private javax.swing.JLabel jLabel1;
@@ -639,7 +663,6 @@ public class CadAgendamento extends javax.swing.JDialog {
     private javax.swing.JTextField txtMotorista;
     private javax.swing.JTextField txtNfe;
     private javax.swing.JTextArea txtObservacao;
-    private javax.swing.JTextField txtOrigem;
     private javax.swing.JTextField txtPesoNfe;
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtPnVeiculo;

@@ -3,6 +3,7 @@ package br.com.view.pesquisa;
 
 import br.com.bean.OrigemFazenda;
 import br.com.dao.OrigemFazendaDao;
+import br.com.view.cadastro.CadAgendamento;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,14 @@ public class PesqOrigem extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setTitle("Pesquisa de Origem Fazenda");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+        atualizarTabela();
+    }
+
+    public PesqOrigem(java.awt.Frame parent, boolean modal, CadAgendamento aThis) {
+        super(parent, modal);
+        initComponents();
+        this.setTitle("Pesquisa de Origem Fazenda Para Agendamento");
         this.setLocationRelativeTo(null);  // centraliza a tela
         atualizarTabela();
     }

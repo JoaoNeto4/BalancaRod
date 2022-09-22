@@ -99,9 +99,37 @@ public class OrigemFazendaDao {
             Logger.getLogger(ProdutoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static List<OrigemFazenda> listar(ParceiroNegocio pn) throws SQLException {
+        try {
+            List<OrigemFazenda> listaOrigem = new ArrayList<>();
+            Connection con = Conexao.getConexao();
+            String sql = "select * from TB_OrigemFazenda where ID_parceiro="+pn.getId()+" order by ID";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                OrigemFazenda origem = new OrigemFazenda();
+                origem.setId(rs.getInt("ID"));
+                origem.setOrigem(rs.getString("origem"));
+                origem.setLocalizacao(rs.getString("localizacao"));
+                origem.setCidade(rs.getString("cidade"));
+                origem.setObservacao(rs.getString("observacao"));
+                origem.setParceiro(pn);
+                listaOrigem.add(origem);
+
+            }
+            stmt.close();
+            rs.close();
+            con.close();
+            return listaOrigem;
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
      }
 
-     public static List<OrigemFazenda> pesquisar(OrigemFazenda orig) throws SQLException {
+    public static List<OrigemFazenda> pesquisar(OrigemFazenda orig) throws SQLException {
         try {
             List<OrigemFazenda> listaOperador = new ArrayList<>();
             Connection con = Conexao.getConexao();

@@ -33,6 +33,7 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
     private boolean parceiro=false;
     private boolean origem=false;
     private boolean cadVeiculo=false;
+    private boolean agenda=false;
 
     public PesqParceiroNegocio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -58,9 +59,10 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         atualizarTabela();
-        this.parceiro=true;
+        //this.parceiro=true;
         this.parentAgenda=aThis;
-        this.pesqPN=true;
+        this.agenda=true;
+        this.pesqPN=false;
         this.editar=false;
         this.setTitle("Pesquisa de Seleção de Parceiro de Negócio");
         this.setLocationRelativeTo(null);  // centraliza a tela
@@ -321,11 +323,20 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
                                 cad.setVisible(true);
                                 this.dispose();
                             }else{
-                                ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
-                                CadPesagem cad = (CadPesagem) parent;
-                                cad.RecebeObjetoParceiro(parSel);
-                                cad.setVisible(true);
-                                this.dispose();
+                                if(agenda){
+                                    ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                                    CadAgendamento cad = (CadAgendamento) parentAgenda;
+                                    cad.RecebeObjetoParceiro(parSel);
+                                    cad.setVisible(true);
+                                    this.dispose();
+                                }else{
+                                    ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                                    CadPesagem cad = (CadPesagem) parent;
+                                    cad.RecebeObjetoParceiro(parSel);
+                                    cad.setVisible(true);
+                                    this.dispose();
+                                }
+                                
                             }
                         }
                     }
