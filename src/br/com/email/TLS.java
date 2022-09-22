@@ -30,7 +30,7 @@ public class TLS {
         };
         Session session = Session.getInstance(props, auth);
 
-        EnvioEmail.enviaEmail(session, destinatario, "SSLEmail Assunto", "SSLEmail Corpo Email");
+        EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
         //Basic.enviaEmail(session, destinatario, "TLSEmail Assunto", "Corpo do Email");
 
     }

@@ -3,11 +3,16 @@ package br.com.view.utilidades;
 
 import br.com.bean.Email;
 import br.com.dao.EmailDao;
+import br.com.email.EnvioEmail;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +32,7 @@ public class CadEmail extends javax.swing.JDialog {
         this.setTitle("Email de disparo automático");
         this.setLocationRelativeTo(null);  // centraliza a tela
         rbSSL.setSelected(true);
+        rbTLS.setEnabled(false);
         atualizarCampos();
     }
     
@@ -85,6 +91,36 @@ public class CadEmail extends javax.swing.JDialog {
             return false;
         }
         return true;
+    }
+    
+    public void enviaEmail(String destinatario) throws SQLException{
+        Email email = EmailDao.retornaInfoEmail(1);
+
+        final String remetente = email.getEmail(); ////email de quem envia(válido)
+        final String senha = email.getSenha(); // senha de quem envia
+        final int porta = email.getPorta();
+        final String servidor = email.getServidor();
+        //final String seguranca = email.getSeguranca();
+        //final String destinatario = "desenvolvimento2@ativusgestao.com.br"; // quem recebe
+
+        System.out.println("SSLEmail Start");
+        Properties props = new Properties();
+        props.put("mail.smtp.host", servidor); //SMTP Host
+        props.put("mail.smtp.socketFactory.port", porta); // Porta SSL
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); //SSL Factory Class
+        props.put("mail.smtp.auth", "true"); // SMTP Autenticação ativa
+        props.put("mail.smtp.port", porta); //SMTP Porta
+
+        Authenticator auth = new Authenticator() {
+            //override the getPasswordAuthentication method
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(remetente, senha);
+            }
+        };
+
+        Session session = Session.getDefaultInstance(props, auth);
+        System.out.println("Sessão criada");
+        EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
     }
 
     @SuppressWarnings("unchecked")
@@ -169,11 +205,11 @@ public class CadEmail extends javax.swing.JDialog {
                     .addComponent(txtEmail)
                     .addComponent(txtServidor)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnTestar, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTestar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbAtivo)
@@ -185,7 +221,7 @@ public class CadEmail extends javax.swing.JDialog {
                                 .addComponent(rbSSL)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rbTLS)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 107, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -259,9 +295,12 @@ public class CadEmail extends javax.swing.JDialog {
     private void btnTestarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTestarMouseReleased
         
         if(validaCampos()){
-            String emailEnvio = JOptionPane.showInputDialog( " Digite um email para teste de envio " );
-            
-            //CONTINUAR...
+            try {
+                String destinatario = JOptionPane.showInputDialog( " Digite um email para teste de envio " );
+                enviaEmail(destinatario);
+            } catch (SQLException ex) {
+                Logger.getLogger(CadEmail.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
     }//GEN-LAST:event_btnTestarMouseReleased

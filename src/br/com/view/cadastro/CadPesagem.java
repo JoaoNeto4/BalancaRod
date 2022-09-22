@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import jssc.SerialPort;
+import jssc.SerialPortException;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -73,7 +75,20 @@ public class CadPesagem extends javax.swing.JDialog {
         txtPesoSaida.setEditable(false);
         txtPesoLiq.setEditable(false);
         txtPesoBal.setEditable(false);
-        
+    }
+    
+    public void capturaPeso(){
+        SerialPort serialPort = new SerialPort("COM3");
+            try {
+                System.out.println("Port opened: " + serialPort.openPort());
+                System.out.println("Params setted: " + serialPort.setParams(9600, 8, 2, 0));
+                System.out.println("successfully writen to port: " + serialPort.writeBytes(new byte[]{0x04}));
+                byte[] buffer = serialPort.readBytes(46);//Read 10 bytes from serial port
+                System.out.println(new String(buffer));
+                System.out.println("Port closed: " + serialPort.closePort());
+            } catch (SerialPortException ex) {
+                System.out.println(ex);
+        }
     }
     
     private Boolean validaCampos(){

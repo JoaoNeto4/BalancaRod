@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMultipart;
 public class EnvioEmail {
     
 
-    public static void enviaEmail(Session session, String toEmail, String subject, String body) {
+    public static void enviaEmail(Session session, String destinatario, String remetente, String subject, String body) {
         try {
             MimeMessage msg = new MimeMessage(session);
             //setando cabeçalhos da menssagem
@@ -27,9 +27,9 @@ public class EnvioEmail {
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress("desenvolvimento2@ativusgestao.com.br", "NoReply-JD"));
+            msg.setFrom(new InternetAddress(remetente, "Não Responda-JD"));
 
-            msg.setReplyTo(InternetAddress.parse("desenvolvimento2@ativusgestao.com.br", false));
+            msg.setReplyTo(InternetAddress.parse(remetente, false));
 
             msg.setSubject(subject, "UTF-8");
 
@@ -37,7 +37,7 @@ public class EnvioEmail {
 
             msg.setSentDate(new Date());
 
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
             System.out.println("A menssagem está pronta");
             Transport.send(msg);
 
@@ -47,22 +47,22 @@ public class EnvioEmail {
         }
     }
 
-    public static void enviaEmailComImagem(Session session, String toEmail, String subject, String body) {
+    public static void enviaEmailComImagem(Session session, String destinatario, String remetente, String subject, String body) {
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+            msg.setFrom(new InternetAddress(remetente, "Não Respond-JD"));
 
-            msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+            msg.setReplyTo(InternetAddress.parse(remetente, false));
 
             msg.setSubject(subject, "UTF-8");
 
             msg.setSentDate(new Date());
 
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
 
             // cria a parte do corpo da menssagem
             BodyPart messageBodyPart = new MimeBodyPart();
@@ -104,22 +104,22 @@ public class EnvioEmail {
         }
     }
 
-    public static void enviaEmailComAnexo(Session session, String toEmail, String subject, String body) {
+    public static void enviaEmailComAnexo(Session session, String destinatario, String remetente, String subject, String body) {
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress("desenvolvimento2@ativusgestao.com.br", "NoReply-JD"));
+            msg.setFrom(new InternetAddress(remetente, "Não Responda-JD"));
 
-            msg.setReplyTo(InternetAddress.parse("desenvolvimento2@ativusgestao.com.br", false));
+            msg.setReplyTo(InternetAddress.parse(remetente, false));
 
             msg.setSubject(subject, "UTF-8");
 
             msg.setSentDate(new Date());
 
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
 
             // cria a parte do corpo da menssagem
             BodyPart messageBodyPart = new MimeBodyPart();

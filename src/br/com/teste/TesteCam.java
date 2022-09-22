@@ -2,6 +2,8 @@
 package br.com.teste;
 
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacv.CanvasFrame;
@@ -26,6 +28,24 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 
 public class TesteCam {
     
+    public boolean validaPlaca(String placa) {
+	boolean result = false;
+	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
+	Matcher mat = pattern.matcher(placa);
+	if (!mat.matches()) {
+            result = false;
+	} else {
+            result = true;
+	}
+	return result;
+    }
+    public boolean validaPlaca2(String placa) {
+	Pattern pattern = Pattern
+            .compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
+	Matcher mat = pattern.matcher(placa);
+	return mat.matches();
+}
+    
     public static void main(String[] args) throws FrameGrabber.Exception, InterruptedException, TesseractException {
         
 
@@ -33,7 +53,7 @@ OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
         //CAMERA
         OpenCVFrameGrabber camera = new OpenCVFrameGrabber(0);
         
-       
+        //REGEX: ^[a-zA-Z]{3}[0-9][A-Za-z0-9][0-9]{2}$
          
         camera.start();
        

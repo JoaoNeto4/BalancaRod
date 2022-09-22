@@ -41,11 +41,11 @@ public class SSL {
 
         Session session = Session.getDefaultInstance(props, auth);
         System.out.println("Sessão criada");
-     //   EnvioEmail.enviaEmail(session, destinatario, "SSLEmail Assunto", "SSLEmail Corpo Email");
+     //   EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
 
-        EnvioEmail.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo");
+        EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo");
 
-    //    EnvioEmail.enviaEmailComAnexo(session, destinatario, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
+    //    EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
 
     }
 

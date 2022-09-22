@@ -50,6 +50,17 @@ create table TB_ParceiroNegocio(
     Observacoes varchar(255)
 );
 
+create table TB_OrigemFazenda(
+    ID int primary key auto_increment,
+    ID_parceiro int not null,
+    origem varchar(255),
+    localizacao varchar(255),
+    cidade varchar(255),
+    estador varchar(255),
+    observacao varchar(255),
+    CONSTRAINT fk_parseiro FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID)
+);
+
 create table TB_Veiculos(
     ID int primary key auto_increment,
     ID_parceiro int not null,
