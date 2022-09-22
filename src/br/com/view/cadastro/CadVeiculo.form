@@ -263,6 +263,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Pesquisa"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPesqPropMouseReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtParceiroNegocio">
         </Component>

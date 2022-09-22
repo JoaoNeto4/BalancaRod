@@ -5,8 +5,10 @@ import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
 import br.com.dao.ParceiroNegocioDao;
 import br.com.view.cadastro.CadAgendamento;
+import br.com.view.cadastro.CadOrigem;
 import br.com.view.cadastro.CadParceiroNegocio;
 import br.com.view.cadastro.CadPesagem;
+import br.com.view.cadastro.CadVeiculo;
 import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -25,8 +27,12 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
     boolean editar = true;
     boolean pesqPN=false;
     private CadPesagem parent;
+    private CadOrigem cadOrigemParent;
+    private CadVeiculo cadVeiculoModal;
     private CadAgendamento parentAgenda;
     private boolean parceiro=false;
+    private boolean origem=false;
+    private boolean cadVeiculo=false;
 
     public PesqParceiroNegocio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -58,6 +64,28 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
         this.editar=false;
         this.setTitle("Pesquisa de Seleção de Parceiro de Negócio");
         this.setLocationRelativeTo(null);  // centraliza a tela
+    }
+
+    public PesqParceiroNegocio(java.awt.Frame parent, boolean modal, CadVeiculo aThis) {
+        super(parent, modal);
+        initComponents();
+        cadVeiculoModal=aThis;
+        atualizarTabela();
+        this.setTitle("Pesquisa de Seleção de Parceiro de Negócio para Veículos");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+        this.cadVeiculo=true;
+        this.editar = false;
+    }
+
+    public PesqParceiroNegocio(java.awt.Frame parent, boolean modal, CadOrigem aThis) {
+        super(parent, modal);
+        initComponents();
+        atualizarTabela();
+        this.setTitle("Pesquisa de Seleção de Parceiro de Negócio de Fazenda");
+        this.setLocationRelativeTo(null);  // centraliza a tela
+        this.origem=true;
+        this.editar = false;
+        cadOrigemParent=aThis;
     }
     
     private ParceiroNegocio retornaObjeto(){
@@ -276,11 +304,30 @@ public class PesqParceiroNegocio extends javax.swing.JDialog {
                         CadParceiroNegocio cp = new CadParceiroNegocio((Frame) getParent(), true, pnSelecionado);
                         cp.setVisible(true);
                     }else{
-                        ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
-                        CadPesagem cad = (CadPesagem) parent;
-                        cad.RecebeObjetoParceiro(parSel);
-                        cad.setVisible(true);
-                        this.dispose();
+                        if(cadVeiculo){
+                            ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                            CadVeiculo cad = (CadVeiculo) cadVeiculoModal;
+                            
+                            System.out.println(parSel.getId());
+                            System.out.println(parSel.getFantasia());
+                            cad.RecebeObjetoParceiro(parSel);
+                            cad.setVisible(true);
+                            this.dispose();
+                        }else{
+                            if(origem){
+                                ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                                CadOrigem cad = (CadOrigem) cadOrigemParent;
+                                cad.RecebeObjetoParceiro(parSel);
+                                cad.setVisible(true);
+                                this.dispose();
+                            }else{
+                                ParceiroNegocio parSel = listaParceiro.get(tabelaTela.getSelectedRow());
+                                CadPesagem cad = (CadPesagem) parent;
+                                cad.RecebeObjetoParceiro(parSel);
+                                cad.setVisible(true);
+                                this.dispose();
+                            }
+                        }
                     }
                 break;
                 default:

@@ -56,7 +56,6 @@ create table TB_OrigemFazenda(
     origem varchar(255),
     localizacao varchar(255),
     cidade varchar(255),
-    estador varchar(255),
     observacao varchar(255),
     CONSTRAINT fk_parseiro FOREIGN KEY (ID_parceiro) REFERENCES TB_ParceiroNegocio(ID)
 );

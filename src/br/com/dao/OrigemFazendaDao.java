@@ -23,14 +23,13 @@ public class OrigemFazendaDao {
     public static void inserir(OrigemFazenda orig)throws SQLException{
         try {
             Connection con = Conexao.getConexao();
-            String sql = "insert into TB_OrigemFazenda( ID_parceiro, origem, localizacao, cidade, estador, observacao) VALUES(?,?,?,?,?,?)";
+            String sql = "insert into TB_OrigemFazenda( ID_parceiro, origem, localizacao, cidade, observacao) VALUES(?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1,  orig.getParceiro().getId());
             stmt.setString(2, orig.getOrigem());
             stmt.setString(3, orig.getLocalizacao());
             stmt.setString(4, orig.getCidade());
-            stmt.setString(5, orig.getEstado());
-            stmt.setString(6, orig.getObservacao());
+            stmt.setString(5, orig.getObservacao());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Origem Salva Com Sucesso!");
             stmt.close();
@@ -64,9 +63,8 @@ public class OrigemFazendaDao {
             stmt.setString(2, orig.getOrigem());
             stmt.setString(3, orig.getLocalizacao());
             stmt.setString(4, orig.getCidade());
-            stmt.setString(5, orig.getEstado());
-            stmt.setString(6, orig.getObservacao());
-            stmt.setInt(7, orig.getId());
+            stmt.setString(5, orig.getObservacao());
+            stmt.setInt(6, orig.getId());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Origem Alterado Com Sucesso!");
             stmt.close();
@@ -90,8 +88,7 @@ public class OrigemFazendaDao {
                 stmt.setString(2, orig.getOrigem());
                 stmt.setString(3, orig.getLocalizacao());
                 stmt.setString(4, orig.getCidade());
-                stmt.setString(5, orig.getEstado());
-                stmt.setString(6, orig.getObservacao());
+                stmt.setString(5, orig.getObservacao());
                 listaProdutos.add(orig);
             }
             stmt.close();
@@ -108,7 +105,7 @@ public class OrigemFazendaDao {
         try {
             List<OrigemFazenda> listaOperador = new ArrayList<>();
             Connection con = Conexao.getConexao();
-            String sql = "select OF.*, P.* from TB_OrigemFazenda as OF inner join TB_ParceiroNegocio as P on OF.ID_parceiro=P.ID where OF.origem like'"+orig.getOrigem()+"%' order by ID";
+            String sql = "select O.*, P.* from TB_OrigemFazenda as O inner join TB_ParceiroNegocio as P on O.ID_parceiro=P.ID where O.origem like'"+orig.getOrigem()+"%' order by O.ID";
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -118,12 +115,11 @@ public class OrigemFazendaDao {
                 pn.setObservacao(rs.getString("P.cpf_cnpj"));
                 
                 OrigemFazenda origem = new OrigemFazenda();
-                origem.setId(rs.getInt("P.ID"));
-                origem.setOrigem(rs.getString("P.origem"));
-                origem.setLocalizacao(rs.getString("P.localizacao"));
-                origem.setCidade(rs.getString("P.cidade"));
-                origem.setEstado(rs.getString("P.estado"));
-                origem.setObservacao(rs.getString("P.observacao"));
+                origem.setId(rs.getInt("O.ID"));
+                origem.setOrigem(rs.getString("O.origem"));
+                origem.setLocalizacao(rs.getString("O.localizacao"));
+                origem.setCidade(rs.getString("O.cidade"));
+                origem.setObservacao(rs.getString("O.observacao"));
                 origem.setParceiro(pn);
                 listaOperador.add(origem);
                 

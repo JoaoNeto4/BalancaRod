@@ -4,6 +4,7 @@ package br.com.view.cadastro;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Veiculos;
 import br.com.dao.VeiculosDao;
+import br.com.view.pesquisa.PesqParceiroNegocio;
 import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -28,6 +29,7 @@ public class CadVeiculo extends javax.swing.JDialog {
         cbAtivo.setSelected(true);
         cbAtivo.setEnabled(false);
         this.setLocationRelativeTo(null);  // centraliza a tela 
+        txtParceiroNegocio.setEditable(false);
     }
 
     public CadVeiculo(Frame frame, boolean modal, Veiculos veiculoSelecionado) {
@@ -37,6 +39,12 @@ public class CadVeiculo extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);  // centraliza a tela 
         this.setaCampos(veiculoSelecionado);
         this.salvar=false;
+        txtParceiroNegocio.setEditable(false);
+    }
+    
+    public void RecebeObjetoParceiro(ParceiroNegocio par){
+        txtParceiroNegocio.setText(par.getFantasia());
+        this.ID_Parceiro=par.getId();
     }
 
     private Veiculos retornaObjeto(){
@@ -148,6 +156,11 @@ public class CadVeiculo extends javax.swing.JDialog {
         jScrollPane1.setViewportView(txtObservacoes);
 
         btnPesqProp.setText("Pesquisa");
+        btnPesqProp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnPesqPropMouseReleased(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
         btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,6 +316,11 @@ public class CadVeiculo extends javax.swing.JDialog {
     private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
         this.dispose();
     }//GEN-LAST:event_btnCancelarMouseReleased
+
+    private void btnPesqPropMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesqPropMouseReleased
+        PesqParceiroNegocio pes = new PesqParceiroNegocio(null, true, this);
+        pes.setVisible(true);
+    }//GEN-LAST:event_btnPesqPropMouseReleased
 
 
     public static void main(String args[]) {

@@ -12,7 +12,6 @@ public class OrigemFazenda {
     private String origem;
     private String localizacao;
     private String cidade;
-    private String estado;
     private String observacao;
 
     public int getId() {
@@ -53,14 +52,6 @@ public class OrigemFazenda {
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public String getObservacao() {
