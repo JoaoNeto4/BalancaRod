@@ -35,9 +35,11 @@ public class TestePeso {
 
                     System.out.println("Parametros de config: " + serialPort.setParams(9600, 8, 2, 0));
                     System.out.println("Sucesso de escrita na porta: " + serialPort.writeBytes(new byte[]{0x04}));
-                    byte[] buffer = serialPort.readBytes(46);//Read 10 bytes from serial port
-                    System.out.println(new String(buffer));
-                    System.out.println("Porta fechada: " + serialPort.closePort());
+                    while(true){
+                        byte[] buffer = serialPort.readBytes(46);//Read 10 bytes from serial port
+                        System.out.println(new String(buffer));
+                    }
+                    //System.out.println("Porta fechada: " + serialPort.closePort());
                 
             } catch (SerialPortException ex) {
                 System.out.println(ex);
@@ -46,6 +48,9 @@ public class TestePeso {
     
     public static void main(String[] args) {
         TestePeso t =new TestePeso();
-        t.capturaPeso();
+        
+            t.capturaPeso();
+        
+        
     }
 }

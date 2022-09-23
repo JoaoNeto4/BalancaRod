@@ -68,7 +68,7 @@ public class ConfiguracoesDao {
         }
     }
     
-    public static Configuracoes retornaInfoEmail(int ID) throws SQLException {
+    public static Configuracoes retornaInfoConfig(int ID) throws SQLException {
         try {
             
             Connection con = Conexao.getConexao();

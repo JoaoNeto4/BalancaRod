@@ -222,8 +222,8 @@ public class PesagemDao {
                 p.setAndamento(rs.getBoolean("PE.andamento"));
                 p.setNfe(rs.getString("PE.nfe"));
                 
-                p.setValorNfe(Double.NaN);
-                p.setPesoNfe(Double.NaN);
+                p.setValorNfe(rs.getDouble("PE.valorNfe"));
+                p.setPesoNfe(rs.getDouble("PE.pesoNfe"));
                 p.setLote(rs.getString("PE.lote"));
                 
                 p.setOrigem(rs.getString("PE.origem"));
@@ -340,6 +340,7 @@ public class PesagemDao {
         }
         return null;
     }
+    
     /*
     public static Pesagem retornaPesagem(int pes) throws SQLException {
         try {
