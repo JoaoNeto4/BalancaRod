@@ -139,13 +139,20 @@ create  table TB_Cameras(
 );
 
 create  table TB_Email(
-	ID int primary key auto_increment,
-	email varchar(150),
-	senha varchar(150),
-	servidor varchar(150),
-	porta int,
-	seguranca varchar(150),
-	ativo boolean
+    ID int primary key auto_increment,
+    email varchar(150),
+    senha varchar(150),
+    servidor varchar(150),
+    porta int,
+    seguranca varchar(150),
+    ativo boolean
+);
+
+create table TB_Configuracoes(
+    ID int primary key auto_increment,
+    envia_fotos boolean,
+    envia_email boolean,
+    pesagem_auto boolean
 );
 
 

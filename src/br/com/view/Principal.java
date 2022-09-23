@@ -10,7 +10,7 @@ import br.com.view.pesquisa.PesqProduto;
 import br.com.view.pesquisa.PesqVeiculo;
 import br.com.view.utilidades.Backup;
 import br.com.view.utilidades.ConfigCameras;
-import br.com.view.utilidades.Configuracoes;
+import br.com.view.utilidades.ConfiguracoesBD;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -237,7 +237,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jmConfiguracoesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmConfiguracoesMouseReleased
-        Configuracoes c = new Configuracoes(this, true);
+        ConfiguracoesBD c = new ConfiguracoesBD(this, true);
         c.setVisible(true);
     }//GEN-LAST:event_jmConfiguracoesMouseReleased
 
