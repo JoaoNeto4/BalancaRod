@@ -2,6 +2,7 @@ package br.com.email;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -104,44 +105,49 @@ public class EnvioEmail {
         }
     }
 
-    public static void enviaEmailComAnexo(Session session, String destinatario, String remetente, String subject, String body) {
+    public static void enviaEmailComAnexo(Session session, String destinatario, String remetente, String subject, String body, String anexo1, String anexo2, List emails) {
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
-
             msg.setFrom(new InternetAddress(remetente, "Não Responda-JD"));
-
             msg.setReplyTo(InternetAddress.parse(remetente, false));
-
             msg.setSubject(subject, "UTF-8");
-
             msg.setSentDate(new Date());
-
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
-
             // cria a parte do corpo da menssagem
-            BodyPart messageBodyPart = new MimeBodyPart();
-
+            BodyPart mb = new MimeBodyPart();
             // Preenche a menssagem
-            messageBodyPart.setText(body);
-
+            mb.setText(body);
             // Cria uma menssagem de varias partes para a menssagem
             Multipart multipart = new MimeMultipart();
 
             // Define o texto de parte da menssagem
-            multipart.addBodyPart(messageBodyPart);
-
+            multipart.addBodyPart(mb);
             // A segunda parte é o anexo
-            messageBodyPart = new MimeBodyPart();
-            //String filename = "abc.txt";
-            ///home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg
+            mb = new MimeBodyPart();
+
             String filename = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg";
+            String filename2 = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/fotoTeste.jpg";
+            
+            int num = emails.size();
+            multiplos emails
+                    https://www.guj.com.br/t/javamail-enviar-com-mais-de-um-destinatario/38842/9
+            
             DataSource source = new FileDataSource(filename);
-            messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(filename);
-            multipart.addBodyPart(messageBodyPart);
+            DataSource source2 = new FileDataSource(filename2);
+            
+            mb.setDataHandler(new DataHandler(source));
+            mb.setFileName(filename);
+
+            multipart.addBodyPart(mb);
+            
+            BodyPart mb2 = new MimeBodyPart();
+            mb2.setDataHandler(new DataHandler(source2));
+            mb2.setFileName(filename2);
+            
+            multipart.addBodyPart(mb2);
 
             //Envia a partes completas da menssagem
             msg.setContent(multipart);

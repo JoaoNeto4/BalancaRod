@@ -162,4 +162,34 @@ public class ParceiroNegocioDao {
         return null;
      }
     
+    public static ParceiroNegocio retornaEmailParceiro(int ID) throws SQLException {
+        try {
+            Connection con = Conexao.getConexao();
+            String sql = "select email, emailAlt from TB_ParceiroNegocio where ID="+ID+"";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            ParceiroNegocio pn = new ParceiroNegocio();
+            if(rs.next()) {
+                //Gambiarra da boa
+                pn.setId(rs.getInt("ID"));
+                pn.setEmail(rs.getString("email"));
+                pn.setEmailAlt(rs.getString("emailAlt"));
+                
+                stmt.close();
+                rs.close();
+                con.close();
+                return pn;
+                
+            }else{
+                stmt.close();
+                rs.close();
+                con.close();
+                return null;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PesagemDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+     }
+    
 }

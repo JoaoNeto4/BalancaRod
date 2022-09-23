@@ -42,8 +42,13 @@ public class SSL {
         Session session = Session.getDefaultInstance(props, auth);
         System.out.println("Sessão criada");
      //   EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
+     
+     
+     
+        String filename = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg";
+        String filename2 = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/fotoTeste.jpg";
 
-        EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo");
+     //   EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo", filename, filename2);
 
     //    EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
 

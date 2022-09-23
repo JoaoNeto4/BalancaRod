@@ -3,6 +3,7 @@ package br.com.view.cadastro;
 
 import br.com.bean.Cameras;
 import br.com.bean.Configuracoes;
+import br.com.bean.Email;
 import br.com.bean.Operador;
 import br.com.bean.ParceiroNegocio;
 import br.com.bean.Pesagem;
@@ -10,7 +11,10 @@ import br.com.bean.Produtos;
 import br.com.bean.Veiculos;
 import br.com.dao.CamerasDao;
 import br.com.dao.ConfiguracoesDao;
+import br.com.dao.EmailDao;
+import br.com.dao.ParceiroNegocioDao;
 import br.com.dao.PesagemDao;
+import br.com.email.EnvioEmail;
 import br.com.view.pesquisa.PesqParceiroNegocio;
 import br.com.view.pesquisa.PesqPesagemParaSaida;
 import br.com.view.pesquisa.PesqProduto;
@@ -19,8 +23,12 @@ import br.com.view.utilidades.ConfigCameras;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.swing.JOptionPane;
 import jssc.SerialPort;
 import jssc.SerialPortException;
@@ -54,6 +62,8 @@ public class CadPesagem extends javax.swing.JDialog {
     private String dirCam01="NotEnabled";
     private String dirCam02="NotEnabled";
     private String DIRETORIOFOTOS="/home/joao/Downloads/Fotos/";
+    String dirFoto1="";
+    String dirFoto2="";
     
     
     public CadPesagem(java.awt.Frame parent, boolean modal) {
@@ -160,34 +170,23 @@ public class CadPesagem extends javax.swing.JDialog {
     public void RecebeObjetoAgendamento(Pesagem pes){
 
             salvar=false;
-
             this.id=pes.getId();
-            
             this.IDoperador=pes.getOperador().getId();//*******************************pegar do sistema********************* 
-            
             IDveiculo=pes.getVeiculo().getId();
             txtTranpVeiculo.setText(pes.getTransportador().getFantasia());
             IDtransport=pes.getTransportador().getId();
             txtPlaca.setText(pes.getVeiculo().getPlaca());
-            
             txtParceiro.setText(pes.getPn().getFantasia());
             IDparceiro=pes.getPn().getId();
-            
             txtNfe.setText(pes.getNfe());
             txtPesoNfe.setText(String.valueOf(pes.getPesoNfe()));
             txtValorNfe.setText(String.valueOf(pes.getValorNfe()));
-            
             txtProduto.setText(pes.getProduto().getProduto());
             IDproduto=pes.getProduto().getId();
-            
             txtDestino.setText(pes.getDestino());
-            
             txtLote.setText(pes.getLote());
-            
             txtMotorista.setText(pes.getMotorista());
-            
             txtObservacao.setText(pes.getObservacao());
-            
             dataHoraEntrada=pes.getDataHoraEtrada();
             
             if(pes.getTipoPesagem().equals("composta")){
@@ -198,9 +197,7 @@ public class CadPesagem extends javax.swing.JDialog {
             Double peso2=pes.getPesoEnt2();
             Double soma=peso1+peso2;
             txtPesoEntrada.setText(Double.toString(soma));
-            
-        
-   
+
     }
     
     public String retornaDataHoraFoto(){
@@ -246,13 +243,11 @@ public class CadPesagem extends javax.swing.JDialog {
         v.setId(IDveiculo);
         op.setId(IDoperador);
         prod.setId(IDproduto);
-
         /*
         inserir data entrada apenas na insercao, alterar nao
         */
         pe.setDataHoraEtrada(dataHoraEntrada());
         pe.setDataHoraSaida(dataHoraSaida());
-        
         pe.setTipoPesagem(retornaTipoPesagem());
         pe.setAndamento(emAndamento());
         pe.setNfe(txtNfe.getText());
@@ -278,9 +273,25 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setTransportador(pn);
         pe.setId(id);
         
+        this.dirFoto1=pe.getFotoCarga1();
+        this.dirFoto2=pe.getFotoCarga2();
+        
+        
+        
         return pe;
     }
-    
+    /*EXCLUIR
+    public void validaConfiguracoesEmail() throws SQLException{
+        Configuracoes c = ConfiguracoesDao.retornaInfoConfig(1);
+        ParceiroNegocio pn = new ParceiroNegocio();
+        
+        List<String> lista = new ArrayList<>();
+        if(c.isEnviaEmail() && c.isEnviaFotos()){
+            
+            
+        }
+    }
+    */
     public boolean validaCam1_Ativa(){
         if(cameras.isAtivoC1()){
             return true;
@@ -401,6 +412,56 @@ public class CadPesagem extends javax.swing.JDialog {
         return pe;
     }
     */
+    
+    
+    
+    public void enviaEmailSSL(int idParceiro, int idTranspor) throws SQLException{
+        Email email = EmailDao.retornaInfoEmail(1);
+        
+        ParceiroNegocio pn = new ParceiroNegocio();
+        ParceiroNegocio transp = new ParceiroNegocio();
+        pn = ParceiroNegocioDao.retornaEmailParceiro(idParceiro);
+        transp = ParceiroNegocioDao.retornaEmailParceiro(idTranspor);
+        List<String> listaEmails = new ArrayList<>();
+        if(!pn.getEmail().isEmpty()){
+            listaEmails.add(pn.getEmail());
+            if(!pn.getEmailAlt().isEmpty()){
+                listaEmails.add(pn.getEmailAlt());
+            }
+        }
+        if(!transp.getEmail().isEmpty()){
+            listaEmails.add(transp.getEmail());
+            if(!transp.getEmailAlt().isEmpty()){
+                listaEmails.add(transp.getEmailAlt());
+            }
+        }
+
+        final String remetente = email.getEmail();
+        final String senha = email.getSenha();
+        final int porta = email.getPorta();
+        final String servidor = email.getServidor();
+        //final String seguranca = email.getSeguranca();
+        final String destinatario = "desenvolvimento2@ativusgestao.com.br"; // quem recebe
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", servidor); 
+        props.put("mail.smtp.socketFactory.port", porta); 
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", porta);
+
+        Authenticator auth = new Authenticator() {
+            //override the getPasswordAuthentication method
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(remetente, senha);
+            }
+        };
+        
+        Session session = Session.getDefaultInstance(props, auth);
+     //   EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
+        EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo", dirFoto1, dirFoto2, listaEmails);
+    //    EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
+    }
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -939,7 +1000,10 @@ public class CadPesagem extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesqAgendamentoMouseReleased
 
     private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
-        if(validaCampos()){
+        
+        
+        
+        /*if(validaCampos()){
             try {
                 Configuracoes c = new Configuracoes();
                 c = ConfiguracoesDao.retornaInfoConfig(retornaObjeto().getId());
@@ -958,6 +1022,7 @@ public class CadPesagem extends javax.swing.JDialog {
                 Logger.getLogger(CadProdutos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        */
     }//GEN-LAST:event_jButton1MouseReleased
 
   
