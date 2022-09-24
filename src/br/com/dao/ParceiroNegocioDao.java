@@ -18,7 +18,7 @@ public class ParceiroNegocioDao {
     public static void inserir(ParceiroNegocio pn)throws SQLException{
         try {
             Connection con = Conexao.getConexao();
-            String sql = "insert into TB_ParceiroNegocio( fantasia, razaoSocial, cpf_cnpj, estado, cidade, bairro, rua, numero, telefone, celular, email, emailAlt, Observacoes) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into TB_ParceiroNegocio( fantasia, razaoSocial, cpf_cnpj, estado, cidade, bairro, rua, numero, telefone, telefoneAlt, celular, email, emailAlt, Observacoes) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, pn.getFantasia());
             stmt.setString(2, pn.getRazaoSocial());
@@ -29,9 +29,9 @@ public class ParceiroNegocioDao {
             stmt.setString(7, pn.getRua());
             stmt.setInt(8, pn.getNumero());
             stmt.setString(9, pn.getTelefone());
-            stmt.setString(10, pn.getCelular());
-            stmt.setString(11, pn.getEmail());
-            stmt.setString(12, pn.getEmailAlt());
+            stmt.setString(10, pn.getTelefoneAlt());
+            stmt.setString(11, pn.getCelular());
+            stmt.setString(12, pn.getEmail());
             stmt.setString(13, pn.getEmailAlt());
             stmt.setString(14, pn.getObservacao());
             stmt.execute();
@@ -171,7 +171,7 @@ public class ParceiroNegocioDao {
             ParceiroNegocio pn = new ParceiroNegocio();
             if(rs.next()) {
                 //Gambiarra da boa
-                pn.setId(rs.getInt("ID"));
+                
                 pn.setEmail(rs.getString("email"));
                 pn.setEmailAlt(rs.getString("emailAlt"));
                 

@@ -53,9 +53,18 @@ public class CadVeiculo extends javax.swing.JDialog {
         p.setId(ID_Parceiro);
         v.setMarca((String) jcMarca.getSelectedItem());
         v.setModelo(txtModelo.getText());
-        v.setAno(Integer.parseInt(txtAno.getText()));
+        
+        if(txtAno.getText().equals("")){
+            v.setAno(0);
+        }else{
+            v.setAno(Integer.parseInt(txtAno.getText()));
+        }
         v.setPlaca(txtPlaca.getText());
-        v.setTara(Double.parseDouble(txtTara.getText()));
+        if(txtTara.getText().equals("")){
+            v.setTara(0.0);
+        }else{
+            v.setTara(Double.parseDouble(txtTara.getText()));
+        }
         v.setTipo(txtTipo.getText());
         v.setObservacoes(txtObservacoes.getText());
         v.setAtivo(true);

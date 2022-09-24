@@ -20,7 +20,7 @@ public class VeiculosDao {
     public static void inserir(Veiculos vei)throws SQLException{
         try {
             Connection con = Conexao.getConexao();
-            String sql = "insert into TB_Veiculos( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, ativo, observacoes) VALUES(?,?,?,?,?,?)";
+            String sql = "insert into TB_Veiculos( ID_parceiro, marca, modelo, anoFabricacao, placa, tara, tipo, ativo, observacoes) VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, vei.getPn().getId());
             stmt.setString(2, vei.getMarca());

@@ -105,7 +105,7 @@ public class EnvioEmail {
         }
     }
 
-    public static void enviaEmailComAnexo(Session session, String destinatario, String remetente, String subject, String body, String anexo1, String anexo2, List emails) {
+    public static void enviaEmailComAnexo(Session session, String[] destinatarios, String remetente, String subject, String body, String anexo1, String anexo2) {
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
@@ -115,7 +115,8 @@ public class EnvioEmail {
             msg.setReplyTo(InternetAddress.parse(remetente, false));
             msg.setSubject(subject, "UTF-8");
             msg.setSentDate(new Date());
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
+            //msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
+            msg.setRecipients(Message.RecipientType.TO, );
             // cria a parte do corpo da menssagem
             BodyPart mb = new MimeBodyPart();
             // Preenche a menssagem
@@ -131,10 +132,15 @@ public class EnvioEmail {
             String filename = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/2022-09-16-17:31:19.jpg";
             String filename2 = "/home/joao/NetBeansProjects/Balanca/src/br/com/teste/fotoTeste.jpg";
             
-            int num = emails.size();
+           
+            /*
             multiplos emails
                     https://www.guj.com.br/t/javamail-enviar-com-mais-de-um-destinatario/38842/9
-            
+                    
+                    https://www.mballem.com/post/enviando-email-com-a-api-javamail/
+                    
+                    https://stackoverflow.com/questions/26867055/how-to-send-an-email-to-multiple-recipients-in-spring
+            */
             DataSource source = new FileDataSource(filename);
             DataSource source2 = new FileDataSource(filename2);
             

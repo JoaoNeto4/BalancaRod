@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
 import javax.swing.JOptionPane;
 import jssc.SerialPort;
 import jssc.SerialPortException;
@@ -358,7 +359,7 @@ public class CadPesagem extends javax.swing.JDialog {
             return diretorio;
         }
     }
-    /*
+    
     private Pesagem tESTE(){
         Pesagem pe = new Pesagem();
         ParceiroNegocio pn = new ParceiroNegocio();
@@ -367,9 +368,9 @@ public class CadPesagem extends javax.swing.JDialog {
         Operador op = new Operador();
         Produtos prod = new Produtos();
           
-        pn.setId(2);
-        transp.setId(1);
-        v.setId(1);
+        pn.setId(3);
+        transp.setId(4);
+        v.setId(3);
         op.setId(1);
         prod.setId(1);
 
@@ -411,12 +412,20 @@ public class CadPesagem extends javax.swing.JDialog {
     
         return pe;
     }
-    */
     
     
+    public InternetAddress[] converteListaArrayEmail(List<String> lista) {
+        
+        int tam =lista.size();
+        InternetAddress[] email = new InternetAddress[tam];
+        for(int i=0; i<tam; i++){
+            email[i]=InternetAddress.(lista.get(i));
+            //converter para InternetAddress
+        }
+        return email;
+    }
     
-    public void enviaEmailSSL(int idParceiro, int idTranspor) throws SQLException{
-        Email email = EmailDao.retornaInfoEmail(1);
+    public String[] retornaArrayEmail(int idParceiro, int idTranspor) throws SQLException{
         
         ParceiroNegocio pn = new ParceiroNegocio();
         ParceiroNegocio transp = new ParceiroNegocio();
@@ -435,7 +444,18 @@ public class CadPesagem extends javax.swing.JDialog {
                 listaEmails.add(transp.getEmailAlt());
             }
         }
-
+        //Converte Lista para Array
+        int tam =listaEmails.size();
+        String[] email = new String[tam];
+        for(int i=0; i<tam; i++){
+            email[i]=listaEmails.get(i).trim();
+        }
+        return email;
+    }
+    
+    public void enviaEmailSSL(String[] destinatarios) throws SQLException{
+        Email email = EmailDao.retornaInfoEmail(1);
+        
         final String remetente = email.getEmail();
         final String senha = email.getSenha();
         final int porta = email.getPorta();
@@ -459,7 +479,7 @@ public class CadPesagem extends javax.swing.JDialog {
         
         Session session = Session.getDefaultInstance(props, auth);
      //   EnvioEmail.enviaEmail(session, destinatario, remetente, "SSLEmail Assunto", "SSLEmail Corpo Email");
-        EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo", dirFoto1, dirFoto2, listaEmails);
+        EnvioEmail.enviaEmailComAnexo(session, destinatarios, remetente, "SSLEmail Assunto de teste com anexo", "SSLEmail Corpo do email com anexo", dirFoto1, dirFoto2);
     //    EnvioEmail.enviaEmailComAnexo(session, destinatario, remetente, "SSLEmail Assunto de teste com imagem", "SSLEmail Corpo do email com imagem");
     }
   
@@ -518,7 +538,7 @@ public class CadPesagem extends javax.swing.JDialog {
         btnLocalOrigem = new javax.swing.JButton();
         txtOrigem = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnTESTE = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -781,10 +801,10 @@ public class CadPesagem extends javax.swing.JDialog {
 
         jLabel16.setText("Local Origem");
 
-        jButton1.setText("jButton1");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnTESTE.setText("TESTE");
+        btnTESTE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jButton1MouseReleased(evt);
+                btnTESTEMouseReleased(evt);
             }
         });
 
@@ -850,7 +870,7 @@ public class CadPesagem extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnTESTE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
@@ -920,7 +940,7 @@ public class CadPesagem extends javax.swing.JDialog {
                     .addComponent(btnCancelar)
                     .addComponent(btnSalvar)
                     .addComponent(btnPesqAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnTESTE))
                 .addContainerGap())
         );
 
@@ -999,18 +1019,21 @@ public class CadPesagem extends javax.swing.JDialog {
         ps.setVisible(true);
     }//GEN-LAST:event_btnPesqAgendamentoMouseReleased
 
-    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+    private void btnTESTEMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTESTEMouseReleased
         
         
         
-        /*if(validaCampos()){
+        if(validaCampos()){
             try {
                 Configuracoes c = new Configuracoes();
-                c = ConfiguracoesDao.retornaInfoConfig(retornaObjeto().getId());
+                c = ConfiguracoesDao.retornaInfoConfig(1);
                 
                 if(salvar){
                     //dao.inserir(tESTE());
-                    PesagemDao.inserir(retornaObjeto());
+                    Pesagem p = new Pesagem();
+                    p=tESTE();
+                    PesagemDao.inserir(p);
+                    enviaEmailSSL(retornaArrayEmail(p.getPn().getId(), p.getTransportador().getId()));
                     limparCampos();
                     //this.dispose();
                 }else{
@@ -1022,8 +1045,8 @@ public class CadPesagem extends javax.swing.JDialog {
                 Logger.getLogger(CadProdutos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        */
-    }//GEN-LAST:event_jButton1MouseReleased
+        
+    }//GEN-LAST:event_btnTESTEMouseReleased
 
   
     public static void main(String args[]) {
@@ -1073,9 +1096,9 @@ public class CadPesagem extends javax.swing.JDialog {
     private javax.swing.JButton btnPesqPlaca;
     private javax.swing.JButton btnPesqProduto;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnTESTE;
     private javax.swing.ButtonGroup grupoBotoes_Operacao;
     private javax.swing.ButtonGroup grupoBotoes_TipoPesagem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
