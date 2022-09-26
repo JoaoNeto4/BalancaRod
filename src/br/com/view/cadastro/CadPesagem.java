@@ -435,18 +435,14 @@ public class CadPesagem extends javax.swing.JDialog {
         List<String> listaEmails = new ArrayList<>();
         if(!pn.getEmail().isEmpty()){
             listaEmails.add(pn.getEmail());
-            System.out.println("parceiro principa: "+pn.getEmail());
             if(!pn.getEmailAlt().isEmpty()){
                 listaEmails.add(pn.getEmailAlt());
-                System.out.println("parceiro alternativo: "+pn.getEmailAlt());
             }
         }
         if(!transp.getEmail().isEmpty()){
             listaEmails.add(transp.getEmail());
-            System.out.println("trasnportadora principa: "+transp.getEmail());
             if(!transp.getEmailAlt().isEmpty()){
                 listaEmails.add(transp.getEmailAlt());
-                System.out.println("transportadora alternativo: "+transp.getEmailAlt());
             }
         }
         //Converte Lista para Array

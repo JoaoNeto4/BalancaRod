@@ -1,9 +1,12 @@
 
 package br.com.teste;
 
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.sourceforge.tess4j.ITessAPI.TessOcrEngineMode;
+import net.sourceforge.tess4j.ITessAPI.TessPageSegMode;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacv.CanvasFrame;
@@ -40,21 +43,22 @@ public class TesteCam {
 	return result;
     }
     public boolean validaPlaca2(String placa) {
-	Pattern pattern = Pattern
-            .compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
+	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
 	Matcher mat = pattern.matcher(placa);
 	return mat.matches();
-}
+    }
+    
+    
     
     public static void main(String[] args) throws FrameGrabber.Exception, InterruptedException, TesseractException {
-        
+        TesteCam t = new TesteCam();
 
 OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
         //CAMERA
         OpenCVFrameGrabber camera = new OpenCVFrameGrabber(0);
         
         //REGEX: ^[a-zA-Z]{3}[0-9][A-Za-z0-9][0-9]{2}$
-         
+        
         camera.start();
        
         CascadeClassifier objPlaca = new CascadeClassifier("src/br/com/teste/cascades/haarcascade_russian_plate_number.xml");
@@ -62,8 +66,19 @@ OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
         
         Tesseract tess4j = new Tesseract();
         tess4j.setDatapath("/usr/share/tesseract-ocr/4.00/tessdata");
-        tess4j.setLanguage("por");
+        tess4j.setLanguage("eng");
+        tess4j.setOcrEngineMode(3);//VERRR
 
+        //https://stackoverflow.com/questions/43966201/tesseract-tess4j-increasing-accuracy
+        tess4j.setHocr(false);
+        tess4j.setTessVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789");
+        tess4j.setTessVariable("load_system_dawg", "false");
+        tess4j.setTessVariable("load_freq_dawg", "false");
+        tess4j.setOcrEngineMode(TessOcrEngineMode.OEM_DEFAULT);
+        tess4j.setPageSegMode(TessPageSegMode.PSM_SINGLE_WORD); //
+        tess4j.setPageSegMode(7);
+        //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_PageSegMode.htm
+        //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_OcrEngineMode.htm
 
 Java2DFrameConverter c2 = new Java2DFrameConverter();
 String result=""; 
@@ -92,19 +107,19 @@ Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
             objPlaca.detectMultiScale(imagemCinza, placaDetectada, 1.1, 2, 0, new Size(150, 150), new Size(500, 500));
             
 
-            //quando entra neste "for" ele ja conseguiu detectar uma face
+            //ao entrar ja reconheceu a placa
             for(int i=0; i<placaDetectada.size(); i++){
-                //Rect significa o retangulo ao redor da face 
+                //Rect retangulo 
                 Rect dadosPlaca = placaDetectada.get(i);
-                //vamos desenhar um retangulo na face colorida quando reconhecer uma face;   padrao R,G,B, naoUsado
+                //desenha retungulo
                 rectangle(imagemColorido, dadosPlaca, new Scalar(0, 255, 0, 0)); 
                 
                 Mat placaCapturada = new Mat(imagemCinza, dadosPlaca);
-                //linha abaixo padroniza o tamanho das imagens para 160 x 160    aula 008
+
 //resize(placaCapturada, placaCapturada, new Size(160, 160));
                 
   
-                //para indeicar qual rotulo é; se é rotulo 1 ou rotulo 2. numero 1 passado por padrao no metodo como parametro para evitar erros.  aula 013 3:52
+                //para identificar qual rotulo é; se é rotulo 1 ou rotulo 2. numero 1 passado por padrao no metodo como parametro para evitar erros.
                 IntPointer rotulo = new IntPointer(1);
                 DoublePointer confianca = new DoublePointer(1);
 
@@ -112,6 +127,7 @@ Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
                 int predicao = rotulo.get(0);
 
                 //result = tess4j.doOCR(bi, rctngl);
+                //result = tess4j.doOCR(java2DConverter.convert(openCVConverter.convert(placaCapturada)));
                 result = tess4j.doOCR(java2DConverter.convert(openCVConverter.convert(placaCapturada)));
 
                 //abaixo se verificacao retornar -1 é porque nao encontrou nenhuma classe
@@ -132,23 +148,27 @@ Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
                     String texto = String.format("%.1f", teste2);
                     String eita = texto.replace(",", ".");
                     Double num = Double.parseDouble(eita);
-               
     /**********************************************************************************/
-                    
                     
                     //result =  " - " + confianca.get(0);
                 }
                 
-                //para colocar o nome ao lado da foto que foi reconhecida
+                //para colocar otexto ao redor
                 int x = Math.max(dadosPlaca.tl().x() - 10, 0);
                 int y = Math.max(dadosPlaca.tl().y() - 10, 0);
                 //linha abaixo coloca o texto para aparecer na webcam
-                putText(imagemColorido, result, new Point(x, y), FONT_HERSHEY_PLAIN, 1.4, new Scalar(0, 255, 0, 0));
                 
+               // putText(imagemColorido, result, new Point(x, y), FONT_HERSHEY_PLAIN, 1.4, new Scalar(0, 255, 0, 0));
+                if(t.validaPlaca(result)){
+                    putText(imagemColorido, result, new Point(x, y), FONT_HERSHEY_PLAIN, 1.4, new Scalar(0, 255, 0, 0));
+                    System.out.println("resultado: "+result);
+                }
+                System.out.println(t.validaPlaca2(result));
+                System.out.println("resultado sem validacao: "+result);
             }
             if(cFrame.isVisible()){
-                    cFrame.showImage(frameCapturado);
-                }    
+                cFrame.showImage(frameCapturado);
+            }    
 
         }
         
