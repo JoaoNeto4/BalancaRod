@@ -427,7 +427,7 @@ public class CadPesagem extends javax.swing.JDialog {
     }
     
     public InternetAddress[] retornaArrayEmail(int idParceiro, int idTranspor) throws SQLException, AddressException{
-        
+        //https://www.programcreek.com/java-api-examples/javax.mail.internet.InternetAddress
         ParceiroNegocio pn = new ParceiroNegocio();
         ParceiroNegocio transp = new ParceiroNegocio();
         pn = ParceiroNegocioDao.retornaEmailParceiro(idParceiro);

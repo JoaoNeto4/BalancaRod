@@ -76,7 +76,7 @@ OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
         tess4j.setTessVariable("load_freq_dawg", "false");
         tess4j.setOcrEngineMode(TessOcrEngineMode.OEM_DEFAULT);
         tess4j.setPageSegMode(TessPageSegMode.PSM_SINGLE_WORD); //
-        tess4j.setPageSegMode(7);
+        //tess4j.setPageSegMode(7);
         //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_PageSegMode.htm
         //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_OcrEngineMode.htm
 
