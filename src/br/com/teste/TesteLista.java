@@ -1,8 +1,11 @@
 
 package br.com.teste;
 
+import static com.mysql.cj.conf.PropertyKey.logger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 public class TesteLista {
     
@@ -14,6 +17,35 @@ public class TesteLista {
         lista.add("teste2");
         lista.add("teste3");
         return lista;
+    }
+    
+    public InternetAddress[] converteListaArrayEmail(List<String> lista) throws AddressException { 
+        String item ="";
+        int tam =lista.size();
+        InternetAddress[] email = new InternetAddress[tam];
+
+        for(int i=0; i<tam; i++){
+            item= lista.get(i);
+            email[i]=new InternetAddress(lista.get(i));
+            //converter para InternetAddress
+        }
+        return email;
+    }
+    
+    private InternetAddress[] getInternetAddress(List<String> lista) {
+	int size = 0;
+	if (lista != null) {
+		size = lista.size();
+	}
+	InternetAddress[] address = new InternetAddress[size];
+	for (int i = 0; i < size; i++) {
+		try {
+                    address[i] = new InternetAddress(lista.get(i));
+		} catch (Exception e) {
+                    e.printStackTrace();
+		}
+	}
+	return address;
     }
     
     

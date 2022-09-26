@@ -32,6 +32,7 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
         this.setTitle("Edição de Parceiro de Negócio");
         this.setLocationRelativeTo(null);  // centraliza a tela 
         this.setaCampos(pnSelecionado);
+        this.id=pnSelecionado.getId();
         this.salvar=false;
     }
     
@@ -52,6 +53,7 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
         pn.setEmail(txtEmail.getText());
         pn.setEmailAlt(txtEmailAlt.getText());
         pn.setObservacao(txtObservacao.getText());
+        pn.setId(id);
         return pn;
     }
     
@@ -394,13 +396,12 @@ public class CadParceiroNegocio extends javax.swing.JDialog {
             ParceiroNegocioDao op = new ParceiroNegocioDao();
             try {
                 if(salvar){
-                    retornaObjeto();
                     op.inserir(retornaObjeto());
-                    limparCampos();
+                    //limparCampos();
                     this.dispose();
                 }else{
                     op.alterar(retornaObjeto());
-                    limparCampos();
+                    //limparCampos();
                     this.dispose();
                 }
             } catch (SQLException ex) {

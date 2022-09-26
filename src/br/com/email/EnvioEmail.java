@@ -105,7 +105,7 @@ public class EnvioEmail {
         }
     }
 
-    public static void enviaEmailComAnexo(Session session, String[] destinatarios, String remetente, String subject, String body, String anexo1, String anexo2) {
+    public static void enviaEmailComAnexo(Session session, InternetAddress[] destinatarios, String remetente, String subject, String body, String anexo1, String anexo2) {
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
@@ -116,7 +116,7 @@ public class EnvioEmail {
             msg.setSubject(subject, "UTF-8");
             msg.setSentDate(new Date());
             //msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario, false));
-            msg.setRecipients(Message.RecipientType.TO, );
+            msg.setRecipients(Message.RecipientType.TO, destinatarios);
             // cria a parte do corpo da menssagem
             BodyPart mb = new MimeBodyPart();
             // Preenche a menssagem

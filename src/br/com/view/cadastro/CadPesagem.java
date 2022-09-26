@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.swing.JOptionPane;
 import jssc.SerialPort;
@@ -408,24 +409,24 @@ public class CadPesagem extends javax.swing.JDialog {
         pe.setVeiculo(v);
         pe.setOperador(op);
         pe.setProduto(prod);
-        pe.setTransportador(pn);
+        pe.setTransportador(transp);
     
         return pe;
     }
     
     
-    public InternetAddress[] converteListaArrayEmail(List<String> lista) {
-        
+    public InternetAddress[] converteListaArrayEmail(List<String> lista) throws AddressException {
         int tam =lista.size();
         InternetAddress[] email = new InternetAddress[tam];
+
         for(int i=0; i<tam; i++){
-            email[i]=InternetAddress.(lista.get(i));
+            email[i]=new InternetAddress(lista.get(i));
             //converter para InternetAddress
         }
         return email;
     }
     
-    public String[] retornaArrayEmail(int idParceiro, int idTranspor) throws SQLException{
+    public InternetAddress[] retornaArrayEmail(int idParceiro, int idTranspor) throws SQLException, AddressException{
         
         ParceiroNegocio pn = new ParceiroNegocio();
         ParceiroNegocio transp = new ParceiroNegocio();
@@ -434,26 +435,33 @@ public class CadPesagem extends javax.swing.JDialog {
         List<String> listaEmails = new ArrayList<>();
         if(!pn.getEmail().isEmpty()){
             listaEmails.add(pn.getEmail());
+            System.out.println("parceiro principa: "+pn.getEmail());
             if(!pn.getEmailAlt().isEmpty()){
                 listaEmails.add(pn.getEmailAlt());
+                System.out.println("parceiro alternativo: "+pn.getEmailAlt());
             }
         }
         if(!transp.getEmail().isEmpty()){
             listaEmails.add(transp.getEmail());
+            System.out.println("trasnportadora principa: "+transp.getEmail());
             if(!transp.getEmailAlt().isEmpty()){
                 listaEmails.add(transp.getEmailAlt());
+                System.out.println("transportadora alternativo: "+transp.getEmailAlt());
             }
         }
         //Converte Lista para Array
         int tam =listaEmails.size();
-        String[] email = new String[tam];
+        InternetAddress[] email = new InternetAddress[tam];
+
         for(int i=0; i<tam; i++){
-            email[i]=listaEmails.get(i).trim();
+            email[i]=new InternetAddress(listaEmails.get(i));
+            //converter para InternetAddress
         }
         return email;
+       
     }
     
-    public void enviaEmailSSL(String[] destinatarios) throws SQLException{
+    public void enviaEmailSSL(InternetAddress[] destinatarios) throws SQLException{
         Email email = EmailDao.retornaInfoEmail(1);
         
         final String remetente = email.getEmail();
@@ -1043,6 +1051,8 @@ public class CadPesagem extends javax.swing.JDialog {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(CadProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AddressException ex) {
+                Logger.getLogger(CadPesagem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

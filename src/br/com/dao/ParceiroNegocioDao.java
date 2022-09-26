@@ -61,7 +61,7 @@ public class ParceiroNegocioDao {
     public static void alterar(ParceiroNegocio pn)throws SQLException{
         try {
             Connection con = Conexao.getConexao();
-            String sql = "UPDATE TB_ParceiroNegocio SET fantasia=?, razaoSocial=?, cpf_cnpj=?, estado=?, cidade=?, bairro=?, rua=?, numero=?, telefone=?, celular=?, email=?, emailAlt=?, Observacoes=? WHERE ID= ?";
+            String sql = "UPDATE TB_ParceiroNegocio SET fantasia=?, razaoSocial=?, cpf_cnpj=?, estado=?, cidade=?, bairro=?, rua=?, numero=?, telefone=?, telefoneAlt=?, celular=?, email=?, emailAlt=?, Observacoes=? WHERE ID=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, pn.getFantasia());
             stmt.setString(2, pn.getRazaoSocial());
@@ -72,9 +72,9 @@ public class ParceiroNegocioDao {
             stmt.setString(7, pn.getRua());
             stmt.setInt(8, pn.getNumero());
             stmt.setString(9, pn.getTelefone());
-            stmt.setString(10, pn.getCelular());
-            stmt.setString(11, pn.getEmail());
-            stmt.setString(12, pn.getEmailAlt());
+            stmt.setString(10, pn.getTelefoneAlt());
+            stmt.setString(11, pn.getCelular());
+            stmt.setString(12, pn.getEmail());
             stmt.setString(13, pn.getEmailAlt());
             stmt.setString(14, pn.getObservacao());
             stmt.setInt(15, pn.getId());
