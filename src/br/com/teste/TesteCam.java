@@ -33,7 +33,8 @@ public class TesteCam {
     
     public boolean validaPlaca(String placa) {
 	boolean result = false;
-	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
+	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}||-[0-9]{4}");
+        //Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}//-[0-9]{4}");
 	Matcher mat = pattern.matcher(placa);
 	if (!mat.matches()) {
             result = false;
@@ -43,7 +44,7 @@ public class TesteCam {
 	return result;
     }
     public boolean validaPlaca2(String placa) {
-	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}\\-[0-9]{4}");
+	Pattern pattern = Pattern.compile("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}||-[0-9]{4}");
 	Matcher mat = pattern.matcher(placa);
 	return mat.matches();
     }
@@ -67,16 +68,18 @@ OpenCVFrameConverter.ToMat convertemat = new OpenCVFrameConverter.ToMat();
         Tesseract tess4j = new Tesseract();
         tess4j.setDatapath("/usr/share/tesseract-ocr/4.00/tessdata");
         tess4j.setLanguage("eng");
-        tess4j.setOcrEngineMode(3);//VERRR
+        tess4j.setOcrEngineMode(TessOcrEngineMode.OEM_DEFAULT);
+        tess4j.setPageSegMode(TessPageSegMode.PSM_SINGLE_WORD); //
+        //tess4j.setOcrEngineMode(3);//VERRR
+        //MESMO QUE
+        //tess4j.setOcrEngineMode(TessOcrEngineMode.OEM_DEFAULT);
 
         //https://stackoverflow.com/questions/43966201/tesseract-tess4j-increasing-accuracy
         tess4j.setHocr(false);
         tess4j.setTessVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789");
         tess4j.setTessVariable("load_system_dawg", "false");
         tess4j.setTessVariable("load_freq_dawg", "false");
-        tess4j.setOcrEngineMode(TessOcrEngineMode.OEM_DEFAULT);
-        tess4j.setPageSegMode(TessPageSegMode.PSM_SINGLE_WORD); //
-        //tess4j.setPageSegMode(7);
+        
         //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_PageSegMode.htm
         //https://tesseract.patagames.com/help/html/T_Patagames_Ocr_Enums_OcrEngineMode.htm
 
