@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.bytedeco.opencv.opencv_java;
 import org.opencv.android.Utils;
@@ -19,9 +20,9 @@ import org.opencv.videoio.VideoCapture;
 public class PainelCAM extends javax.swing.JPanel implements Runnable{
 
     private VideoCapture video;
-    private Mat frame;
+    private Mat frameMat;
     private BufferedImage buff;
-    //OpenCVFrameGrabber video;
+    //OpenCVFrameGrabber video2;//**//
     
     public PainelCAM() {
         initComponents();
@@ -59,17 +60,17 @@ public class PainelCAM extends javax.swing.JPanel implements Runnable{
 
     @Override
     public void run() {
-
+       // OpenCVFrameConverter converter = new OpenCVFrameConverter.ToMat();//**//
         this.video = new VideoCapture(0);
-        //this.video = new OpenCVFrameGrabber(0);
-        this.frame = new Mat();
+        //this.video2 = new OpenCVFrameGrabber(0);//**//
+        this.frameMat = new Mat();
         if(video.isOpened()){
 
             while(true){
-                //video.read(frame);
-                video.read(frame);
-                if(frame != null){
-                    MatToBufferedImage(frame);
+                //video2.;
+                video.read(frameMat);
+                if(frameMat != null){
+                    MatToBufferedImage(frameMat);
                     this.repaint();
                 }
             }
